@@ -1,0 +1,19 @@
+query Me {
+  me {
+    data {
+      id
+      username
+      name
+      last_name
+      store {
+        id
+        name
+      }
+      role {
+        id
+        name
+      }
+    }
+    message
+  }
+}

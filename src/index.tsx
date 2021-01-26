@@ -1,34 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { ApolloClient, ApolloProvider } from "@apollo/client";
-import { cache } from "./cache";
-import { Provider } from "react-redux";
-import store from "./app/store";
+import App from "./app/App";
+import { ThemeProvider } from "./theme";
+import { SnackbarProvider } from "notistack";
 import reportWebVitals from "./reportWebVitals";
 
-const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql",
-  cache,
-});
-
-const render = () => {
-  const App = require("./app/App").default;
-
-  ReactDOM.render(
-    <ApolloProvider client={client}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </ApolloProvider>,
-    document.getElementById("root")
-  );
-};
-
-render();
-
-if (process.env.NODE_ENV === "development" && module.hot) {
-  module.hot.accept("./app/App", render);
-}
+ReactDOM.render(
+  <ThemeProvider>
+    <SnackbarProvider
+      maxSnack={4}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+    >
+      <App />
+    </SnackbarProvider>
+  </ThemeProvider>,
+  document.getElementById("root")
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

@@ -1,24 +1,24 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Route, Switch } from "react-router-dom";
-import { Login } from "../features/Login";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../app/rootReducer";
+import { Login } from "../views/Login";
 import { useMeQuery } from "../generated/graphql";
-import { getMeSuccess, getMeFail } from "./authSlice";
+import { PageLoaderWrapper } from "./styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const Router: React.FC<{}> = () => {
-  const dispatch = useDispatch();
-  const auth = useSelector((state: RootState) => state.auth);
-  const { data, error } = useMeQuery();
+  const { data, loading } = useMeQuery();
 
-  useEffect(() => {
-    if (!auth.data && !auth.error) {
-      if (data) {
-        console.log(data);
-        dispatch(getMeSuccess(data));
-      }
-    }
-  }, []);
+  if (loading) {
+    return (
+      <PageLoaderWrapper>
+        <CircularProgress />
+      </PageLoaderWrapper>
+    );
+  }
+
+  if (!data) {
+    return <Route path="/" exact component={Login} />;
+  }
 
   return (
     <Switch>

@@ -9,7 +9,7 @@ import { myTheme } from "./theme";
 
 const theme = createMuiTheme(myTheme);
 
-export const ThemeProvider: React.FC<{}> = ({ children }) => {
+const ThemeProvider: React.FC<{}> = ({ children }) => {
   return (
     <StyledThemeProvider theme={theme}>
       <MuiThemeProvider theme={theme}>
@@ -18,3 +18,5 @@ export const ThemeProvider: React.FC<{}> = ({ children }) => {
     </StyledThemeProvider>
   );
 };
+
+export default ThemeProvider;

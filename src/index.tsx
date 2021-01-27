@@ -1,19 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./app/App";
-import { ThemeProvider } from "./theme";
-import { SnackbarProvider } from "notistack";
+import ThemeProvider from "./theme";
+import SnackbarProvider from "./theme/SnackbarProvider";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <ThemeProvider>
-    <SnackbarProvider
-      maxSnack={4}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-    >
+    <SnackbarProvider>
       <App />
     </SnackbarProvider>
   </ThemeProvider>,

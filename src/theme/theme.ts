@@ -1,7 +1,7 @@
-import { DefaultTheme } from "styled-components";
+// import { DefaultTheme } from "styled-components";
 import { orange, green } from "@material-ui/core/colors";
 
-const myTheme: DefaultTheme = {
+const myTheme = {
   palette: {
     primary: {
       main: orange[500],

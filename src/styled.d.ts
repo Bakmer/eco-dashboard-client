@@ -1,14 +1,14 @@
-import "styled-components";
+// import "styled-components";
 
-declare module "styled-components" {
-  export interface DefaultTheme {
-    palette: {
-      primary: {
-        main: string;
-      };
-      secondary: {
-        main: string;
-      };
-    };
-  }
-}
+// declare module "styled-components" {
+//   export interface DefaultTheme {
+//     palette: {
+//       primary: {
+//         main: string;
+//       };
+//       secondary: {
+//         main: string;
+//       };
+//     };
+//   }
+// }

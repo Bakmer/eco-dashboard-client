@@ -14,7 +14,10 @@ import Routes from "../routes";
 const App: React.FC<{}> = () => {
   const { enqueueSnackbar } = useSnackbar();
 
-  const httpLink = new HttpLink({ uri: "http://localhost:4000/graphql" });
+  const httpLink = new HttpLink({
+    uri: "http://localhost:4000/graphql",
+    credentials: "include",
+  });
 
   const handleErrors = new ApolloLink((operation, forward) => {
     return forward(operation).map((response) => {

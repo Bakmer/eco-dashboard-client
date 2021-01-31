@@ -1,9 +1,11 @@
 import React from "react";
 import { StyledMuiTextField } from "./styles";
-import { BaseTextFieldProps } from "@material-ui/core/TextField";
+import { StandardTextFieldProps } from "@material-ui/core/TextField";
 
-interface TextFieldProps extends BaseTextFieldProps {}
+interface TextFieldProps extends StandardTextFieldProps {}
 
-export const TextField: React.FC<TextFieldProps> = (props) => {
-  return <StyledMuiTextField {...props} variant="outlined" />;
-};
+export const TextField: React.FC<TextFieldProps> = React.forwardRef(
+  (props, ref) => {
+    return <StyledMuiTextField {...props} inputRef={ref} variant="outlined" />;
+  }
+);

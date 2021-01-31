@@ -10,6 +10,7 @@ import { Orders } from "./Orders";
 
 const Router: React.FC<{}> = () => {
   const { data, loading } = useMeQuery();
+  console.log(loading);
 
   if (loading) {
     return (

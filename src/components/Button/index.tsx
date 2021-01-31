@@ -1,19 +1,25 @@
 import React from "react";
-import { StyledButton } from "./styles";
+import { StyledButton, ButtonWrapper, StyledProgress } from "./styles";
 import { ButtonProps as MuiButtonProps } from "@material-ui/core/Button";
 
-interface ButtonProps extends MuiButtonProps {}
+interface ButtonProps extends MuiButtonProps {
+  loading?: boolean;
+}
 
 export const Button: React.FC<ButtonProps> = (props) => {
-  const { color, variant } = props;
+  const { children, color, variant, loading, disabled, ...rest } = props;
 
   return (
-    <StyledButton
-      {...props}
-      color={color ? color : "primary"}
-      variant={variant ? variant : "contained"}
-    >
-      {props.children}
-    </StyledButton>
+    <ButtonWrapper>
+      <StyledButton
+        {...rest}
+        color={color ? color : "primary"}
+        variant={variant ? variant : "contained"}
+        disabled={disabled ? disabled : loading}
+      >
+        {children}
+      </StyledButton>
+      {loading && <StyledProgress size={25} />}
+    </ButtonWrapper>
   );
 };

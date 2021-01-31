@@ -9,6 +9,10 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import Sections from "./Sections";
+import { useApolloClient } from "@apollo/client";
+import { useLogoutMutation } from "../../generated/graphql";
+import { useHistory } from "react-router";
+import { Login } from "../../views/Login";
 
 import {
   Root,
@@ -25,8 +29,11 @@ interface ResponsiveDrawerProps {}
 
 const ResponsiveDrawer: React.FC<ResponsiveDrawerProps> = ({ children }) => {
   const theme = useTheme();
+  const client = useApolloClient();
+  const history = useHistory();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [logout, { data }] = useLogoutMutation();
   const open = Boolean(anchorEl);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -40,6 +47,20 @@ const ResponsiveDrawer: React.FC<ResponsiveDrawerProps> = ({ children }) => {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      await client.resetStore();
+      history.push("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (data) {
+    return <Login />;
+  }
 
   const drawer = (
     <div>
@@ -91,8 +112,7 @@ const ResponsiveDrawer: React.FC<ResponsiveDrawerProps> = ({ children }) => {
               open={open}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={handleLogout}>Salir</MenuItem>
             </Menu>
           </div>
         </Toolbar>

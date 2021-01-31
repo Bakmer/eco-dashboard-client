@@ -1,17 +1,14 @@
 import React from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Divider from "@material-ui/core/Divider";
 import Hidden from "@material-ui/core/Hidden";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import MailIcon from "@material-ui/icons/Mail";
 import MenuIcon from "@material-ui/icons/Menu";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
 import { useTheme } from "@material-ui/core/styles";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+import Sections from "./Sections";
 
 import {
   Root,
@@ -21,6 +18,7 @@ import {
   ToolbarMixin,
   StyledDrawer,
   Main,
+  StyledTypography,
 } from "./styles";
 
 interface ResponsiveDrawerProps {}
@@ -28,6 +26,16 @@ interface ResponsiveDrawerProps {}
 const ResponsiveDrawer: React.FC<ResponsiveDrawerProps> = ({ children }) => {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -35,28 +43,10 @@ const ResponsiveDrawer: React.FC<ResponsiveDrawerProps> = ({ children }) => {
 
   const drawer = (
     <div>
-      <ToolbarMixin />
-      <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
+      <Hidden xsDown>
+        <ToolbarMixin />
+      </Hidden>
+      <Sections />
     </div>
   );
 
@@ -73,14 +63,43 @@ const ResponsiveDrawer: React.FC<ResponsiveDrawerProps> = ({ children }) => {
           >
             <MenuIcon />
           </StyledIconButton>
-          <Typography variant="h6" noWrap>
+          <StyledTypography variant="h6" noWrap>
             Responsive drawer
-          </Typography>
+          </StyledTypography>
+          <div>
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleMenu}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={open}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={handleClose}>Profile</MenuItem>
+              <MenuItem onClick={handleClose}>My account</MenuItem>
+            </Menu>
+          </div>
         </Toolbar>
       </StyledAppBar>
       <StyledNav aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation="css">
+        <Hidden smUp>
           <StyledDrawer
             variant="temporary"
             anchor={theme.direction === "rtl" ? "right" : "left"}
@@ -93,7 +112,7 @@ const ResponsiveDrawer: React.FC<ResponsiveDrawerProps> = ({ children }) => {
             {drawer}
           </StyledDrawer>
         </Hidden>
-        <Hidden xsDown implementation="css">
+        <Hidden xsDown>
           <StyledDrawer variant="permanent" open>
             {drawer}
           </StyledDrawer>

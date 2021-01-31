@@ -1,10 +1,12 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
-import { Login } from "../views/Login";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { useMeQuery } from "../generated/graphql";
 import { PageLoaderWrapper } from "./styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Wrapper from "../components/Layout";
+import Layout from "../components/Layout";
+
+import { Login } from "../views/Login";
+import { Orders } from "./Orders";
 
 const Router: React.FC<{}> = () => {
   const { data, loading } = useMeQuery();
@@ -19,15 +21,23 @@ const Router: React.FC<{}> = () => {
 
   if (!data) {
     return (
-      <Wrapper>
+      <Switch>
         <Route path="/" exact component={Login} />
-      </Wrapper>
+        <Route path="*">
+          <Redirect to="/" />
+        </Route>
+      </Switch>
     );
   }
 
   return (
     <Switch>
-      <Route path="/" exact component={Login} />
+      <Layout>
+        <Orders />
+        <Route path="*">
+          <Redirect to="/" />
+        </Route>
+      </Layout>
     </Switch>
   );
 };

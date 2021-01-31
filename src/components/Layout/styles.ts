@@ -2,6 +2,7 @@ import styled from "styled-components";
 import AppBar from "@material-ui/core/AppBar";
 import IconButton from "@material-ui/core/IconButton";
 import Drawer from "@material-ui/core/Drawer";
+import Typography from "@material-ui/core/Typography";
 
 const drawerWidth = 240;
 
@@ -42,4 +43,8 @@ export const StyledDrawer = styled(Drawer)`
 export const Main = styled.main(({ theme }) => ({
   flexGrow: 1,
   padding: theme.spacing(3),
+}));
+
+export const StyledTypography = styled(Typography)(() => ({
+  flexGrow: 1,
 }));

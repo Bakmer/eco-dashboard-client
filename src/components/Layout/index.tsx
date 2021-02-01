@@ -11,8 +11,7 @@ import Menu from "@material-ui/core/Menu";
 import Sections from "./Sections";
 import { useApolloClient } from "@apollo/client";
 import { useLogoutMutation } from "../../generated/graphql";
-import { useHistory } from "react-router";
-import { Login } from "../../views/Login";
+import { isLoggedInVar } from "../../config/cache";
 
 import {
   Root,
@@ -30,10 +29,16 @@ interface ResponsiveDrawerProps {}
 const ResponsiveDrawer: React.FC<ResponsiveDrawerProps> = ({ children }) => {
   const theme = useTheme();
   const client = useApolloClient();
-  const history = useHistory();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [logout, { data }] = useLogoutMutation();
+  const [logout] = useLogoutMutation({
+    onCompleted: () => {
+      client.clearStore();
+      isLoggedInVar(false);
+    },
+    onError: (error) => console.log(error),
+  });
+
   const open = Boolean(anchorEl);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -48,19 +53,9 @@ const ResponsiveDrawer: React.FC<ResponsiveDrawerProps> = ({ children }) => {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-      await client.resetStore();
-      history.push("/");
-    } catch (error) {
-      console.log(error);
-    }
+  const handleLogout = () => {
+    logout();
   };
-
-  if (data) {
-    return <Login />;
-  }
 
   const drawer = (
     <div>

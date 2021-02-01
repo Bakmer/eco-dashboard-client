@@ -8,13 +8,13 @@ import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { TextField } from "../../components/TextField";
 import { Button } from "../../components/Button";
 import { Root, GridContainer, StyledPaper } from "./styles";
 import { LOGIN_SCHEMA } from "../../constants/validationSchemas";
 import logo from "../../assets/images/ECO-SISTEMA-CON-LOGO.png";
 import { useLoginMutation, MeQuery, MeDocument } from "../../generated/graphql";
+import { isLoggedInVar } from "../../config/cache";
 
 interface FormData {
   username: string;
@@ -25,6 +25,7 @@ export const Login: React.FC<{}> = () => {
   const { register, handleSubmit, errors } = useForm<FormData>({
     resolver: yupResolver(LOGIN_SCHEMA),
   });
+
   const [showPassword, setShowPassword] = useState(false);
   const [login, { loading }] = useLoginMutation({
     update: (cache, { data }) => {
@@ -35,14 +36,12 @@ export const Login: React.FC<{}> = () => {
         },
       });
     },
+    onCompleted: () => isLoggedInVar(true),
+    onError: (error) => console.log(error),
   });
 
-  const onSubmit: SubmitHandler<FormData> = async (formData) => {
-    try {
-      await login({ variables: formData });
-    } catch (error) {
-      console.log(error);
-    }
+  const onSubmit: SubmitHandler<FormData> = (formData) => {
+    login({ variables: formData });
   };
 
   const TogglePassword: React.FC<{}> = () => {

@@ -4,13 +4,18 @@ import { useMeQuery } from "../generated/graphql";
 import { PageLoaderWrapper } from "./styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Layout from "../components/Layout";
+import { useReactiveVar } from "@apollo/client";
+import { isLoggedInVar } from "../config/cache";
 
 import { Login } from "../views/Login";
 import { Orders } from "./Orders";
 
 const Router: React.FC<{}> = () => {
-  const { data, loading } = useMeQuery();
-  console.log(loading);
+  const { loading } = useMeQuery({
+    onCompleted: () => isLoggedInVar(true),
+    onError: (error) => console.log(error),
+  });
+  const isLoggedIn = useReactiveVar(isLoggedInVar);
 
   if (loading) {
     return (
@@ -20,7 +25,7 @@ const Router: React.FC<{}> = () => {
     );
   }
 
-  if (!data) {
+  if (!isLoggedIn) {
     return (
       <Switch>
         <Route path="/" exact component={Login} />

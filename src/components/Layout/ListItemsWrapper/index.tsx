@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import ListItem from "@material-ui/core/ListItem";
-import { StyledList } from "./styles";
+import { StyledList, StyledItemIcon } from "./styles";
 
 interface ListItemsWrapperProps {
   icon: React.ReactElement;
@@ -26,7 +25,7 @@ export const ListItemsWrapper: React.FC<ListItemsWrapperProps> = ({
   return (
     <React.Fragment>
       <ListItem button onClick={handleClick}>
-        <ListItemIcon>{icon}</ListItemIcon>
+        <StyledItemIcon>{icon}</StyledItemIcon>
         <ListItemText primary={primary} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>

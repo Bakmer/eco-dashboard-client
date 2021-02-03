@@ -10,7 +10,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { TextField } from "../../components/TextField";
 import { Button } from "../../components/Button";
-import { Root, GridContainer, StyledPaper } from "./styles";
+import { Root, GridContainer, StyledPaper, StyledForm } from "./styles";
 import { LOGIN_SCHEMA } from "../../constants/validationSchemas";
 import logo from "../../assets/images/ECO-SISTEMA-CON-LOGO.png";
 import { useLoginMutation, MeQuery, MeDocument } from "../../generated/graphql";
@@ -69,53 +69,51 @@ export const Login: React.FC<{}> = () => {
       <GridContainer container justify="center" alignItems="center">
         <Grid item>
           <StyledPaper elevation={3}>
-            <Box px={3} py={4}>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-                    <Box textAlign="center" mb={1}>
-                      <img src={logo} alt="logo" width="250px" />
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      label="Usuario"
-                      name="username"
-                      ref={register}
-                      error={!!errors.username}
-                      helperText={errors.username?.message}
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      label="Contraseña"
-                      name="password"
-                      type={showPassword ? "text" : "password"}
-                      ref={register}
-                      error={!!errors.password}
-                      helperText={errors.password?.message}
-                      InputProps={{
-                        endAdornment: <TogglePassword />,
-                      }}
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Box mt={2}>
-                      <Button
-                        size="large"
-                        type="submit"
-                        loading={loading}
-                        fullWidth
-                      >
-                        Ingresar
-                      </Button>
-                    </Box>
-                  </Grid>
+            <StyledForm onSubmit={handleSubmit(onSubmit)}>
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <Box textAlign="center" mb={1}>
+                    <img src={logo} alt="logo" width="250px" />
+                  </Box>
                 </Grid>
-              </form>
-            </Box>
+                <Grid item xs={12}>
+                  <TextField
+                    label="Usuario"
+                    name="username"
+                    ref={register}
+                    error={!!errors.username}
+                    helperText={errors.username?.message}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    label="Contraseña"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    ref={register}
+                    error={!!errors.password}
+                    helperText={errors.password?.message}
+                    InputProps={{
+                      endAdornment: <TogglePassword />,
+                    }}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Box mt={2}>
+                    <Button
+                      size="large"
+                      type="submit"
+                      loading={loading}
+                      fullWidth
+                    >
+                      Ingresar
+                    </Button>
+                  </Box>
+                </Grid>
+              </Grid>
+            </StyledForm>
           </StyledPaper>
         </Grid>
       </GridContainer>

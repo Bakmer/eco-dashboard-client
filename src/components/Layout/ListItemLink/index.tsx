@@ -1,10 +1,7 @@
 import React from "react";
-import { StyledListItem } from "./styles";
-import {
-  NavLink as RouterLink,
-  NavLinkProps as RouterLinkProps,
-} from "react-router-dom";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
+import { StyledListItem, RouterLink } from "./styles";
+import { NavLinkProps as RouterLinkProps } from "react-router-dom";
+// import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
 interface ListItemLinkProps {
@@ -33,7 +30,7 @@ export const ListItemLink: React.FC<ListItemLinkProps> = ({
 
   return (
     <StyledListItem button component={renderLink}>
-      {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+      {/* {icon ? <ListItemIcon>{icon}</ListItemIcon> : null} */}
       <ListItemText primary={primary} />
     </StyledListItem>
   );

@@ -14,6 +14,7 @@ const myTheme = {
     fontSize: 13,
   },
   borderSecondary: "#d6d6d6",
+  borderDanger: "#ff6363",
 };
 
 export { myTheme };

@@ -9,5 +9,5 @@ export const StyledListItem = styled(ListItem)<
 }));
 
 export const RouterLink = styled(NavLink)`
-  padding-left: 65px;
+  padding-left: 60px;
 `;

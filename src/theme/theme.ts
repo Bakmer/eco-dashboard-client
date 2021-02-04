@@ -10,6 +10,10 @@ const myTheme = {
       main: green[500],
     },
   },
+  typography: {
+    fontSize: 13,
+  },
+  borderSecondary: "#d6d6d6",
 };
 
 export { myTheme };

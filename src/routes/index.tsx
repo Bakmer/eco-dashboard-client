@@ -9,6 +9,7 @@ import { isLoggedInVar } from "../config/cache";
 
 import { Login } from "../views/Login";
 import { Orders } from "./Orders";
+import { Users } from "./Users";
 
 const Router: React.FC<{}> = () => {
   const { loading } = useMeQuery({
@@ -40,6 +41,7 @@ const Router: React.FC<{}> = () => {
     <Switch>
       <Layout>
         <Orders />
+        <Users />
         <Route path="*">
           <Redirect to="/" />
         </Route>

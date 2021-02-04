@@ -11,5 +11,5 @@ export const StyledList = styled(List)<ListProps<"div", { component: "div" }>>`
 `;
 
 export const StyledItemIcon = styled(ListItemIcon)`
-  min-width: 35px;
+  min-width: 30px;
 `;

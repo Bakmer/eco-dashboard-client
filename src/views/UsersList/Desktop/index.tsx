@@ -86,9 +86,9 @@ const Desktop: React.FC<{}> = () => {
           </StyledTable>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[3, 10, 25]}
           component="div"
           count={rows.length}
+          rowsPerPageOptions={[3, 10, 25]}
           rowsPerPage={3}
           page={1}
           labelRowsPerPage="Filas por página"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { useMeQuery } from "../generated/graphql";
 import { PageLoaderWrapper } from "./styles";
@@ -12,13 +12,21 @@ import { Orders } from "./Orders";
 import { Users } from "./Users";
 
 const Router: React.FC<{}> = () => {
-  const { loading } = useMeQuery({
-    onCompleted: () => isLoggedInVar(true),
-    onError: (error) => console.log(error),
-  });
+  const [isLoading, setIsLoading] = useState(true);
   const isLoggedIn = useReactiveVar(isLoggedInVar);
 
-  if (loading) {
+  useMeQuery({
+    onCompleted: () => {
+      isLoggedInVar(true);
+      setIsLoading(false);
+    },
+    onError: (error) => {
+      console.log(error);
+      setIsLoading(false);
+    },
+  });
+
+  if (isLoading) {
     return (
       <PageLoaderWrapper>
         <CircularProgress />
@@ -42,9 +50,6 @@ const Router: React.FC<{}> = () => {
       <Layout>
         <Orders />
         <Users />
-        <Route path="*">
-          <Redirect to="/" />
-        </Route>
       </Layout>
     </Switch>
   );

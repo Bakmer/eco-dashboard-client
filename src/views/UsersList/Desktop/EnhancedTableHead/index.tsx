@@ -83,6 +83,9 @@ export const EnhancedTableHead: React.FC<EnhancedTableProps> = (props) => {
             </TableSortLabel>
           </TableCell>
         ))}
+        <TableCell key="action" align="right">
+          Acción
+        </TableCell>
       </TableRow>
     </TableHead>
   );

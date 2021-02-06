@@ -1,15 +1,10 @@
 import React from "react";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
+import { ListUsersQueryResult } from "../../../../generated/graphql";
 
 interface RowProps {
-  data: {
-    name: string;
-    calories: number;
-    fat: number;
-    carbs: number;
-    protein: number;
-  };
+  data: ListUsersQueryResult;
 }
 
 export const Row: React.FC<RowProps> = ({ data }) => {

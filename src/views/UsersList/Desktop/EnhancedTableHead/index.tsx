@@ -4,9 +4,10 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import { VisuallyHidden } from "./styles";
+import { ListUsersQueryHookResult } from "../../../../generated/graphql";
 
 interface HeadCell {
-  id: keyof Data;
+  value: keyof Data;
   label: string;
   numeric: boolean;
 }
@@ -16,38 +17,44 @@ interface EnhancedTableProps {
     event: React.MouseEvent<unknown>,
     property: keyof Data
   ) => void;
-  order: Order;
+  orderType: OrderType;
   orderBy: string;
+  users?: ListUsersQueryHookResult;
 }
 
 interface Data {
-  calories: number;
-  carbs: number;
-  fat: number;
+  id: number;
+  username: string;
   name: string;
-  protein: number;
+  last_name: string;
+  store: string;
+  role: string;
+  status: string;
 }
 
-type Order = "asc" | "desc";
+type OrderType = "asc" | "desc";
 
 const headCells: HeadCell[] = [
   {
-    id: "name",
+    value: "id",
     numeric: false,
-    label: "Dessert",
+    label: "ID",
   },
-  { id: "calories", numeric: true, label: "Calories" },
-  { id: "fat", numeric: true, label: "Fat (g)" },
-  { id: "carbs", numeric: true, label: "Carbs (g)" },
-  { id: "protein", numeric: true, label: "Protein (g)" },
+  { value: "username", numeric: true, label: "Usuario" },
+  { value: "name", numeric: true, label: "Nombre" },
+  { value: "last_name", numeric: true, label: "Apellido" },
+  { value: "store", numeric: true, label: "Tienda" },
+  { value: "role", numeric: true, label: "Rol" },
+  { value: "status", numeric: true, label: "Estado" },
 ];
 
 export const EnhancedTableHead: React.FC<EnhancedTableProps> = (props) => {
-  const { order, orderBy, onRequestSort } = props;
+  const { orderType, orderBy, onRequestSort } = props;
 
   const createSortHandler = (property: keyof Data) => (
     event: React.MouseEvent<unknown>
   ) => {
+    console.log(property);
     onRequestSort(event, property);
   };
 
@@ -56,19 +63,21 @@ export const EnhancedTableHead: React.FC<EnhancedTableProps> = (props) => {
       <TableRow>
         {headCells.map((headCell) => (
           <TableCell
-            key={headCell.id}
+            key={headCell.value}
             align={headCell.numeric ? "right" : "left"}
-            sortDirection={orderBy === headCell.id ? order : false}
+            sortDirection={orderBy === headCell.value ? orderType : false}
           >
             <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
+              active={orderBy === headCell.value}
+              direction={orderBy === headCell.value ? orderType : "asc"}
+              onClick={createSortHandler(headCell.value)}
             >
               {headCell.label}
-              {orderBy === headCell.id ? (
+              {orderBy === headCell.value ? (
                 <VisuallyHidden>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
+                  {orderType === "desc"
+                    ? "sorted descending"
+                    : "sorted ascending"}
                 </VisuallyHidden>
               ) : null}
             </TableSortLabel>

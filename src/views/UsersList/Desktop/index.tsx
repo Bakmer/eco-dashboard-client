@@ -12,11 +12,13 @@ import { useListUsersQuery } from "../../../generated/graphql";
 type Order = "asc" | "desc";
 
 interface Data {
-  calories: number;
-  carbs: number;
-  fat: number;
+  id: number;
+  username: string;
   name: string;
-  protein: number;
+  last_name: string;
+  store: string;
+  role: string;
+  status: string;
 }
 
 function createData(
@@ -38,8 +40,8 @@ const rows = [
 ];
 
 const Desktop: React.FC<{}> = () => {
-  const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("calories");
+  const [orderType, setOrderType] = React.useState<Order>("asc");
+  const [orderBy, setOrderBy] = React.useState<keyof Data>("id");
   const { data, loading, fetchMore } = useListUsersQuery({
     variables: { per_page: 5, search: "test" },
     onCompleted: () => console.log(data),
@@ -49,8 +51,8 @@ const Desktop: React.FC<{}> = () => {
     event: React.MouseEvent<unknown>,
     property: keyof Data
   ) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
+    const isAsc = orderBy === property && orderType === "asc";
+    setOrderType(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
@@ -79,7 +81,7 @@ const Desktop: React.FC<{}> = () => {
         <TableContainer>
           <StyledTable>
             <EnhancedTableHead
-              order={order}
+              orderType={orderType}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
             />

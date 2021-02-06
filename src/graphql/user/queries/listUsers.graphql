@@ -1,0 +1,40 @@
+query ListUsers(
+  $search: String
+  $field: String
+  $order_type: String
+  $page: Float
+  $per_page: Float
+) {
+  listUsers(
+    vars: {
+      search: $search
+      field: $field
+      order_type: $order_type
+      page: $page
+      per_page: $per_page
+    }
+  ) {
+    data {
+      id
+      username
+      name
+      last_name
+      store {
+        id
+        name
+      }
+      role {
+        id
+        name
+      }
+      status {
+        id
+        name
+      }
+    }
+    page
+    per_page
+    count
+    message
+  }
+}

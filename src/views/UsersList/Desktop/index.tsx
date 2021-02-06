@@ -7,6 +7,7 @@ import { SearchBar } from "../../../components/SearchBar";
 import { EnhancedTableHead } from "./EnhancedTableHead";
 import { Row } from "./Row";
 import { Root, StyledPaper, StyledTable, Title } from "./styles";
+import { useListUsersQuery } from "../../../generated/graphql";
 
 type Order = "asc" | "desc";
 
@@ -39,6 +40,10 @@ const rows = [
 const Desktop: React.FC<{}> = () => {
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("calories");
+  const { data, loading, fetchMore } = useListUsersQuery({
+    variables: { per_page: 5, search: "test" },
+    onCompleted: () => console.log(data),
+  });
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -66,7 +71,7 @@ const Desktop: React.FC<{}> = () => {
     <Root>
       <StyledPaper>
         <Title variant="h6" id="tableTitle" component="div">
-          Nutrition
+          Listado de usuarios
         </Title>
         <Box pl={2} pt={3} pb={2}>
           <SearchBar placeholder="Buscar usuario" />

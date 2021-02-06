@@ -16,8 +16,14 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   me: UserResponse;
+  listUsers: PaginatedUsersResponse;
   hello: Scalars['String'];
   listStores: ListStoresResponse;
+};
+
+
+export type QueryListUsersArgs = {
+  vars?: Maybe<UsersPaginationFields>;
 };
 
 export type UserResponse = {
@@ -39,6 +45,7 @@ export type Users = {
   store: Stores;
   role: Roles;
   status: Status;
+  clients: Array<Clients>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -48,6 +55,41 @@ export type Stores = {
   id: Scalars['Float'];
   name: Scalars['String'];
   users: Array<Users>;
+  clients: Array<Clients>;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+export type Clients = {
+  __typename?: 'Clients';
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  last_name: Scalars['String'];
+  razon_social: Scalars['String'];
+  cuit: Scalars['String'];
+  iva: Scalars['String'];
+  email: Scalars['String'];
+  phone_1: Scalars['String'];
+  phone_2?: Maybe<Scalars['String']>;
+  phone_3?: Maybe<Scalars['String']>;
+  address_1: Scalars['String'];
+  address_2?: Maybe<Scalars['String']>;
+  address_3?: Maybe<Scalars['String']>;
+  memo: Scalars['String'];
+  storeId: Scalars['Float'];
+  statusId: Scalars['Float'];
+  userId: Scalars['Float'];
+  store: Stores;
+  status: Status;
+  user: Users;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+export type Status = {
+  __typename?: 'Status';
+  id: Scalars['Float'];
+  name: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -60,12 +102,21 @@ export type Roles = {
   updatedAt: Scalars['String'];
 };
 
-export type Status = {
-  __typename?: 'Status';
-  id: Scalars['Float'];
-  name: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+export type PaginatedUsersResponse = {
+  __typename?: 'PaginatedUsersResponse';
+  data?: Maybe<Array<Users>>;
+  message?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  per_page?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']>;
+};
+
+export type UsersPaginationFields = {
+  per_page?: Maybe<Scalars['Float']>;
+  page?: Maybe<Scalars['Float']>;
+  field?: Maybe<Scalars['String']>;
+  order_type?: Maybe<Scalars['String']>;
+  search?: Maybe<Scalars['String']>;
 };
 
 export type ListStoresResponse = {
@@ -83,6 +134,7 @@ export type Mutation = {
   createStore: StoreResponse;
   createRole: RoleResponse;
   createStatus: StatusResponse;
+  createClient: ClientResponse;
 };
 
 
@@ -108,6 +160,11 @@ export type MutationCreateRoleArgs = {
 
 export type MutationCreateStatusArgs = {
   data: CreateStatusFields;
+};
+
+
+export type MutationCreateClientArgs = {
+  data: CreateFields;
 };
 
 export type RegisterFields = {
@@ -154,6 +211,30 @@ export type CreateStatusFields = {
   name: Scalars['String'];
 };
 
+export type ClientResponse = {
+  __typename?: 'ClientResponse';
+  data?: Maybe<Clients>;
+  message?: Maybe<Scalars['String']>;
+};
+
+export type CreateFields = {
+  name: Scalars['String'];
+  last_name: Scalars['String'];
+  razon_social: Scalars['String'];
+  cuit: Scalars['String'];
+  iva: Scalars['String'];
+  email: Scalars['String'];
+  phone_1: Scalars['String'];
+  phone_2?: Maybe<Scalars['String']>;
+  phone_3?: Maybe<Scalars['String']>;
+  address_1: Scalars['String'];
+  address_2?: Maybe<Scalars['String']>;
+  address_3?: Maybe<Scalars['String']>;
+  memo: Scalars['String'];
+  storeId: Scalars['Float'];
+  statusId: Scalars['Float'];
+};
+
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -187,6 +268,37 @@ export type LogoutMutation = (
   & { logout: (
     { __typename?: 'UserResponse' }
     & Pick<UserResponse, 'message'>
+  ) }
+);
+
+export type ListUsersQueryVariables = Exact<{
+  search?: Maybe<Scalars['String']>;
+  field?: Maybe<Scalars['String']>;
+  order_type?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  per_page?: Maybe<Scalars['Float']>;
+}>;
+
+
+export type ListUsersQuery = (
+  { __typename?: 'Query' }
+  & { listUsers: (
+    { __typename?: 'PaginatedUsersResponse' }
+    & Pick<PaginatedUsersResponse, 'page' | 'per_page' | 'count' | 'message'>
+    & { data?: Maybe<Array<(
+      { __typename?: 'Users' }
+      & Pick<Users, 'id' | 'username' | 'name' | 'last_name'>
+      & { store: (
+        { __typename?: 'Stores' }
+        & Pick<Stores, 'id' | 'name'>
+      ), role: (
+        { __typename?: 'Roles' }
+        & Pick<Roles, 'id' | 'name'>
+      ), status: (
+        { __typename?: 'Status' }
+        & Pick<Status, 'id' | 'name'>
+      ) }
+    )>> }
   ) }
 );
 
@@ -291,6 +403,66 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const ListUsersDocument = gql`
+    query ListUsers($search: String, $field: String, $order_type: String, $page: Float, $per_page: Float) {
+  listUsers(
+    vars: {search: $search, field: $field, order_type: $order_type, page: $page, per_page: $per_page}
+  ) {
+    data {
+      id
+      username
+      name
+      last_name
+      store {
+        id
+        name
+      }
+      role {
+        id
+        name
+      }
+      status {
+        id
+        name
+      }
+    }
+    page
+    per_page
+    count
+    message
+  }
+}
+    `;
+
+/**
+ * __useListUsersQuery__
+ *
+ * To run a query within a React component, call `useListUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListUsersQuery({
+ *   variables: {
+ *      search: // value for 'search'
+ *      field: // value for 'field'
+ *      order_type: // value for 'order_type'
+ *      page: // value for 'page'
+ *      per_page: // value for 'per_page'
+ *   },
+ * });
+ */
+export function useListUsersQuery(baseOptions?: Apollo.QueryHookOptions<ListUsersQuery, ListUsersQueryVariables>) {
+        return Apollo.useQuery<ListUsersQuery, ListUsersQueryVariables>(ListUsersDocument, baseOptions);
+      }
+export function useListUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListUsersQuery, ListUsersQueryVariables>) {
+          return Apollo.useLazyQuery<ListUsersQuery, ListUsersQueryVariables>(ListUsersDocument, baseOptions);
+        }
+export type ListUsersQueryHookResult = ReturnType<typeof useListUsersQuery>;
+export type ListUsersLazyQueryHookResult = ReturnType<typeof useListUsersLazyQuery>;
+export type ListUsersQueryResult = Apollo.QueryResult<ListUsersQuery, ListUsersQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {

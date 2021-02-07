@@ -4,14 +4,20 @@ import { StyledPaper, StyledTextField, StyledIconButton } from "./styles";
 
 interface SearchBarProps {
   placeholder?: string;
+  search?: Function;
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({ placeholder }) => {
+export const SearchBar: React.FC<SearchBarProps> = ({
+  placeholder,
+  search,
+}) => {
   const [text, setText] = useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
-    return console.log(text);
+    if (search) {
+      return search(text);
+    }
   };
 
   return (

@@ -3,13 +3,12 @@ import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
 import TablePagination from "@material-ui/core/TablePagination";
 import Box from "@material-ui/core/Box";
+import { Backdrop } from "../../../components/Backdrop";
 import { SearchBar } from "../../../components/SearchBar";
 import { EnhancedTableHead } from "./EnhancedTableHead";
 import { Row } from "./Row";
 import { Root, StyledPaper, StyledTable, Title } from "./styles";
 import { useListUsersQuery } from "../../../generated/graphql";
-
-type Order = "asc" | "desc";
 
 interface Data {
   id: number;
@@ -21,62 +20,53 @@ interface Data {
   status: string;
 }
 
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
-
 const Desktop: React.FC<{}> = () => {
-  const [orderType, setOrderType] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("id");
-  const { data, loading, fetchMore } = useListUsersQuery({
-    variables: { per_page: 5, search: "test" },
-    onCompleted: () => console.log(data),
+  const { data, loading, refetch } = useListUsersQuery({
+    fetchPolicy: "no-cache",
   });
+
+  const orderBy = data?.listUsers.filters?.order_by;
+  const orderType = data?.listUsers.filters?.order_type?.toLowerCase();
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: keyof Data
   ) => {
     const isAsc = orderBy === property && orderType === "asc";
-    setOrderType(isAsc ? "desc" : "asc");
-    setOrderBy(property);
+    refetch({
+      ...data?.listUsers.filters,
+      order_by: property,
+      order_type: isAsc ? "DESC" : "ASC",
+    });
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
-    // setPage(newPage);
-    console.log("sdfasdf");
+    refetch({
+      ...data?.listUsers.filters,
+      page: newPage,
+    });
   };
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    // setRowsPerPage(parseInt(event.target.value, 10));
-    // setPage(0);
-    console.log("erfwt");
+    refetch({
+      ...data?.listUsers.filters,
+      per_page: parseInt(event.target.value, 10),
+      page: 0,
+    });
   };
+
+  const handleSearch = (text: string) => {
+    refetch({
+      ...data?.listUsers.filters,
+      search: text,
+    });
+  };
+
+  if (loading) {
+    return <Backdrop open={true} />;
+  }
 
   return (
     <Root>
@@ -85,28 +75,28 @@ const Desktop: React.FC<{}> = () => {
           Listado de usuarios
         </Title>
         <Box pl={2} pt={3} pb={2}>
-          <SearchBar placeholder="Buscar usuario" />
+          <SearchBar placeholder="Buscar usuario" search={handleSearch} />
         </Box>
         <TableContainer>
           <StyledTable>
             <EnhancedTableHead
-              orderType={orderType}
-              orderBy={orderBy}
+              orderType={orderType!}
+              orderBy={orderBy!}
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {data?.listUsers.data.map((data) => (
-                <Row data={data} />
+              {data?.listUsers?.data!.map((data) => (
+                <Row data={data} key={data.id} />
               ))}
             </TableBody>
           </StyledTable>
         </TableContainer>
         <TablePagination
           component="div"
-          count={rows.length}
-          rowsPerPageOptions={[3, 10, 25]}
-          rowsPerPage={3}
-          page={1}
+          count={data?.listUsers.filters?.count!}
+          rowsPerPageOptions={[30, 60, 100]}
+          rowsPerPage={data?.listUsers.filters?.per_page!}
+          page={data?.listUsers.filters?.page!}
           labelRowsPerPage="Filas por página"
           labelDisplayedRows={({ page, count }) => `${page} de ${count}`}
           onChangePage={handleChangePage}

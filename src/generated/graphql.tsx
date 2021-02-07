@@ -23,7 +23,7 @@ export type Query = {
 
 
 export type QueryListUsersArgs = {
-  vars?: Maybe<UsersPaginationFields>;
+  vars?: Maybe<PaginationFields>;
 };
 
 export type UserResponse = {
@@ -106,15 +106,23 @@ export type PaginatedUsersResponse = {
   __typename?: 'PaginatedUsersResponse';
   data?: Maybe<Array<Users>>;
   message?: Maybe<Scalars['String']>;
+  filters?: Maybe<PaginationFilters>;
+};
+
+export type PaginationFilters = {
+  __typename?: 'PaginationFilters';
+  search?: Maybe<Scalars['String']>;
   page?: Maybe<Scalars['Float']>;
   per_page?: Maybe<Scalars['Float']>;
   count?: Maybe<Scalars['Float']>;
+  order_type?: Maybe<Scalars['String']>;
+  order_by?: Maybe<Scalars['String']>;
 };
 
-export type UsersPaginationFields = {
+export type PaginationFields = {
   per_page?: Maybe<Scalars['Float']>;
   page?: Maybe<Scalars['Float']>;
-  field?: Maybe<Scalars['String']>;
+  order_by?: Maybe<Scalars['String']>;
   order_type?: Maybe<Scalars['String']>;
   search?: Maybe<Scalars['String']>;
 };
@@ -273,7 +281,7 @@ export type LogoutMutation = (
 
 export type ListUsersQueryVariables = Exact<{
   search?: Maybe<Scalars['String']>;
-  field?: Maybe<Scalars['String']>;
+  order_by?: Maybe<Scalars['String']>;
   order_type?: Maybe<Scalars['String']>;
   page?: Maybe<Scalars['Float']>;
   per_page?: Maybe<Scalars['Float']>;
@@ -284,7 +292,7 @@ export type ListUsersQuery = (
   { __typename?: 'Query' }
   & { listUsers: (
     { __typename?: 'PaginatedUsersResponse' }
-    & Pick<PaginatedUsersResponse, 'page' | 'per_page' | 'count' | 'message'>
+    & Pick<PaginatedUsersResponse, 'message'>
     & { data?: Maybe<Array<(
       { __typename?: 'Users' }
       & Pick<Users, 'id' | 'username' | 'name' | 'last_name'>
@@ -298,7 +306,10 @@ export type ListUsersQuery = (
         { __typename?: 'Status' }
         & Pick<Status, 'id' | 'name'>
       ) }
-    )>> }
+    )>>, filters?: Maybe<(
+      { __typename?: 'PaginationFilters' }
+      & Pick<PaginationFilters, 'search' | 'page' | 'per_page' | 'order_by' | 'order_type' | 'count'>
+    )> }
   ) }
 );
 
@@ -404,9 +415,9 @@ export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const ListUsersDocument = gql`
-    query ListUsers($search: String, $field: String, $order_type: String, $page: Float, $per_page: Float) {
+    query ListUsers($search: String, $order_by: String, $order_type: String, $page: Float, $per_page: Float) {
   listUsers(
-    vars: {search: $search, field: $field, order_type: $order_type, page: $page, per_page: $per_page}
+    vars: {search: $search, order_by: $order_by, order_type: $order_type, page: $page, per_page: $per_page}
   ) {
     data {
       id
@@ -426,9 +437,14 @@ export const ListUsersDocument = gql`
         name
       }
     }
-    page
-    per_page
-    count
+    filters {
+      search
+      page
+      per_page
+      order_by
+      order_type
+      count
+    }
     message
   }
 }
@@ -447,7 +463,7 @@ export const ListUsersDocument = gql`
  * const { data, loading, error } = useListUsersQuery({
  *   variables: {
  *      search: // value for 'search'
- *      field: // value for 'field'
+ *      order_by: // value for 'order_by'
  *      order_type: // value for 'order_type'
  *      page: // value for 'page'
  *      per_page: // value for 'per_page'

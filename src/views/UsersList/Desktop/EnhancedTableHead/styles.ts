@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import TableCell from "@material-ui/core/TableCell";
 
 export const VisuallyHidden = styled.span({
   border: 0,
@@ -9,5 +10,11 @@ export const VisuallyHidden = styled.span({
   padding: 0,
   position: "absolute",
   top: 20,
-  width: 1,
 });
+
+export const StyledTableCell = styled(TableCell)`
+  .MuiSvgIcon-root {
+    position: absolute;
+    right: -26px;
+  }
+`;

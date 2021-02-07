@@ -1,6 +1,6 @@
 query ListUsers(
   $search: String
-  $field: String
+  $order_by: String
   $order_type: String
   $page: Float
   $per_page: Float
@@ -8,7 +8,7 @@ query ListUsers(
   listUsers(
     vars: {
       search: $search
-      field: $field
+      order_by: $order_by
       order_type: $order_type
       page: $page
       per_page: $per_page
@@ -32,9 +32,14 @@ query ListUsers(
         name
       }
     }
-    page
-    per_page
-    count
+    filters {
+      search
+      page
+      per_page
+      order_by
+      order_type
+      count
+    }
     message
   }
 }

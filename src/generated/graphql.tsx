@@ -137,6 +137,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   register: UserResponse;
   login: UserResponse;
+  changeUserStatus: ChangeStatusResponse;
   logout: UserResponse;
   deleteAllUsers: Scalars['String'];
   createStore: StoreResponse;
@@ -153,6 +154,11 @@ export type MutationRegisterArgs = {
 
 export type MutationLoginArgs = {
   data: UsernamePasswordInput;
+};
+
+
+export type MutationChangeUserStatusArgs = {
+  data: ChangeUserStatusFields;
 };
 
 
@@ -187,6 +193,21 @@ export type RegisterFields = {
 export type UsernamePasswordInput = {
   username: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type ChangeStatusResponse = {
+  __typename?: 'ChangeStatusResponse';
+  data?: Maybe<IsActive>;
+  message?: Maybe<Scalars['String']>;
+};
+
+export type IsActive = {
+  __typename?: 'IsActive';
+  active: Scalars['Boolean'];
+};
+
+export type ChangeUserStatusFields = {
+  id: Scalars['Float'];
 };
 
 export type StoreResponse = {
@@ -242,6 +263,23 @@ export type CreateFields = {
   storeId: Scalars['Float'];
   statusId: Scalars['Float'];
 };
+
+export type ChangeUserStatusMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type ChangeUserStatusMutation = (
+  { __typename?: 'Mutation' }
+  & { changeUserStatus: (
+    { __typename?: 'ChangeStatusResponse' }
+    & Pick<ChangeStatusResponse, 'message'>
+    & { data?: Maybe<(
+      { __typename?: 'IsActive' }
+      & Pick<IsActive, 'active'>
+    )> }
+  ) }
+);
 
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
@@ -336,6 +374,41 @@ export type MeQuery = (
 );
 
 
+export const ChangeUserStatusDocument = gql`
+    mutation ChangeUserStatus($id: Float!) {
+  changeUserStatus(data: {id: $id}) {
+    data {
+      active
+    }
+    message
+  }
+}
+    `;
+export type ChangeUserStatusMutationFn = Apollo.MutationFunction<ChangeUserStatusMutation, ChangeUserStatusMutationVariables>;
+
+/**
+ * __useChangeUserStatusMutation__
+ *
+ * To run a mutation, you first call `useChangeUserStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeUserStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeUserStatusMutation, { data, loading, error }] = useChangeUserStatusMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useChangeUserStatusMutation(baseOptions?: Apollo.MutationHookOptions<ChangeUserStatusMutation, ChangeUserStatusMutationVariables>) {
+        return Apollo.useMutation<ChangeUserStatusMutation, ChangeUserStatusMutationVariables>(ChangeUserStatusDocument, baseOptions);
+      }
+export type ChangeUserStatusMutationHookResult = ReturnType<typeof useChangeUserStatusMutation>;
+export type ChangeUserStatusMutationResult = Apollo.MutationResult<ChangeUserStatusMutation>;
+export type ChangeUserStatusMutationOptions = Apollo.BaseMutationOptions<ChangeUserStatusMutation, ChangeUserStatusMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($username: String!, $password: String!) {
   login(data: {username: $username, password: $password}) {

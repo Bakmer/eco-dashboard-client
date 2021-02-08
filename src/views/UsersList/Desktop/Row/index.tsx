@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import Switch from "@material-ui/core/Switch";
+import { Dropdown } from "../../../../components/Dropdown";
+import EditIcon from "@material-ui/icons/Edit";
 import { useChangeUserStatusMutation } from "../../../../generated/graphql";
 
 interface RowProps {
@@ -35,6 +37,16 @@ export const Row: React.FC<RowProps> = ({ data }) => {
     toggleStatus({ variables: { id: data.id } });
   };
 
+  const menu = [
+    {
+      icon: <EditIcon fontSize="small" />,
+      label: "Ver y editar",
+      action: () => {
+        console.log("works");
+      },
+    },
+  ];
+
   return (
     <TableRow key={data.name}>
       <TableCell component="th" scope="row" align="center">
@@ -53,7 +65,9 @@ export const Row: React.FC<RowProps> = ({ data }) => {
           name="status"
         />
       </TableCell>
-      <TableCell align="center">Action</TableCell>
+      <TableCell align="center">
+        <Dropdown items={menu} />
+      </TableCell>
     </TableRow>
   );
 };

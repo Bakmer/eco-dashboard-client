@@ -98,7 +98,9 @@ const Desktop: React.FC<{}> = () => {
           rowsPerPage={data?.listUsers.filters?.per_page!}
           page={data?.listUsers.filters?.page!}
           labelRowsPerPage="Filas por página"
-          labelDisplayedRows={({ page, count }) => `${page} de ${count}`}
+          labelDisplayedRows={({ page, count, from, to }) =>
+            `${from}-${to} de ${count}`
+          }
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />

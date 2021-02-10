@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
 import TablePagination from "@material-ui/core/TablePagination";
@@ -6,7 +6,9 @@ import Box from "@material-ui/core/Box";
 import { Backdrop } from "../../../components/Backdrop";
 import { SearchBar } from "../../../components/SearchBar";
 import { EnhancedTableHead } from "./EnhancedTableHead";
+import { UserForm } from "../UserForm";
 import { Row } from "./Row";
+import { Modal } from "../../../components/Modal";
 import { Root, StyledPaper, StyledTable, Title } from "./styles";
 import { useListUsersQuery } from "../../../generated/graphql";
 
@@ -24,6 +26,8 @@ const Desktop: React.FC<{}> = () => {
   const { data, loading, refetch } = useListUsersQuery({
     fetchPolicy: "no-cache",
   });
+  const [showModal, setShowModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState({});
 
   const orderBy = data?.listUsers.filters?.order_by;
   const orderType = data?.listUsers.filters?.order_type?.toLowerCase();
@@ -64,6 +68,11 @@ const Desktop: React.FC<{}> = () => {
     });
   };
 
+  const openModal = (user: object) => {
+    setSelectedUser(user);
+    setShowModal(true);
+  };
+
   if (loading) {
     return <Backdrop open={true} />;
   }
@@ -86,7 +95,7 @@ const Desktop: React.FC<{}> = () => {
             />
             <TableBody>
               {data?.listUsers?.data!.map((data) => (
-                <Row data={data} key={data.id} />
+                <Row data={data} openModal={openModal} key={data.id} />
               ))}
             </TableBody>
           </StyledTable>
@@ -98,13 +107,19 @@ const Desktop: React.FC<{}> = () => {
           rowsPerPage={data?.listUsers.filters?.per_page!}
           page={data?.listUsers.filters?.page!}
           labelRowsPerPage="Filas por página"
-          labelDisplayedRows={({ page, count, from, to }) =>
+          labelDisplayedRows={({ count, from, to }) =>
             `${from}-${to} de ${count}`
           }
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </StyledPaper>
+      <Modal open={showModal} onClose={() => setShowModal(false)}>
+        <UserForm
+          selectedUser={selectedUser}
+          onClose={() => setShowModal(false)}
+        />
+      </Modal>
     </Root>
   );
 };

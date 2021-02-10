@@ -1,0 +1,9 @@
+query ListStores {
+  listStores {
+    data {
+      id
+      name
+    }
+    message
+  }
+}

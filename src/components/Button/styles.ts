@@ -9,7 +9,6 @@ export const StyledButton = styled(MuiButton)<StyledButtonProps>`
 `;
 
 export const ButtonWrapper = styled.div(({ theme }) => ({
-  margin: theme.spacing(1),
   position: "relative",
 }));
 

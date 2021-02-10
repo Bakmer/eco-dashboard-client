@@ -42,6 +42,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ items }) => {
         {items.map(({ icon, label, action }) => {
           const handleEvent = (event: React.MouseEvent<HTMLElement>) => {
             action();
+            handleClose();
           };
           return (
             <MenuItem onClick={handleEvent} key={label}>

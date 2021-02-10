@@ -19,6 +19,8 @@ export type Query = {
   listUsers: PaginatedUsersResponse;
   hello: Scalars['String'];
   listStores: ListStoresResponse;
+  listRoles: ListRolesResponse;
+  listStatus: ListStatusResponse;
 };
 
 
@@ -133,6 +135,18 @@ export type ListStoresResponse = {
   message?: Maybe<Scalars['String']>;
 };
 
+export type ListRolesResponse = {
+  __typename?: 'ListRolesResponse';
+  data?: Maybe<Array<Roles>>;
+  message?: Maybe<Scalars['String']>;
+};
+
+export type ListStatusResponse = {
+  __typename?: 'ListStatusResponse';
+  data?: Maybe<Array<Status>>;
+  message?: Maybe<Scalars['String']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   register: UserResponse;
@@ -197,13 +211,14 @@ export type UsernamePasswordInput = {
 
 export type ChangeStatusResponse = {
   __typename?: 'ChangeStatusResponse';
-  data?: Maybe<IsActive>;
+  data?: Maybe<StatusFields>;
   message?: Maybe<Scalars['String']>;
 };
 
-export type IsActive = {
-  __typename?: 'IsActive';
-  active: Scalars['Boolean'];
+export type StatusFields = {
+  __typename?: 'StatusFields';
+  id: Scalars['Float'];
+  name: Scalars['String'];
 };
 
 export type ChangeUserStatusFields = {
@@ -264,6 +279,51 @@ export type CreateFields = {
   statusId: Scalars['Float'];
 };
 
+export type ListRolesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListRolesQuery = (
+  { __typename?: 'Query' }
+  & { listRoles: (
+    { __typename?: 'ListRolesResponse' }
+    & Pick<ListRolesResponse, 'message'>
+    & { data?: Maybe<Array<(
+      { __typename?: 'Roles' }
+      & Pick<Roles, 'id' | 'name'>
+    )>> }
+  ) }
+);
+
+export type ListStatusQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListStatusQuery = (
+  { __typename?: 'Query' }
+  & { listStatus: (
+    { __typename?: 'ListStatusResponse' }
+    & Pick<ListStatusResponse, 'message'>
+    & { data?: Maybe<Array<(
+      { __typename?: 'Status' }
+      & Pick<Status, 'id' | 'name'>
+    )>> }
+  ) }
+);
+
+export type ListStoresQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListStoresQuery = (
+  { __typename?: 'Query' }
+  & { listStores: (
+    { __typename?: 'ListStoresResponse' }
+    & Pick<ListStoresResponse, 'message'>
+    & { data?: Maybe<Array<(
+      { __typename?: 'Stores' }
+      & Pick<Stores, 'id' | 'name'>
+    )>> }
+  ) }
+);
+
 export type ChangeUserStatusMutationVariables = Exact<{
   id: Scalars['Float'];
 }>;
@@ -275,8 +335,8 @@ export type ChangeUserStatusMutation = (
     { __typename?: 'ChangeStatusResponse' }
     & Pick<ChangeStatusResponse, 'message'>
     & { data?: Maybe<(
-      { __typename?: 'IsActive' }
-      & Pick<IsActive, 'active'>
+      { __typename?: 'StatusFields' }
+      & Pick<StatusFields, 'id' | 'name'>
     )> }
   ) }
 );
@@ -333,7 +393,7 @@ export type ListUsersQuery = (
     & Pick<PaginatedUsersResponse, 'message'>
     & { data?: Maybe<Array<(
       { __typename?: 'Users' }
-      & Pick<Users, 'id' | 'username' | 'name' | 'last_name'>
+      & Pick<Users, 'id' | 'username' | 'name' | 'last_name' | 'password'>
       & { store: (
         { __typename?: 'Stores' }
         & Pick<Stores, 'id' | 'name'>
@@ -374,11 +434,120 @@ export type MeQuery = (
 );
 
 
+export const ListRolesDocument = gql`
+    query ListRoles {
+  listRoles {
+    data {
+      id
+      name
+    }
+    message
+  }
+}
+    `;
+
+/**
+ * __useListRolesQuery__
+ *
+ * To run a query within a React component, call `useListRolesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListRolesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListRolesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useListRolesQuery(baseOptions?: Apollo.QueryHookOptions<ListRolesQuery, ListRolesQueryVariables>) {
+        return Apollo.useQuery<ListRolesQuery, ListRolesQueryVariables>(ListRolesDocument, baseOptions);
+      }
+export function useListRolesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListRolesQuery, ListRolesQueryVariables>) {
+          return Apollo.useLazyQuery<ListRolesQuery, ListRolesQueryVariables>(ListRolesDocument, baseOptions);
+        }
+export type ListRolesQueryHookResult = ReturnType<typeof useListRolesQuery>;
+export type ListRolesLazyQueryHookResult = ReturnType<typeof useListRolesLazyQuery>;
+export type ListRolesQueryResult = Apollo.QueryResult<ListRolesQuery, ListRolesQueryVariables>;
+export const ListStatusDocument = gql`
+    query ListStatus {
+  listStatus {
+    data {
+      id
+      name
+    }
+    message
+  }
+}
+    `;
+
+/**
+ * __useListStatusQuery__
+ *
+ * To run a query within a React component, call `useListStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListStatusQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useListStatusQuery(baseOptions?: Apollo.QueryHookOptions<ListStatusQuery, ListStatusQueryVariables>) {
+        return Apollo.useQuery<ListStatusQuery, ListStatusQueryVariables>(ListStatusDocument, baseOptions);
+      }
+export function useListStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListStatusQuery, ListStatusQueryVariables>) {
+          return Apollo.useLazyQuery<ListStatusQuery, ListStatusQueryVariables>(ListStatusDocument, baseOptions);
+        }
+export type ListStatusQueryHookResult = ReturnType<typeof useListStatusQuery>;
+export type ListStatusLazyQueryHookResult = ReturnType<typeof useListStatusLazyQuery>;
+export type ListStatusQueryResult = Apollo.QueryResult<ListStatusQuery, ListStatusQueryVariables>;
+export const ListStoresDocument = gql`
+    query ListStores {
+  listStores {
+    data {
+      id
+      name
+    }
+    message
+  }
+}
+    `;
+
+/**
+ * __useListStoresQuery__
+ *
+ * To run a query within a React component, call `useListStoresQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListStoresQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListStoresQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useListStoresQuery(baseOptions?: Apollo.QueryHookOptions<ListStoresQuery, ListStoresQueryVariables>) {
+        return Apollo.useQuery<ListStoresQuery, ListStoresQueryVariables>(ListStoresDocument, baseOptions);
+      }
+export function useListStoresLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListStoresQuery, ListStoresQueryVariables>) {
+          return Apollo.useLazyQuery<ListStoresQuery, ListStoresQueryVariables>(ListStoresDocument, baseOptions);
+        }
+export type ListStoresQueryHookResult = ReturnType<typeof useListStoresQuery>;
+export type ListStoresLazyQueryHookResult = ReturnType<typeof useListStoresLazyQuery>;
+export type ListStoresQueryResult = Apollo.QueryResult<ListStoresQuery, ListStoresQueryVariables>;
 export const ChangeUserStatusDocument = gql`
     mutation ChangeUserStatus($id: Float!) {
   changeUserStatus(data: {id: $id}) {
     data {
-      active
+      id
+      name
     }
     message
   }
@@ -497,6 +666,7 @@ export const ListUsersDocument = gql`
       username
       name
       last_name
+      password
       store {
         id
         name

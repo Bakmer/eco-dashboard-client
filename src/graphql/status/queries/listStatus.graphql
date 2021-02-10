@@ -1,0 +1,9 @@
+query ListStatus {
+  listStatus {
+    data {
+      id
+      name
+    }
+    message
+  }
+}

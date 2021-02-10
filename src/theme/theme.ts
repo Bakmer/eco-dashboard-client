@@ -1,13 +1,19 @@
 // import { DefaultTheme } from "styled-components";
-import { orange, green } from "@material-ui/core/colors";
+// import { orange, green } from "@material-ui/core/colors";
 
 const myTheme = {
   palette: {
     primary: {
-      main: orange[500],
+      light: "#4dd0e1",
+      main: "#00bcd4",
+      dark: "#00acc1",
+      contrastText: "#fff",
     },
     secondary: {
-      main: green[500],
+      light: "#ef5350",
+      main: "#f44336",
+      dark: "#d32f2f",
+      contrastText: "#fff",
     },
   },
   typography: {

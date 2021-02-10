@@ -1,0 +1,9 @@
+query ListRoles {
+  listRoles {
+    data {
+      id
+      name
+    }
+    message
+  }
+}

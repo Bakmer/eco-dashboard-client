@@ -19,6 +19,7 @@ query ListUsers(
       username
       name
       last_name
+      password
       store {
         id
         name

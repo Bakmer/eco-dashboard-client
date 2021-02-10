@@ -25,16 +25,18 @@ interface RowProps {
       name: string;
     };
   };
+  openModal: Function;
 }
 
-export const Row: React.FC<RowProps> = ({ data }) => {
-  const [status, setStatus] = useState(data.status.id === 1 ? true : false);
+export const Row: React.FC<RowProps> = ({ data, openModal }) => {
+  const [user, setUser] = useState(data);
   const [toggleStatus] = useChangeUserStatusMutation({
-    onCompleted: (data) => setStatus(data.changeUserStatus.data?.active!),
+    onCompleted: (res) =>
+      setUser({ ...user, status: res.changeUserStatus.data! }),
   });
 
   const handleChange = () => {
-    toggleStatus({ variables: { id: data.id } });
+    toggleStatus({ variables: { id: user.id } });
   };
 
   const menu = [
@@ -42,24 +44,24 @@ export const Row: React.FC<RowProps> = ({ data }) => {
       icon: <EditIcon fontSize="small" />,
       label: "Ver y editar",
       action: () => {
-        console.log("works");
+        openModal({ user, setUser });
       },
     },
   ];
 
   return (
-    <TableRow key={data.name}>
+    <TableRow key={user.name}>
       <TableCell component="th" scope="row" align="center">
-        {data.id}
+        {user.id}
       </TableCell>
-      <TableCell align="center">{data.username}</TableCell>
-      <TableCell align="center">{data.name}</TableCell>
-      <TableCell align="center">{data.last_name}</TableCell>
-      <TableCell align="center">{data.store.name}</TableCell>
-      <TableCell align="center">{data.role.name}</TableCell>
+      <TableCell align="center">{user.username}</TableCell>
+      <TableCell align="center">{user.name}</TableCell>
+      <TableCell align="center">{user.last_name}</TableCell>
+      <TableCell align="center">{user.store.name}</TableCell>
+      <TableCell align="center">{user.role.name}</TableCell>
       <TableCell align="center">
         <Switch
-          checked={status}
+          checked={user.status.id === 1 ? true : false}
           color="primary"
           onChange={handleChange}
           name="status"

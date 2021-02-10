@@ -9,9 +9,11 @@ export const StyledModal = styled(Modal)`
 
 export const StyledPaper = styled.div(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
-  borderRadius: 2,
+  borderRadius: 4,
   boxShadow: theme.shadows[5],
   padding: theme.spacing(4, 4),
   outline: 0,
-  width: 400,
+  [theme.breakpoints.up("md")]: {
+    width: 400,
+  },
 }));

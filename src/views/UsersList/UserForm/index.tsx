@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 // import { LOGIN_SCHEMA } from "../../constants/validationSchemas";
@@ -18,47 +18,73 @@ import {
 import { StyledRadioGroup } from "./styles";
 
 interface UserFormProps {
-  selectedUser?: object;
+  selectedUser: any;
+  setSelectedUser: Function;
   onClose: Function;
 }
 
 export const UserForm: React.FC<UserFormProps> = ({
   selectedUser,
+  setSelectedUser,
   onClose,
 }) => {
   const { register, handleSubmit, errors, control } = useForm<FormData>({
     // resolver: yupResolver(LOGIN_SCHEMA),
   });
+  const user = selectedUser.user;
 
   const { data: stores, loading: storesLoading } = useListStoresQuery();
   const { data: roles, loading: rolesLoading } = useListRolesQuery();
-  const { data: status, loading: statusLoading } = useListStatusQuery();
+  const { data: status } = useListStatusQuery();
 
   const onSubmit: SubmitHandler<FormData> = (formData) => {
     console.log(formData);
   };
-  console.log(selectedUser);
+
+  useEffect(() => {
+    return () => setSelectedUser({});
+  }, [setSelectedUser]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <TextField label="Usuario" name="username" fullWidth />
+          <TextField
+            label="Usuario"
+            name="username"
+            defaultValue={user ? user.username : ""}
+            fullWidth
+          />
         </Grid>
         <Grid item xs={12}>
-          <TextField label="Nombre" name="name" fullWidth />
+          <TextField
+            label="Nombre"
+            name="name"
+            defaultValue={user ? user.name : ""}
+            fullWidth
+          />
         </Grid>
         <Grid item xs={12}>
-          <TextField label="Apellido" name="last_name" fullWidth />
+          <TextField
+            label="Apellido"
+            name="last_name"
+            defaultValue={user ? user.last_name : ""}
+            fullWidth
+          />
         </Grid>
         <Grid item xs={12}>
-          <TextField label="Contraseña" name="password" fullWidth />
+          <TextField
+            label="Contraseña"
+            name="password"
+            defaultValue={user ? user.password : ""}
+            fullWidth
+          />
         </Grid>
         <Grid item xs={12}>
           <Controller
             control={control}
             name="store"
-            defaultValue=""
+            defaultValue={user ? user.store.id : ""}
             render={({ value, onChange }) => (
               <Select
                 label="Tienda"
@@ -78,7 +104,7 @@ export const UserForm: React.FC<UserFormProps> = ({
           <Controller
             control={control}
             name="role"
-            defaultValue=""
+            defaultValue={user ? user.role.id : ""}
             render={({ value, onChange }) => (
               <Select
                 label="Rol"
@@ -98,7 +124,7 @@ export const UserForm: React.FC<UserFormProps> = ({
           <Controller
             control={control}
             name="status"
-            defaultValue={1}
+            defaultValue={user ? user.status.id : 1}
             render={({ value, onChange }) => (
               <FormControl component="fieldset" fullWidth>
                 <FormLabel component="legend">Estado</FormLabel>

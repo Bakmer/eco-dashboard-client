@@ -28,7 +28,7 @@ const Desktop: React.FC<{}> = () => {
   });
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
-
+  console.log(selectedUser);
   const orderBy = data?.listUsers.filters?.order_by;
   const orderType = data?.listUsers.filters?.order_type?.toLowerCase();
 
@@ -117,6 +117,7 @@ const Desktop: React.FC<{}> = () => {
       <Modal open={showModal} onClose={() => setShowModal(false)}>
         <UserForm
           selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
           onClose={() => setShowModal(false)}
         />
       </Modal>

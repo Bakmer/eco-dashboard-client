@@ -9,6 +9,7 @@ import { EnhancedTableHead } from "./EnhancedTableHead";
 import { UserForm } from "../UserForm";
 import { Row } from "./Row";
 import { Modal } from "../../../components/Modal";
+import { Button } from "../../../components/Button";
 import { Root, StyledPaper, StyledTable, Title } from "./styles";
 import { useListUsersQuery } from "../../../generated/graphql";
 
@@ -83,8 +84,11 @@ const Desktop: React.FC<{}> = () => {
         <Title variant="h6" id="tableTitle" component="div">
           Listado de usuarios
         </Title>
-        <Box pl={2} pt={3} pb={2}>
+        <Box px={2} pt={3} pb={2} display="flex" justifyContent="space-between">
           <SearchBar placeholder="Buscar usuario" search={handleSearch} />
+          <Button size="large" type="button" onClick={openModal}>
+            Crear usuario
+          </Button>
         </Box>
         <TableContainer>
           <StyledTable>

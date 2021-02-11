@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-// import { LOGIN_SCHEMA } from "../../constants/validationSchemas";
+import { USER_SCHEMA } from "../../../constants/validationSchemas";
 import { TextField } from "../../../components/TextField";
 import { Select } from "../../../components/Select";
 import { Button } from "../../../components/Button";
@@ -23,13 +23,23 @@ interface UserFormProps {
   onClose: Function;
 }
 
+interface FormData {
+  username: string;
+  name: string;
+  last_name: string;
+  password: string;
+  roleId: number;
+  statusId: number;
+  storeId: number;
+}
+
 export const UserForm: React.FC<UserFormProps> = ({
   selectedUser,
   setSelectedUser,
   onClose,
 }) => {
   const { register, handleSubmit, errors, control } = useForm<FormData>({
-    // resolver: yupResolver(LOGIN_SCHEMA),
+    resolver: yupResolver(USER_SCHEMA),
   });
   const user = selectedUser.user;
 
@@ -47,12 +57,15 @@ export const UserForm: React.FC<UserFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={2}>
+      <Grid container spacing={3}>
         <Grid item xs={12}>
           <TextField
             label="Usuario"
             name="username"
             defaultValue={user ? user.username : ""}
+            ref={register}
+            error={!!errors.username}
+            helperText={errors.username?.message}
             fullWidth
           />
         </Grid>
@@ -61,6 +74,9 @@ export const UserForm: React.FC<UserFormProps> = ({
             label="Nombre"
             name="name"
             defaultValue={user ? user.name : ""}
+            ref={register}
+            error={!!errors.name}
+            helperText={errors.name?.message}
             fullWidth
           />
         </Grid>
@@ -69,6 +85,9 @@ export const UserForm: React.FC<UserFormProps> = ({
             label="Apellido"
             name="last_name"
             defaultValue={user ? user.last_name : ""}
+            ref={register}
+            error={!!errors.last_name}
+            helperText={errors.last_name?.message}
             fullWidth
           />
         </Grid>
@@ -77,13 +96,16 @@ export const UserForm: React.FC<UserFormProps> = ({
             label="Contraseña"
             name="password"
             defaultValue={user ? user.password : ""}
+            ref={register}
+            error={!!errors.password}
+            helperText={errors.password?.message}
             fullWidth
           />
         </Grid>
         <Grid item xs={12}>
           <Controller
             control={control}
-            name="store"
+            name="storeId"
             defaultValue={user ? user.store.id : ""}
             render={({ value, onChange }) => (
               <Select
@@ -91,6 +113,8 @@ export const UserForm: React.FC<UserFormProps> = ({
                 isLoading={storesLoading}
                 value={value}
                 onChange={onChange}
+                error={!!errors.storeId}
+                helperText={errors.storeId?.message}
                 options={stores?.listStores.data!.map((store) => ({
                   value: store.id,
                   label: store.name,
@@ -103,7 +127,7 @@ export const UserForm: React.FC<UserFormProps> = ({
         <Grid item xs={12}>
           <Controller
             control={control}
-            name="role"
+            name="roleId"
             defaultValue={user ? user.role.id : ""}
             render={({ value, onChange }) => (
               <Select
@@ -111,6 +135,8 @@ export const UserForm: React.FC<UserFormProps> = ({
                 isLoading={rolesLoading}
                 value={value}
                 onChange={onChange}
+                error={!!errors.roleId}
+                helperText={errors.roleId?.message}
                 options={roles?.listRoles.data!.map((role) => ({
                   value: role.id,
                   label: role.name,
@@ -123,7 +149,7 @@ export const UserForm: React.FC<UserFormProps> = ({
         <Grid item xs={12}>
           <Controller
             control={control}
-            name="status"
+            name="statusId"
             defaultValue={user ? user.status.id : 1}
             render={({ value, onChange }) => (
               <FormControl component="fieldset" fullWidth>

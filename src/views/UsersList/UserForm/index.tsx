@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { USER_SCHEMA } from "../../../constants/validationSchemas";
@@ -16,11 +16,13 @@ import {
   useListStatusQuery,
 } from "../../../generated/graphql";
 import { StyledRadioGroup } from "./styles";
+import { useCreateUserMutation } from "../../../generated/graphql";
 
 interface UserFormProps {
   selectedUser: any;
   setSelectedUser: Function;
   onClose: Function;
+  fetchUsers: Function;
 }
 
 interface FormData {
@@ -37,18 +39,34 @@ export const UserForm: React.FC<UserFormProps> = ({
   selectedUser,
   setSelectedUser,
   onClose,
+  fetchUsers,
 }) => {
   const { register, handleSubmit, errors, control } = useForm<FormData>({
     resolver: yupResolver(USER_SCHEMA),
   });
+  const [isLoading, setIsLoading] = useState(false);
   const user = selectedUser.user;
 
   const { data: stores, loading: storesLoading } = useListStoresQuery();
   const { data: roles, loading: rolesLoading } = useListRolesQuery();
   const { data: status } = useListStatusQuery();
+  const [createUser] = useCreateUserMutation();
 
-  const onSubmit: SubmitHandler<FormData> = (formData) => {
-    console.log(formData);
+  const onSubmit: SubmitHandler<FormData> = async (formData) => {
+    try {
+      setIsLoading(true);
+      if (user) {
+        console.log("UPDATE");
+      } else {
+        await createUser({ variables: formData });
+        await fetchUsers();
+      }
+      setIsLoading(false);
+    } catch (error) {
+      return console.log(error);
+    }
+
+    return onClose();
   };
 
   useEffect(() => {
@@ -173,7 +191,7 @@ export const UserForm: React.FC<UserFormProps> = ({
           />
         </Grid>
         <Grid xs={12} md={6} item>
-          <Button size="large" type="submit" fullWidth>
+          <Button size="large" type="submit" loading={isLoading} fullWidth>
             Guardar
           </Button>
         </Grid>
@@ -182,6 +200,7 @@ export const UserForm: React.FC<UserFormProps> = ({
             size="large"
             color="secondary"
             type="button"
+            disabled={isLoading}
             onClick={() => onClose()}
             fullWidth
           >

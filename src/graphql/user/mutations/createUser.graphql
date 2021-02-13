@@ -1,0 +1,28 @@
+mutation CreateUser(
+  $username: String!
+  $password: String!
+  $name: String!
+  $last_name: String!
+  $storeId: Float!
+  $roleId: Float!
+  $statusId: Float!
+) {
+  createUser(
+    data: {
+      username: $username
+      password: $password
+      name: $name
+      last_name: $last_name
+      storeId: $storeId
+      roleId: $roleId
+      statusId: $statusId
+    }
+  ) {
+    data {
+      username
+      name
+      last_name
+    }
+    message
+  }
+}

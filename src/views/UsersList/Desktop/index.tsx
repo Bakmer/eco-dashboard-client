@@ -24,9 +24,7 @@ interface Data {
 }
 
 const Desktop: React.FC<{}> = () => {
-  const { data, loading, refetch } = useListUsersQuery({
-    fetchPolicy: "no-cache",
-  });
+  const { data, loading, refetch } = useListUsersQuery();
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
   console.log(selectedUser);
@@ -86,7 +84,7 @@ const Desktop: React.FC<{}> = () => {
         </Title>
         <Box px={2} pt={3} pb={2} display="flex" justifyContent="space-between">
           <SearchBar placeholder="Buscar usuario" search={handleSearch} />
-          <Button size="large" type="button" onClick={openModal}>
+          <Button size="large" type="button" onClick={() => setShowModal(true)}>
             Crear usuario
           </Button>
         </Box>
@@ -123,6 +121,7 @@ const Desktop: React.FC<{}> = () => {
           selectedUser={selectedUser}
           setSelectedUser={setSelectedUser}
           onClose={() => setShowModal(false)}
+          fetchUsers={refetch}
         />
       </Modal>
     </Root>

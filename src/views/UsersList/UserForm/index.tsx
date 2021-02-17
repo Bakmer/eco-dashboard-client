@@ -13,10 +13,11 @@ import FormLabel from "@material-ui/core/FormLabel";
 import {
   useListStoresQuery,
   useListRolesQuery,
-  useListStatusQuery,
+  useListStatesQuery,
+  useCreateUserMutation,
+  useUpdateUserMutation,
 } from "../../../generated/graphql";
 import { StyledRadioGroup } from "./styles";
-import { useCreateUserMutation } from "../../../generated/graphql";
 
 interface UserFormProps {
   selectedUser: any;
@@ -31,7 +32,7 @@ interface FormData {
   last_name: string;
   password: string;
   roleId: number;
-  statusId: number;
+  stateId: number;
   storeId: number;
 }
 
@@ -45,18 +46,22 @@ export const UserForm: React.FC<UserFormProps> = ({
     resolver: yupResolver(USER_SCHEMA),
   });
   const [isLoading, setIsLoading] = useState(false);
-  const user = selectedUser.user;
+  const { user, setUser } = selectedUser;
 
   const { data: stores, loading: storesLoading } = useListStoresQuery();
   const { data: roles, loading: rolesLoading } = useListRolesQuery();
-  const { data: status } = useListStatusQuery();
+  const { data: state } = useListStatesQuery();
   const [createUser] = useCreateUserMutation();
+  const [updateUser] = useUpdateUserMutation();
 
   const onSubmit: SubmitHandler<FormData> = async (formData) => {
     try {
       setIsLoading(true);
       if (user) {
-        console.log("UPDATE");
+        const updatedUser = await updateUser({
+          variables: { id: user.id, ...formData },
+        });
+        setUser(updatedUser.data?.updateUser.data);
       } else {
         await createUser({ variables: formData });
         await fetchUsers();
@@ -167,8 +172,8 @@ export const UserForm: React.FC<UserFormProps> = ({
         <Grid item xs={12}>
           <Controller
             control={control}
-            name="statusId"
-            defaultValue={user ? user.status.id : 1}
+            name="stateId"
+            defaultValue={user ? user.state.id : 1}
             render={({ value, onChange }) => (
               <FormControl component="fieldset" fullWidth>
                 <FormLabel component="legend">Estado</FormLabel>
@@ -177,12 +182,12 @@ export const UserForm: React.FC<UserFormProps> = ({
                   value={value}
                   onChange={(e) => onChange(Number(e.target.value))}
                 >
-                  {status?.listStatus.data!.map((status) => (
+                  {state?.listStates.data!.map((state) => (
                     <FormControlLabel
-                      value={status.id}
+                      value={state.id}
                       control={<Radio />}
-                      label={status.name}
-                      key={status.id}
+                      label={state.name}
+                      key={state.id}
                     />
                   ))}
                 </StyledRadioGroup>

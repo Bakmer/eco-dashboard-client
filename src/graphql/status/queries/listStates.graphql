@@ -1,5 +1,5 @@
-query ListStatus {
-  listStatus {
+query ListStates {
+  listStates {
     data {
       id
       name

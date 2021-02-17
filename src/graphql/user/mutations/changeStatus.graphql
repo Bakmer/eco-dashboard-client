@@ -1,9 +1,0 @@
-mutation ChangeUserStatus($id: Float!) {
-  changeUserStatus(data: { id: $id }) {
-    data {
-      id
-      name
-    }
-    message
-  }
-}

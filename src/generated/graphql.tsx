@@ -20,7 +20,7 @@ export type Query = {
   hello: Scalars['String'];
   listStores: ListStoresResponse;
   listRoles: ListRolesResponse;
-  listStatus: ListStatusResponse;
+  listStates: ListStatesResponse;
 };
 
 
@@ -43,10 +43,10 @@ export type Users = {
   password: Scalars['String'];
   storeId: Scalars['Float'];
   roleId: Scalars['Float'];
-  statusId: Scalars['Float'];
+  stateId: Scalars['Float'];
   store: Stores;
   role: Roles;
-  status: Status;
+  state: States;
   clients: Array<Clients>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
@@ -79,17 +79,17 @@ export type Clients = {
   address_3?: Maybe<Scalars['String']>;
   memo: Scalars['String'];
   storeId: Scalars['Float'];
-  statusId: Scalars['Float'];
+  stateId: Scalars['Float'];
   userId: Scalars['Float'];
   store: Stores;
-  status: Status;
+  state: States;
   user: Users;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
 
-export type Status = {
-  __typename?: 'Status';
+export type States = {
+  __typename?: 'States';
   id: Scalars['Float'];
   name: Scalars['String'];
   createdAt: Scalars['String'];
@@ -141,9 +141,9 @@ export type ListRolesResponse = {
   message?: Maybe<Scalars['String']>;
 };
 
-export type ListStatusResponse = {
-  __typename?: 'ListStatusResponse';
-  data?: Maybe<Array<Status>>;
+export type ListStatesResponse = {
+  __typename?: 'ListStatesResponse';
+  data?: Maybe<Array<States>>;
   message?: Maybe<Scalars['String']>;
 };
 
@@ -151,12 +151,13 @@ export type Mutation = {
   __typename?: 'Mutation';
   createUser: UserResponse;
   login: UserResponse;
-  changeUserStatus: ChangeStatusResponse;
+  changeUserState: ChangeStateResponse;
+  updateUser: UserResponse;
   logout: UserResponse;
   deleteAllUsers: Scalars['String'];
   createStore: StoreResponse;
   createRole: RoleResponse;
-  createStatus: StatusResponse;
+  createState: StatesResponse;
   createClient: ClientResponse;
 };
 
@@ -171,8 +172,13 @@ export type MutationLoginArgs = {
 };
 
 
-export type MutationChangeUserStatusArgs = {
-  data: ChangeUserStatusFields;
+export type MutationChangeUserStateArgs = {
+  data: ChangeUserStateFields;
+};
+
+
+export type MutationUpdateUserArgs = {
+  data: UpdateUserFields;
 };
 
 
@@ -186,8 +192,8 @@ export type MutationCreateRoleArgs = {
 };
 
 
-export type MutationCreateStatusArgs = {
-  data: CreateStatusFields;
+export type MutationCreateStateArgs = {
+  data: CreateStatesFields;
 };
 
 
@@ -202,7 +208,7 @@ export type CreateUserFields = {
   password: Scalars['String'];
   storeId: Scalars['Float'];
   roleId: Scalars['Float'];
-  statusId: Scalars['Float'];
+  stateId: Scalars['Float'];
 };
 
 export type UsernamePasswordInput = {
@@ -210,20 +216,25 @@ export type UsernamePasswordInput = {
   password: Scalars['String'];
 };
 
-export type ChangeStatusResponse = {
-  __typename?: 'ChangeStatusResponse';
-  data?: Maybe<StatusFields>;
+export type ChangeStateResponse = {
+  __typename?: 'ChangeStateResponse';
+  data?: Maybe<StateFields>;
   message?: Maybe<Scalars['String']>;
 };
 
-export type StatusFields = {
-  __typename?: 'StatusFields';
+export type StateFields = {
+  __typename?: 'StateFields';
   id: Scalars['Float'];
   name: Scalars['String'];
 };
 
-export type ChangeUserStatusFields = {
+export type ChangeUserStateFields = {
   id: Scalars['Float'];
+};
+
+export type UpdateUserFields = {
+  id?: Maybe<Scalars['Float']>;
+  user: CreateUserFields;
 };
 
 export type StoreResponse = {
@@ -246,13 +257,13 @@ export type CreateRoleField = {
   name: Scalars['String'];
 };
 
-export type StatusResponse = {
-  __typename?: 'StatusResponse';
-  data?: Maybe<Status>;
+export type StatesResponse = {
+  __typename?: 'StatesResponse';
+  data?: Maybe<States>;
   message?: Maybe<Scalars['String']>;
 };
 
-export type CreateStatusFields = {
+export type CreateStatesFields = {
   name: Scalars['String'];
 };
 
@@ -277,7 +288,7 @@ export type CreateFields = {
   address_3?: Maybe<Scalars['String']>;
   memo: Scalars['String'];
   storeId: Scalars['Float'];
-  statusId: Scalars['Float'];
+  stateId: Scalars['Float'];
 };
 
 export type ListRolesQueryVariables = Exact<{ [key: string]: never; }>;
@@ -295,17 +306,17 @@ export type ListRolesQuery = (
   ) }
 );
 
-export type ListStatusQueryVariables = Exact<{ [key: string]: never; }>;
+export type ListStatesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ListStatusQuery = (
+export type ListStatesQuery = (
   { __typename?: 'Query' }
-  & { listStatus: (
-    { __typename?: 'ListStatusResponse' }
-    & Pick<ListStatusResponse, 'message'>
+  & { listStates: (
+    { __typename?: 'ListStatesResponse' }
+    & Pick<ListStatesResponse, 'message'>
     & { data?: Maybe<Array<(
-      { __typename?: 'Status' }
-      & Pick<Status, 'id' | 'name'>
+      { __typename?: 'States' }
+      & Pick<States, 'id' | 'name'>
     )>> }
   ) }
 );
@@ -325,19 +336,19 @@ export type ListStoresQuery = (
   ) }
 );
 
-export type ChangeUserStatusMutationVariables = Exact<{
+export type ChangeUserStateMutationVariables = Exact<{
   id: Scalars['Float'];
 }>;
 
 
-export type ChangeUserStatusMutation = (
+export type ChangeUserStateMutation = (
   { __typename?: 'Mutation' }
-  & { changeUserStatus: (
-    { __typename?: 'ChangeStatusResponse' }
-    & Pick<ChangeStatusResponse, 'message'>
+  & { changeUserState: (
+    { __typename?: 'ChangeStateResponse' }
+    & Pick<ChangeStateResponse, 'message'>
     & { data?: Maybe<(
-      { __typename?: 'StatusFields' }
-      & Pick<StatusFields, 'id' | 'name'>
+      { __typename?: 'StateFields' }
+      & Pick<StateFields, 'id' | 'name'>
     )> }
   ) }
 );
@@ -349,7 +360,7 @@ export type CreateUserMutationVariables = Exact<{
   last_name: Scalars['String'];
   storeId: Scalars['Float'];
   roleId: Scalars['Float'];
-  statusId: Scalars['Float'];
+  stateId: Scalars['Float'];
 }>;
 
 
@@ -385,6 +396,9 @@ export type LoginMutation = (
       ), role: (
         { __typename?: 'Roles' }
         & Pick<Roles, 'id' | 'name'>
+      ), state: (
+        { __typename?: 'States' }
+        & Pick<States, 'id' | 'name'>
       ) }
     )> }
   ) }
@@ -398,6 +412,40 @@ export type LogoutMutation = (
   & { logout: (
     { __typename?: 'UserResponse' }
     & Pick<UserResponse, 'message'>
+  ) }
+);
+
+export type UpdateUserMutationVariables = Exact<{
+  id: Scalars['Float'];
+  username: Scalars['String'];
+  password: Scalars['String'];
+  name: Scalars['String'];
+  last_name: Scalars['String'];
+  storeId: Scalars['Float'];
+  roleId: Scalars['Float'];
+  stateId: Scalars['Float'];
+}>;
+
+
+export type UpdateUserMutation = (
+  { __typename?: 'Mutation' }
+  & { updateUser: (
+    { __typename?: 'UserResponse' }
+    & Pick<UserResponse, 'message'>
+    & { data?: Maybe<(
+      { __typename?: 'Users' }
+      & Pick<Users, 'id' | 'username' | 'name' | 'last_name' | 'password'>
+      & { store: (
+        { __typename?: 'Stores' }
+        & Pick<Stores, 'id' | 'name'>
+      ), role: (
+        { __typename?: 'Roles' }
+        & Pick<Roles, 'id' | 'name'>
+      ), state: (
+        { __typename?: 'States' }
+        & Pick<States, 'id' | 'name'>
+      ) }
+    )> }
   ) }
 );
 
@@ -424,9 +472,9 @@ export type ListUsersQuery = (
       ), role: (
         { __typename?: 'Roles' }
         & Pick<Roles, 'id' | 'name'>
-      ), status: (
-        { __typename?: 'Status' }
-        & Pick<Status, 'id' | 'name'>
+      ), state: (
+        { __typename?: 'States' }
+        & Pick<States, 'id' | 'name'>
       ) }
     )>>, filters?: Maybe<(
       { __typename?: 'PaginationFilters' }
@@ -452,6 +500,9 @@ export type MeQuery = (
       ), role: (
         { __typename?: 'Roles' }
         & Pick<Roles, 'id' | 'name'>
+      ), state: (
+        { __typename?: 'States' }
+        & Pick<States, 'id' | 'name'>
       ) }
     )> }
   ) }
@@ -494,9 +545,9 @@ export function useListRolesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type ListRolesQueryHookResult = ReturnType<typeof useListRolesQuery>;
 export type ListRolesLazyQueryHookResult = ReturnType<typeof useListRolesLazyQuery>;
 export type ListRolesQueryResult = Apollo.QueryResult<ListRolesQuery, ListRolesQueryVariables>;
-export const ListStatusDocument = gql`
-    query ListStatus {
-  listStatus {
+export const ListStatesDocument = gql`
+    query ListStates {
+  listStates {
     data {
       id
       name
@@ -507,29 +558,29 @@ export const ListStatusDocument = gql`
     `;
 
 /**
- * __useListStatusQuery__
+ * __useListStatesQuery__
  *
- * To run a query within a React component, call `useListStatusQuery` and pass it any options that fit your needs.
- * When your component renders, `useListStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useListStatesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListStatesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useListStatusQuery({
+ * const { data, loading, error } = useListStatesQuery({
  *   variables: {
  *   },
  * });
  */
-export function useListStatusQuery(baseOptions?: Apollo.QueryHookOptions<ListStatusQuery, ListStatusQueryVariables>) {
-        return Apollo.useQuery<ListStatusQuery, ListStatusQueryVariables>(ListStatusDocument, baseOptions);
+export function useListStatesQuery(baseOptions?: Apollo.QueryHookOptions<ListStatesQuery, ListStatesQueryVariables>) {
+        return Apollo.useQuery<ListStatesQuery, ListStatesQueryVariables>(ListStatesDocument, baseOptions);
       }
-export function useListStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListStatusQuery, ListStatusQueryVariables>) {
-          return Apollo.useLazyQuery<ListStatusQuery, ListStatusQueryVariables>(ListStatusDocument, baseOptions);
+export function useListStatesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListStatesQuery, ListStatesQueryVariables>) {
+          return Apollo.useLazyQuery<ListStatesQuery, ListStatesQueryVariables>(ListStatesDocument, baseOptions);
         }
-export type ListStatusQueryHookResult = ReturnType<typeof useListStatusQuery>;
-export type ListStatusLazyQueryHookResult = ReturnType<typeof useListStatusLazyQuery>;
-export type ListStatusQueryResult = Apollo.QueryResult<ListStatusQuery, ListStatusQueryVariables>;
+export type ListStatesQueryHookResult = ReturnType<typeof useListStatesQuery>;
+export type ListStatesLazyQueryHookResult = ReturnType<typeof useListStatesLazyQuery>;
+export type ListStatesQueryResult = Apollo.QueryResult<ListStatesQuery, ListStatesQueryVariables>;
 export const ListStoresDocument = gql`
     query ListStores {
   listStores {
@@ -566,9 +617,9 @@ export function useListStoresLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type ListStoresQueryHookResult = ReturnType<typeof useListStoresQuery>;
 export type ListStoresLazyQueryHookResult = ReturnType<typeof useListStoresLazyQuery>;
 export type ListStoresQueryResult = Apollo.QueryResult<ListStoresQuery, ListStoresQueryVariables>;
-export const ChangeUserStatusDocument = gql`
-    mutation ChangeUserStatus($id: Float!) {
-  changeUserStatus(data: {id: $id}) {
+export const ChangeUserStateDocument = gql`
+    mutation ChangeUserState($id: Float!) {
+  changeUserState(data: {id: $id}) {
     data {
       id
       name
@@ -577,35 +628,35 @@ export const ChangeUserStatusDocument = gql`
   }
 }
     `;
-export type ChangeUserStatusMutationFn = Apollo.MutationFunction<ChangeUserStatusMutation, ChangeUserStatusMutationVariables>;
+export type ChangeUserStateMutationFn = Apollo.MutationFunction<ChangeUserStateMutation, ChangeUserStateMutationVariables>;
 
 /**
- * __useChangeUserStatusMutation__
+ * __useChangeUserStateMutation__
  *
- * To run a mutation, you first call `useChangeUserStatusMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useChangeUserStatusMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useChangeUserStateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeUserStateMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [changeUserStatusMutation, { data, loading, error }] = useChangeUserStatusMutation({
+ * const [changeUserStateMutation, { data, loading, error }] = useChangeUserStateMutation({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useChangeUserStatusMutation(baseOptions?: Apollo.MutationHookOptions<ChangeUserStatusMutation, ChangeUserStatusMutationVariables>) {
-        return Apollo.useMutation<ChangeUserStatusMutation, ChangeUserStatusMutationVariables>(ChangeUserStatusDocument, baseOptions);
+export function useChangeUserStateMutation(baseOptions?: Apollo.MutationHookOptions<ChangeUserStateMutation, ChangeUserStateMutationVariables>) {
+        return Apollo.useMutation<ChangeUserStateMutation, ChangeUserStateMutationVariables>(ChangeUserStateDocument, baseOptions);
       }
-export type ChangeUserStatusMutationHookResult = ReturnType<typeof useChangeUserStatusMutation>;
-export type ChangeUserStatusMutationResult = Apollo.MutationResult<ChangeUserStatusMutation>;
-export type ChangeUserStatusMutationOptions = Apollo.BaseMutationOptions<ChangeUserStatusMutation, ChangeUserStatusMutationVariables>;
+export type ChangeUserStateMutationHookResult = ReturnType<typeof useChangeUserStateMutation>;
+export type ChangeUserStateMutationResult = Apollo.MutationResult<ChangeUserStateMutation>;
+export type ChangeUserStateMutationOptions = Apollo.BaseMutationOptions<ChangeUserStateMutation, ChangeUserStateMutationVariables>;
 export const CreateUserDocument = gql`
-    mutation CreateUser($username: String!, $password: String!, $name: String!, $last_name: String!, $storeId: Float!, $roleId: Float!, $statusId: Float!) {
+    mutation CreateUser($username: String!, $password: String!, $name: String!, $last_name: String!, $storeId: Float!, $roleId: Float!, $stateId: Float!) {
   createUser(
-    data: {username: $username, password: $password, name: $name, last_name: $last_name, storeId: $storeId, roleId: $roleId, statusId: $statusId}
+    data: {username: $username, password: $password, name: $name, last_name: $last_name, storeId: $storeId, roleId: $roleId, stateId: $stateId}
   ) {
     data {
       username
@@ -637,7 +688,7 @@ export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, C
  *      last_name: // value for 'last_name'
  *      storeId: // value for 'storeId'
  *      roleId: // value for 'roleId'
- *      statusId: // value for 'statusId'
+ *      stateId: // value for 'stateId'
  *   },
  * });
  */
@@ -660,6 +711,10 @@ export const LoginDocument = gql`
         name
       }
       role {
+        id
+        name
+      }
+      state {
         id
         name
       }
@@ -725,6 +780,66 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($id: Float!, $username: String!, $password: String!, $name: String!, $last_name: String!, $storeId: Float!, $roleId: Float!, $stateId: Float!) {
+  updateUser(
+    data: {id: $id, user: {username: $username, password: $password, name: $name, last_name: $last_name, storeId: $storeId, roleId: $roleId, stateId: $stateId}}
+  ) {
+    data {
+      id
+      username
+      name
+      last_name
+      password
+      store {
+        id
+        name
+      }
+      role {
+        id
+        name
+      }
+      state {
+        id
+        name
+      }
+    }
+    message
+  }
+}
+    `;
+export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
+
+/**
+ * __useUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      username: // value for 'username'
+ *      password: // value for 'password'
+ *      name: // value for 'name'
+ *      last_name: // value for 'last_name'
+ *      storeId: // value for 'storeId'
+ *      roleId: // value for 'roleId'
+ *      stateId: // value for 'stateId'
+ *   },
+ * });
+ */
+export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
+        return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, baseOptions);
+      }
+export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
+export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
+export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
 export const ListUsersDocument = gql`
     query ListUsers($search: String, $order_by: String, $order_type: String, $page: Float, $per_page: Float) {
   listUsers(
@@ -744,7 +859,7 @@ export const ListUsersDocument = gql`
         id
         name
       }
-      status {
+      state {
         id
         name
       }
@@ -804,6 +919,10 @@ export const MeDocument = gql`
         name
       }
       role {
+        id
+        name
+      }
+      state {
         id
         name
       }

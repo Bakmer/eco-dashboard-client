@@ -5,7 +5,7 @@ mutation CreateUser(
   $last_name: String!
   $storeId: Float!
   $roleId: Float!
-  $statusId: Float!
+  $stateId: Float!
 ) {
   createUser(
     data: {
@@ -15,7 +15,7 @@ mutation CreateUser(
       last_name: $last_name
       storeId: $storeId
       roleId: $roleId
-      statusId: $statusId
+      stateId: $stateId
     }
   ) {
     data {

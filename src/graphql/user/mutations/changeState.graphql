@@ -1,0 +1,9 @@
+mutation ChangeUserState($id: Float!) {
+  changeUserState(data: { id: $id }) {
+    data {
+      id
+      name
+    }
+    message
+  }
+}

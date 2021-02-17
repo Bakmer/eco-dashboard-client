@@ -27,7 +27,7 @@ interface Data {
   last_name: string;
   store: string;
   role: string;
-  status: string;
+  state: string;
 }
 
 const headCells: HeadCell[] = [
@@ -37,7 +37,7 @@ const headCells: HeadCell[] = [
   { value: "last_name", label: "Apellido" },
   { value: "store", label: "Tienda" },
   { value: "role", label: "Rol" },
-  { value: "status", label: "Estado" },
+  { value: "state", label: "Estado" },
 ];
 
 export const EnhancedTableHead: React.FC<EnhancedTableProps> = (props) => {

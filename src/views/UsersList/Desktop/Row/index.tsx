@@ -4,7 +4,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Switch from "@material-ui/core/Switch";
 import { Dropdown } from "../../../../components/Dropdown";
 import EditIcon from "@material-ui/icons/Edit";
-import { useChangeUserStatusMutation } from "../../../../generated/graphql";
+import { useChangeUserStateMutation } from "../../../../generated/graphql";
 
 interface RowProps {
   data: {
@@ -20,7 +20,7 @@ interface RowProps {
       id: number;
       name: string;
     };
-    status: {
+    state: {
       id: number;
       name: string;
     };
@@ -30,13 +30,13 @@ interface RowProps {
 
 export const Row: React.FC<RowProps> = ({ data, openModal }) => {
   const [user, setUser] = useState(data);
-  const [toggleStatus] = useChangeUserStatusMutation({
+  const [toggleState] = useChangeUserStateMutation({
     onCompleted: (res) =>
-      setUser({ ...user, status: res.changeUserStatus.data! }),
+      setUser({ ...user, state: res.changeUserState.data! }),
   });
 
   const handleChange = () => {
-    toggleStatus({ variables: { id: user.id } });
+    toggleState({ variables: { id: user.id } });
   };
 
   const menu = [
@@ -61,10 +61,10 @@ export const Row: React.FC<RowProps> = ({ data, openModal }) => {
       <TableCell align="center">{user.role.name}</TableCell>
       <TableCell align="center">
         <Switch
-          checked={user.status.id === 1 ? true : false}
+          checked={user.state.id === 1 ? true : false}
           color="primary"
           onChange={handleChange}
-          name="status"
+          name="state"
         />
       </TableCell>
       <TableCell align="center">

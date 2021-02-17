@@ -20,11 +20,13 @@ interface Data {
   last_name: string;
   store: string;
   role: string;
-  status: string;
+  state: string;
 }
 
 const Desktop: React.FC<{}> = () => {
-  const { data, loading, refetch } = useListUsersQuery();
+  const { data, loading, refetch } = useListUsersQuery({
+    fetchPolicy: "no-cache",
+  });
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
   console.log(selectedUser);

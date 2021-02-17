@@ -28,7 +28,7 @@ query ListUsers(
         id
         name
       }
-      status {
+      state {
         id
         name
       }

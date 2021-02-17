@@ -1,0 +1,46 @@
+mutation UpdateUser(
+  $id: Float!
+  $username: String!
+  $password: String!
+  $name: String!
+  $last_name: String!
+  $storeId: Float!
+  $roleId: Float!
+  $stateId: Float!
+) {
+  updateUser(
+    data: {
+      id: $id
+      user: {
+        username: $username
+        password: $password
+        name: $name
+        last_name: $last_name
+        storeId: $storeId
+        roleId: $roleId
+        stateId: $stateId
+      }
+    }
+  ) {
+    data {
+      id
+      username
+      name
+      last_name
+      password
+      store {
+        id
+        name
+      }
+      role {
+        id
+        name
+      }
+      state {
+        id
+        name
+      }
+    }
+    message
+  }
+}

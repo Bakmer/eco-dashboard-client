@@ -20,8 +20,8 @@ const roleId = {
   roleId: yup.number().typeError("Requerido").required("Requerido"),
 };
 
-const statusId = {
-  statusId: yup.number().typeError("Requerido").required("Requerido"),
+const stateId = {
+  stateId: yup.number().typeError("Requerido").required("Requerido"),
 };
 
 const storeId = {
@@ -39,6 +39,6 @@ export const USER_SCHEMA = yup.object().shape({
   ...last_name,
   ...password,
   ...roleId,
-  ...statusId,
+  ...stateId,
   ...storeId,
 });

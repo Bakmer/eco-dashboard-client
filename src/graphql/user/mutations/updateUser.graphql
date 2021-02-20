@@ -6,7 +6,7 @@ mutation UpdateUser(
   $last_name: String!
   $storeId: Float!
   $roleId: Float!
-  $stateId: Float!
+  $state_id: Float!
 ) {
   updateUser(
     data: {
@@ -18,7 +18,7 @@ mutation UpdateUser(
         last_name: $last_name
         storeId: $storeId
         roleId: $roleId
-        stateId: $stateId
+        state_id: $state_id
       }
     }
   ) {

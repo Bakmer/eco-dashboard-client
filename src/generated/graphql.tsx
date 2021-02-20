@@ -30,12 +30,12 @@ export type QueryListUsersArgs = {
 
 export type UserResponse = {
   __typename?: 'UserResponse';
-  data?: Maybe<Users>;
+  data?: Maybe<User>;
   message?: Maybe<Scalars['String']>;
 };
 
-export type Users = {
-  __typename?: 'Users';
+export type User = {
+  __typename?: 'User';
   id: Scalars['Float'];
   username: Scalars['String'];
   name: Scalars['String'];
@@ -43,27 +43,27 @@ export type Users = {
   password: Scalars['String'];
   storeId: Scalars['Float'];
   roleId: Scalars['Float'];
-  stateId: Scalars['Float'];
-  store: Stores;
-  role: Roles;
-  state: States;
-  clients: Array<Clients>;
+  state_id: Scalars['Float'];
+  store: Store;
+  role: Role;
+  state: State;
+  clients: Array<Client>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
 
-export type Stores = {
-  __typename?: 'Stores';
+export type Store = {
+  __typename?: 'Store';
   id: Scalars['Float'];
   name: Scalars['String'];
-  users: Array<Users>;
-  clients: Array<Clients>;
+  users: Array<User>;
+  clients: Array<Client>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
 
-export type Clients = {
-  __typename?: 'Clients';
+export type Client = {
+  __typename?: 'Client';
   id: Scalars['Float'];
   name: Scalars['String'];
   last_name: Scalars['String'];
@@ -71,33 +71,65 @@ export type Clients = {
   cuit: Scalars['String'];
   iva: Scalars['String'];
   email: Scalars['String'];
+  area_code_1: Scalars['String'];
   phone_1: Scalars['String'];
+  area_code_2?: Maybe<Scalars['String']>;
   phone_2?: Maybe<Scalars['String']>;
+  area_code_3?: Maybe<Scalars['String']>;
   phone_3?: Maybe<Scalars['String']>;
-  address_1: Scalars['String'];
-  address_2?: Maybe<Scalars['String']>;
-  address_3?: Maybe<Scalars['String']>;
   memo: Scalars['String'];
   storeId: Scalars['Float'];
-  stateId: Scalars['Float'];
   userId: Scalars['Float'];
-  store: Stores;
-  state: States;
-  user: Users;
+  store: Store;
+  state: State;
+  user: User;
+  addresses: Array<ClientAddress>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
 
-export type States = {
-  __typename?: 'States';
+export type State = {
+  __typename?: 'State';
   id: Scalars['Float'];
   name: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
 
-export type Roles = {
-  __typename?: 'Roles';
+export type ClientAddress = {
+  __typename?: 'ClientAddress';
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  last_name: Scalars['String'];
+  street: Scalars['String'];
+  street_number: Scalars['Float'];
+  cuit: Scalars['String'];
+  province: Scalars['String'];
+  location: Scalars['String'];
+  postal_code: Scalars['String'];
+  area_code_1: Scalars['String'];
+  phone_1: Scalars['String'];
+  area_code_2?: Maybe<Scalars['String']>;
+  phone_2?: Maybe<Scalars['String']>;
+  clientId: Scalars['Float'];
+  shippingMethodId: Scalars['Float'];
+  client: Client;
+  shipping_method: ShippingMethod;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+export type ShippingMethod = {
+  __typename?: 'ShippingMethod';
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  addresses: Array<ClientAddress>;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+export type Role = {
+  __typename?: 'Role';
   id: Scalars['Float'];
   name: Scalars['String'];
   createdAt: Scalars['String'];
@@ -106,7 +138,7 @@ export type Roles = {
 
 export type PaginatedUsersResponse = {
   __typename?: 'PaginatedUsersResponse';
-  data?: Maybe<Array<Users>>;
+  data?: Maybe<Array<User>>;
   message?: Maybe<Scalars['String']>;
   filters?: Maybe<PaginationFilters>;
 };
@@ -131,19 +163,19 @@ export type PaginationFields = {
 
 export type ListStoresResponse = {
   __typename?: 'ListStoresResponse';
-  data?: Maybe<Array<Stores>>;
+  data?: Maybe<Array<Store>>;
   message?: Maybe<Scalars['String']>;
 };
 
 export type ListRolesResponse = {
   __typename?: 'ListRolesResponse';
-  data?: Maybe<Array<Roles>>;
+  data?: Maybe<Array<Role>>;
   message?: Maybe<Scalars['String']>;
 };
 
 export type ListStatesResponse = {
   __typename?: 'ListStatesResponse';
-  data?: Maybe<Array<States>>;
+  data?: Maybe<Array<State>>;
   message?: Maybe<Scalars['String']>;
 };
 
@@ -157,7 +189,7 @@ export type Mutation = {
   deleteAllUsers: Scalars['String'];
   createStore: StoreResponse;
   createRole: RoleResponse;
-  createState: StatesResponse;
+  createState: StateResponse;
   createClient: ClientResponse;
 };
 
@@ -193,7 +225,7 @@ export type MutationCreateRoleArgs = {
 
 
 export type MutationCreateStateArgs = {
-  data: CreateStatesFields;
+  data: CreateStateFields;
 };
 
 
@@ -208,7 +240,7 @@ export type CreateUserFields = {
   password: Scalars['String'];
   storeId: Scalars['Float'];
   roleId: Scalars['Float'];
-  stateId: Scalars['Float'];
+  state_id: Scalars['Float'];
 };
 
 export type UsernamePasswordInput = {
@@ -239,7 +271,7 @@ export type UpdateUserFields = {
 
 export type StoreResponse = {
   __typename?: 'StoreResponse';
-  data?: Maybe<Stores>;
+  data?: Maybe<Store>;
   message?: Maybe<Scalars['String']>;
 };
 
@@ -249,7 +281,7 @@ export type CreateStoreFields = {
 
 export type RoleResponse = {
   __typename?: 'RoleResponse';
-  data?: Maybe<Roles>;
+  data?: Maybe<Role>;
   message?: Maybe<Scalars['String']>;
 };
 
@@ -257,19 +289,19 @@ export type CreateRoleField = {
   name: Scalars['String'];
 };
 
-export type StatesResponse = {
-  __typename?: 'StatesResponse';
-  data?: Maybe<States>;
+export type StateResponse = {
+  __typename?: 'StateResponse';
+  data?: Maybe<State>;
   message?: Maybe<Scalars['String']>;
 };
 
-export type CreateStatesFields = {
+export type CreateStateFields = {
   name: Scalars['String'];
 };
 
 export type ClientResponse = {
   __typename?: 'ClientResponse';
-  data?: Maybe<Clients>;
+  data?: Maybe<Client>;
   message?: Maybe<Scalars['String']>;
 };
 
@@ -288,7 +320,7 @@ export type CreateFields = {
   address_3?: Maybe<Scalars['String']>;
   memo: Scalars['String'];
   storeId: Scalars['Float'];
-  stateId: Scalars['Float'];
+  state_id: Scalars['Float'];
 };
 
 export type ListRolesQueryVariables = Exact<{ [key: string]: never; }>;
@@ -300,8 +332,8 @@ export type ListRolesQuery = (
     { __typename?: 'ListRolesResponse' }
     & Pick<ListRolesResponse, 'message'>
     & { data?: Maybe<Array<(
-      { __typename?: 'Roles' }
-      & Pick<Roles, 'id' | 'name'>
+      { __typename?: 'Role' }
+      & Pick<Role, 'id' | 'name'>
     )>> }
   ) }
 );
@@ -315,8 +347,8 @@ export type ListStatesQuery = (
     { __typename?: 'ListStatesResponse' }
     & Pick<ListStatesResponse, 'message'>
     & { data?: Maybe<Array<(
-      { __typename?: 'States' }
-      & Pick<States, 'id' | 'name'>
+      { __typename?: 'State' }
+      & Pick<State, 'id' | 'name'>
     )>> }
   ) }
 );
@@ -330,8 +362,8 @@ export type ListStoresQuery = (
     { __typename?: 'ListStoresResponse' }
     & Pick<ListStoresResponse, 'message'>
     & { data?: Maybe<Array<(
-      { __typename?: 'Stores' }
-      & Pick<Stores, 'id' | 'name'>
+      { __typename?: 'Store' }
+      & Pick<Store, 'id' | 'name'>
     )>> }
   ) }
 );
@@ -360,7 +392,7 @@ export type CreateUserMutationVariables = Exact<{
   last_name: Scalars['String'];
   storeId: Scalars['Float'];
   roleId: Scalars['Float'];
-  stateId: Scalars['Float'];
+  state_id: Scalars['Float'];
 }>;
 
 
@@ -370,8 +402,8 @@ export type CreateUserMutation = (
     { __typename?: 'UserResponse' }
     & Pick<UserResponse, 'message'>
     & { data?: Maybe<(
-      { __typename?: 'Users' }
-      & Pick<Users, 'username' | 'name' | 'last_name'>
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'name' | 'last_name'>
     )> }
   ) }
 );
@@ -388,17 +420,17 @@ export type LoginMutation = (
     { __typename?: 'UserResponse' }
     & Pick<UserResponse, 'message'>
     & { data?: Maybe<(
-      { __typename?: 'Users' }
-      & Pick<Users, 'id' | 'username' | 'name' | 'last_name'>
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username' | 'name' | 'last_name'>
       & { store: (
-        { __typename?: 'Stores' }
-        & Pick<Stores, 'id' | 'name'>
+        { __typename?: 'Store' }
+        & Pick<Store, 'id' | 'name'>
       ), role: (
-        { __typename?: 'Roles' }
-        & Pick<Roles, 'id' | 'name'>
+        { __typename?: 'Role' }
+        & Pick<Role, 'id' | 'name'>
       ), state: (
-        { __typename?: 'States' }
-        & Pick<States, 'id' | 'name'>
+        { __typename?: 'State' }
+        & Pick<State, 'id' | 'name'>
       ) }
     )> }
   ) }
@@ -423,7 +455,7 @@ export type UpdateUserMutationVariables = Exact<{
   last_name: Scalars['String'];
   storeId: Scalars['Float'];
   roleId: Scalars['Float'];
-  stateId: Scalars['Float'];
+  state_id: Scalars['Float'];
 }>;
 
 
@@ -433,17 +465,17 @@ export type UpdateUserMutation = (
     { __typename?: 'UserResponse' }
     & Pick<UserResponse, 'message'>
     & { data?: Maybe<(
-      { __typename?: 'Users' }
-      & Pick<Users, 'id' | 'username' | 'name' | 'last_name' | 'password'>
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username' | 'name' | 'last_name' | 'password'>
       & { store: (
-        { __typename?: 'Stores' }
-        & Pick<Stores, 'id' | 'name'>
+        { __typename?: 'Store' }
+        & Pick<Store, 'id' | 'name'>
       ), role: (
-        { __typename?: 'Roles' }
-        & Pick<Roles, 'id' | 'name'>
+        { __typename?: 'Role' }
+        & Pick<Role, 'id' | 'name'>
       ), state: (
-        { __typename?: 'States' }
-        & Pick<States, 'id' | 'name'>
+        { __typename?: 'State' }
+        & Pick<State, 'id' | 'name'>
       ) }
     )> }
   ) }
@@ -464,17 +496,17 @@ export type ListUsersQuery = (
     { __typename?: 'PaginatedUsersResponse' }
     & Pick<PaginatedUsersResponse, 'message'>
     & { data?: Maybe<Array<(
-      { __typename?: 'Users' }
-      & Pick<Users, 'id' | 'username' | 'name' | 'last_name' | 'password'>
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username' | 'name' | 'last_name' | 'password'>
       & { store: (
-        { __typename?: 'Stores' }
-        & Pick<Stores, 'id' | 'name'>
+        { __typename?: 'Store' }
+        & Pick<Store, 'id' | 'name'>
       ), role: (
-        { __typename?: 'Roles' }
-        & Pick<Roles, 'id' | 'name'>
+        { __typename?: 'Role' }
+        & Pick<Role, 'id' | 'name'>
       ), state: (
-        { __typename?: 'States' }
-        & Pick<States, 'id' | 'name'>
+        { __typename?: 'State' }
+        & Pick<State, 'id' | 'name'>
       ) }
     )>>, filters?: Maybe<(
       { __typename?: 'PaginationFilters' }
@@ -492,17 +524,17 @@ export type MeQuery = (
     { __typename?: 'UserResponse' }
     & Pick<UserResponse, 'message'>
     & { data?: Maybe<(
-      { __typename?: 'Users' }
-      & Pick<Users, 'id' | 'username' | 'name' | 'last_name'>
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username' | 'name' | 'last_name'>
       & { store: (
-        { __typename?: 'Stores' }
-        & Pick<Stores, 'id' | 'name'>
+        { __typename?: 'Store' }
+        & Pick<Store, 'id' | 'name'>
       ), role: (
-        { __typename?: 'Roles' }
-        & Pick<Roles, 'id' | 'name'>
+        { __typename?: 'Role' }
+        & Pick<Role, 'id' | 'name'>
       ), state: (
-        { __typename?: 'States' }
-        & Pick<States, 'id' | 'name'>
+        { __typename?: 'State' }
+        & Pick<State, 'id' | 'name'>
       ) }
     )> }
   ) }
@@ -654,9 +686,9 @@ export type ChangeUserStateMutationHookResult = ReturnType<typeof useChangeUserS
 export type ChangeUserStateMutationResult = Apollo.MutationResult<ChangeUserStateMutation>;
 export type ChangeUserStateMutationOptions = Apollo.BaseMutationOptions<ChangeUserStateMutation, ChangeUserStateMutationVariables>;
 export const CreateUserDocument = gql`
-    mutation CreateUser($username: String!, $password: String!, $name: String!, $last_name: String!, $storeId: Float!, $roleId: Float!, $stateId: Float!) {
+    mutation CreateUser($username: String!, $password: String!, $name: String!, $last_name: String!, $storeId: Float!, $roleId: Float!, $state_id: Float!) {
   createUser(
-    data: {username: $username, password: $password, name: $name, last_name: $last_name, storeId: $storeId, roleId: $roleId, stateId: $stateId}
+    data: {username: $username, password: $password, name: $name, last_name: $last_name, storeId: $storeId, roleId: $roleId, state_id: $state_id}
   ) {
     data {
       username
@@ -688,7 +720,7 @@ export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, C
  *      last_name: // value for 'last_name'
  *      storeId: // value for 'storeId'
  *      roleId: // value for 'roleId'
- *      stateId: // value for 'stateId'
+ *      state_id: // value for 'state_id'
  *   },
  * });
  */
@@ -781,9 +813,9 @@ export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const UpdateUserDocument = gql`
-    mutation UpdateUser($id: Float!, $username: String!, $password: String!, $name: String!, $last_name: String!, $storeId: Float!, $roleId: Float!, $stateId: Float!) {
+    mutation UpdateUser($id: Float!, $username: String!, $password: String!, $name: String!, $last_name: String!, $storeId: Float!, $roleId: Float!, $state_id: Float!) {
   updateUser(
-    data: {id: $id, user: {username: $username, password: $password, name: $name, last_name: $last_name, storeId: $storeId, roleId: $roleId, stateId: $stateId}}
+    data: {id: $id, user: {username: $username, password: $password, name: $name, last_name: $last_name, storeId: $storeId, roleId: $roleId, state_id: $state_id}}
   ) {
     data {
       id
@@ -830,7 +862,7 @@ export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, U
  *      last_name: // value for 'last_name'
  *      storeId: // value for 'storeId'
  *      roleId: // value for 'roleId'
- *      stateId: // value for 'stateId'
+ *      state_id: // value for 'state_id'
  *   },
  * });
  */

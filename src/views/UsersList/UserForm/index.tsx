@@ -32,7 +32,7 @@ interface FormData {
   last_name: string;
   password: string;
   roleId: number;
-  stateId: number;
+  state_id: number;
   storeId: number;
 }
 
@@ -172,7 +172,7 @@ export const UserForm: React.FC<UserFormProps> = ({
         <Grid item xs={12}>
           <Controller
             control={control}
-            name="stateId"
+            name="state_id"
             defaultValue={user ? user.state.id : 1}
             render={({ value, onChange }) => (
               <FormControl component="fieldset" fullWidth>

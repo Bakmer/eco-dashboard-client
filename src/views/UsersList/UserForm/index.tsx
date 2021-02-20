@@ -31,9 +31,9 @@ interface FormData {
   name: string;
   last_name: string;
   password: string;
-  roleId: number;
+  role_id: number;
   state_id: number;
-  storeId: number;
+  store_id: number;
 }
 
 export const UserForm: React.FC<UserFormProps> = ({
@@ -128,7 +128,7 @@ export const UserForm: React.FC<UserFormProps> = ({
         <Grid item xs={12}>
           <Controller
             control={control}
-            name="storeId"
+            name="store_id"
             defaultValue={user ? user.store.id : ""}
             render={({ value, onChange }) => (
               <Select
@@ -136,8 +136,8 @@ export const UserForm: React.FC<UserFormProps> = ({
                 isLoading={storesLoading}
                 value={value}
                 onChange={onChange}
-                error={!!errors.storeId}
-                helperText={errors.storeId?.message}
+                error={!!errors.store_id}
+                helperText={errors.store_id?.message}
                 options={stores?.listStores.data!.map((store) => ({
                   value: store.id,
                   label: store.name,
@@ -150,7 +150,7 @@ export const UserForm: React.FC<UserFormProps> = ({
         <Grid item xs={12}>
           <Controller
             control={control}
-            name="roleId"
+            name="role_id"
             defaultValue={user ? user.role.id : ""}
             render={({ value, onChange }) => (
               <Select
@@ -158,8 +158,8 @@ export const UserForm: React.FC<UserFormProps> = ({
                 isLoading={rolesLoading}
                 value={value}
                 onChange={onChange}
-                error={!!errors.roleId}
-                helperText={errors.roleId?.message}
+                error={!!errors.role_id}
+                helperText={errors.role_id?.message}
                 options={roles?.listRoles.data!.map((role) => ({
                   value: role.id,
                   label: role.name,

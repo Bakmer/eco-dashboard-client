@@ -3,8 +3,8 @@ mutation CreateUser(
   $password: String!
   $name: String!
   $last_name: String!
-  $storeId: Float!
-  $roleId: Float!
+  $store_id: Float!
+  $role_id: Float!
   $state_id: Float!
 ) {
   createUser(
@@ -13,8 +13,8 @@ mutation CreateUser(
       password: $password
       name: $name
       last_name: $last_name
-      storeId: $storeId
-      roleId: $roleId
+      store_id: $store_id
+      role_id: $role_id
       state_id: $state_id
     }
   ) {

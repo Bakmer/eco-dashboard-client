@@ -16,16 +16,16 @@ const last_name = {
   last_name: yup.string().trim().min(3, "Mín. 3 caracteres"),
 };
 
-const roleId = {
-  roleId: yup.number().typeError("Requerido").required("Requerido"),
+const role_id = {
+  role_id: yup.number().typeError("Requerido").required("Requerido"),
 };
 
 const state_id = {
   state_id: yup.number().typeError("Requerido").required("Requerido"),
 };
 
-const storeId = {
-  storeId: yup.number().typeError("Requerido").required("Requerido"),
+const store_id = {
+  store_id: yup.number().typeError("Requerido").required("Requerido"),
 };
 
 export const LOGIN_SCHEMA = yup.object().shape({
@@ -38,7 +38,7 @@ export const USER_SCHEMA = yup.object().shape({
   ...name,
   ...last_name,
   ...password,
-  ...roleId,
+  ...role_id,
   ...state_id,
-  ...storeId,
+  ...store_id,
 });

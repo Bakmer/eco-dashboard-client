@@ -41,15 +41,15 @@ export type User = {
   name: Scalars['String'];
   last_name: Scalars['String'];
   password: Scalars['String'];
-  storeId: Scalars['Float'];
-  roleId: Scalars['Float'];
+  store_id: Scalars['Float'];
+  role_id: Scalars['Float'];
   state_id: Scalars['Float'];
   store: Store;
   role: Role;
   state: State;
   clients: Array<Client>;
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  created_at: Scalars['String'];
+  updated_at: Scalars['String'];
 };
 
 export type Store = {
@@ -58,8 +58,8 @@ export type Store = {
   name: Scalars['String'];
   users: Array<User>;
   clients: Array<Client>;
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  created_at: Scalars['String'];
+  updated_at: Scalars['String'];
 };
 
 export type Client = {
@@ -78,22 +78,23 @@ export type Client = {
   area_code_3?: Maybe<Scalars['String']>;
   phone_3?: Maybe<Scalars['String']>;
   memo: Scalars['String'];
-  storeId: Scalars['Float'];
-  userId: Scalars['Float'];
+  store_id: Scalars['Float'];
+  state_id: Scalars['Float'];
+  user_id: Scalars['Float'];
   store: Store;
   state: State;
   user: User;
   addresses: Array<ClientAddress>;
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  created_at: Scalars['String'];
+  updated_at: Scalars['String'];
 };
 
 export type State = {
   __typename?: 'State';
   id: Scalars['Float'];
   name: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  created_at: Scalars['String'];
+  updated_at: Scalars['String'];
 };
 
 export type ClientAddress = {
@@ -111,12 +112,12 @@ export type ClientAddress = {
   phone_1: Scalars['String'];
   area_code_2?: Maybe<Scalars['String']>;
   phone_2?: Maybe<Scalars['String']>;
-  clientId: Scalars['Float'];
-  shippingMethodId: Scalars['Float'];
+  client_id: Scalars['Float'];
+  shipping_method_id: Scalars['Float'];
   client: Client;
   shipping_method: ShippingMethod;
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  created_at: Scalars['String'];
+  updated_at: Scalars['String'];
 };
 
 export type ShippingMethod = {
@@ -124,16 +125,16 @@ export type ShippingMethod = {
   id: Scalars['Float'];
   name: Scalars['String'];
   addresses: Array<ClientAddress>;
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  created_at: Scalars['String'];
+  updated_at: Scalars['String'];
 };
 
 export type Role = {
   __typename?: 'Role';
   id: Scalars['Float'];
   name: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  created_at: Scalars['String'];
+  updated_at: Scalars['String'];
 };
 
 export type PaginatedUsersResponse = {
@@ -238,8 +239,8 @@ export type CreateUserFields = {
   last_name: Scalars['String'];
   username: Scalars['String'];
   password: Scalars['String'];
-  storeId: Scalars['Float'];
-  roleId: Scalars['Float'];
+  store_id: Scalars['Float'];
+  role_id: Scalars['Float'];
   state_id: Scalars['Float'];
 };
 
@@ -319,7 +320,7 @@ export type CreateFields = {
   address_2?: Maybe<Scalars['String']>;
   address_3?: Maybe<Scalars['String']>;
   memo: Scalars['String'];
-  storeId: Scalars['Float'];
+  store_id: Scalars['Float'];
   state_id: Scalars['Float'];
 };
 
@@ -390,8 +391,8 @@ export type CreateUserMutationVariables = Exact<{
   password: Scalars['String'];
   name: Scalars['String'];
   last_name: Scalars['String'];
-  storeId: Scalars['Float'];
-  roleId: Scalars['Float'];
+  store_id: Scalars['Float'];
+  role_id: Scalars['Float'];
   state_id: Scalars['Float'];
 }>;
 
@@ -453,8 +454,8 @@ export type UpdateUserMutationVariables = Exact<{
   password: Scalars['String'];
   name: Scalars['String'];
   last_name: Scalars['String'];
-  storeId: Scalars['Float'];
-  roleId: Scalars['Float'];
+  store_id: Scalars['Float'];
+  role_id: Scalars['Float'];
   state_id: Scalars['Float'];
 }>;
 
@@ -686,9 +687,9 @@ export type ChangeUserStateMutationHookResult = ReturnType<typeof useChangeUserS
 export type ChangeUserStateMutationResult = Apollo.MutationResult<ChangeUserStateMutation>;
 export type ChangeUserStateMutationOptions = Apollo.BaseMutationOptions<ChangeUserStateMutation, ChangeUserStateMutationVariables>;
 export const CreateUserDocument = gql`
-    mutation CreateUser($username: String!, $password: String!, $name: String!, $last_name: String!, $storeId: Float!, $roleId: Float!, $state_id: Float!) {
+    mutation CreateUser($username: String!, $password: String!, $name: String!, $last_name: String!, $store_id: Float!, $role_id: Float!, $state_id: Float!) {
   createUser(
-    data: {username: $username, password: $password, name: $name, last_name: $last_name, storeId: $storeId, roleId: $roleId, state_id: $state_id}
+    data: {username: $username, password: $password, name: $name, last_name: $last_name, store_id: $store_id, role_id: $role_id, state_id: $state_id}
   ) {
     data {
       username
@@ -718,8 +719,8 @@ export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, C
  *      password: // value for 'password'
  *      name: // value for 'name'
  *      last_name: // value for 'last_name'
- *      storeId: // value for 'storeId'
- *      roleId: // value for 'roleId'
+ *      store_id: // value for 'store_id'
+ *      role_id: // value for 'role_id'
  *      state_id: // value for 'state_id'
  *   },
  * });
@@ -813,9 +814,9 @@ export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const UpdateUserDocument = gql`
-    mutation UpdateUser($id: Float!, $username: String!, $password: String!, $name: String!, $last_name: String!, $storeId: Float!, $roleId: Float!, $state_id: Float!) {
+    mutation UpdateUser($id: Float!, $username: String!, $password: String!, $name: String!, $last_name: String!, $store_id: Float!, $role_id: Float!, $state_id: Float!) {
   updateUser(
-    data: {id: $id, user: {username: $username, password: $password, name: $name, last_name: $last_name, storeId: $storeId, roleId: $roleId, state_id: $state_id}}
+    data: {id: $id, user: {username: $username, password: $password, name: $name, last_name: $last_name, store_id: $store_id, role_id: $role_id, state_id: $state_id}}
   ) {
     data {
       id
@@ -860,8 +861,8 @@ export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, U
  *      password: // value for 'password'
  *      name: // value for 'name'
  *      last_name: // value for 'last_name'
- *      storeId: // value for 'storeId'
- *      roleId: // value for 'roleId'
+ *      store_id: // value for 'store_id'
+ *      role_id: // value for 'role_id'
  *      state_id: // value for 'state_id'
  *   },
  * });

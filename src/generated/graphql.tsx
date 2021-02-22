@@ -320,8 +320,9 @@ export type CreateFields = {
   address_2?: Maybe<Scalars['String']>;
   address_3?: Maybe<Scalars['String']>;
   memo: Scalars['String'];
-  store_id: Scalars['Float'];
+  store_id?: Maybe<Scalars['Float']>;
   state_id: Scalars['Float'];
+  user_id?: Maybe<Scalars['Float']>;
 };
 
 export type ListRolesQueryVariables = Exact<{ [key: string]: never; }>;

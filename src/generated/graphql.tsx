@@ -21,10 +21,22 @@ export type Query = {
   listStores: ListStoresResponse;
   listRoles: ListRolesResponse;
   listStates: ListStatesResponse;
+  getClient: ClientResponse;
+  listClients: PaginatedClientsResponse;
 };
 
 
 export type QueryListUsersArgs = {
+  vars?: Maybe<PaginationFields>;
+};
+
+
+export type QueryGetClientArgs = {
+  vars: GetUserFields;
+};
+
+
+export type QueryListClientsArgs = {
   vars?: Maybe<PaginationFields>;
 };
 
@@ -67,24 +79,20 @@ export type Client = {
   id: Scalars['Float'];
   name: Scalars['String'];
   last_name: Scalars['String'];
-  razon_social: Scalars['String'];
-  cuit: Scalars['String'];
-  iva: Scalars['String'];
   email: Scalars['String'];
-  area_code_1: Scalars['String'];
-  phone_1: Scalars['String'];
-  area_code_2?: Maybe<Scalars['String']>;
-  phone_2?: Maybe<Scalars['String']>;
-  area_code_3?: Maybe<Scalars['String']>;
-  phone_3?: Maybe<Scalars['String']>;
   memo: Scalars['String'];
   store_id: Scalars['Float'];
   state_id: Scalars['Float'];
+  discount_id: Scalars['Float'];
   user_id: Scalars['Float'];
   store: Store;
   state: State;
+  discount: Discount;
   user: User;
-  addresses: Array<ClientAddress>;
+  phones: Array<Phone>;
+  shippings: Array<Shipping>;
+  billings: Array<Billing>;
+  addresses: Array<Address>;
   created_at: Scalars['String'];
   updated_at: Scalars['String'];
 };
@@ -97,34 +105,96 @@ export type State = {
   updated_at: Scalars['String'];
 };
 
-export type ClientAddress = {
-  __typename?: 'ClientAddress';
+export type Discount = {
+  __typename?: 'Discount';
+  id: Scalars['Float'];
+  percentage: Scalars['Float'];
+  clients: Array<Client>;
+  created_at: Scalars['String'];
+  updated_at: Scalars['String'];
+};
+
+export type Phone = {
+  __typename?: 'Phone';
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  area_code: Scalars['String'];
+  phone: Scalars['String'];
+  client_id: Scalars['Float'];
+  client: Client;
+  created_at: Scalars['String'];
+  updated_at: Scalars['String'];
+};
+
+export type Shipping = {
+  __typename?: 'Shipping';
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  street: Scalars['String'];
+  street_number: Scalars['Float'];
+  memo: Scalars['String'];
+  cuit: Scalars['String'];
+  province: Scalars['String'];
+  location: Scalars['String'];
+  postal_code: Scalars['String'];
+  client_id: Scalars['Float'];
+  transport_id: Scalars['Float'];
+  client: Client;
+  transport: Transport;
+  created_at: Scalars['String'];
+  updated_at: Scalars['String'];
+};
+
+export type Transport = {
+  __typename?: 'Transport';
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  shippings: Array<Shipping>;
+  created_at: Scalars['String'];
+  updated_at: Scalars['String'];
+};
+
+export type Billing = {
+  __typename?: 'Billing';
   id: Scalars['Float'];
   name: Scalars['String'];
   last_name: Scalars['String'];
   street: Scalars['String'];
   street_number: Scalars['Float'];
+  memo: Scalars['String'];
   cuit: Scalars['String'];
   province: Scalars['String'];
   location: Scalars['String'];
   postal_code: Scalars['String'];
-  area_code_1: Scalars['String'];
-  phone_1: Scalars['String'];
-  area_code_2?: Maybe<Scalars['String']>;
-  phone_2?: Maybe<Scalars['String']>;
   client_id: Scalars['Float'];
-  shipping_method_id: Scalars['Float'];
+  iva_id: Scalars['Float'];
   client: Client;
-  shipping_method: ShippingMethod;
+  iva: Iva;
   created_at: Scalars['String'];
   updated_at: Scalars['String'];
 };
 
-export type ShippingMethod = {
-  __typename?: 'ShippingMethod';
+export type Iva = {
+  __typename?: 'Iva';
   id: Scalars['Float'];
   name: Scalars['String'];
-  addresses: Array<ClientAddress>;
+  billings: Array<Billing>;
+  created_at: Scalars['String'];
+  updated_at: Scalars['String'];
+};
+
+export type Address = {
+  __typename?: 'Address';
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  street: Scalars['String'];
+  street_number: Scalars['Float'];
+  memo: Scalars['String'];
+  province: Scalars['String'];
+  location: Scalars['String'];
+  postal_code: Scalars['String'];
+  client_id: Scalars['Float'];
+  client: Client;
   created_at: Scalars['String'];
   updated_at: Scalars['String'];
 };
@@ -180,6 +250,23 @@ export type ListStatesResponse = {
   message?: Maybe<Scalars['String']>;
 };
 
+export type ClientResponse = {
+  __typename?: 'ClientResponse';
+  data?: Maybe<Client>;
+  message?: Maybe<Scalars['String']>;
+};
+
+export type GetUserFields = {
+  id: Scalars['Float'];
+};
+
+export type PaginatedClientsResponse = {
+  __typename?: 'PaginatedClientsResponse';
+  data?: Maybe<Array<Client>>;
+  message?: Maybe<Scalars['String']>;
+  filters?: Maybe<PaginationFilters>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createUser: UserResponse;
@@ -192,6 +279,7 @@ export type Mutation = {
   createRole: RoleResponse;
   createState: StateResponse;
   createClient: ClientResponse;
+  changeClientState: ChangeStateResponse;
 };
 
 
@@ -206,7 +294,7 @@ export type MutationLoginArgs = {
 
 
 export type MutationChangeUserStateArgs = {
-  data: ChangeUserStateFields;
+  data: ChangeStateFields;
 };
 
 
@@ -232,6 +320,11 @@ export type MutationCreateStateArgs = {
 
 export type MutationCreateClientArgs = {
   data: CreateFields;
+};
+
+
+export type MutationChangeClientStateArgs = {
+  data: ChangeStateFields;
 };
 
 export type CreateUserFields = {
@@ -261,7 +354,7 @@ export type StateFields = {
   name: Scalars['String'];
 };
 
-export type ChangeUserStateFields = {
+export type ChangeStateFields = {
   id: Scalars['Float'];
 };
 
@@ -300,30 +393,77 @@ export type CreateStateFields = {
   name: Scalars['String'];
 };
 
-export type ClientResponse = {
-  __typename?: 'ClientResponse';
-  data?: Maybe<Client>;
-  message?: Maybe<Scalars['String']>;
-};
-
 export type CreateFields = {
   name: Scalars['String'];
   last_name: Scalars['String'];
-  razon_social: Scalars['String'];
-  cuit: Scalars['String'];
-  iva: Scalars['String'];
   email: Scalars['String'];
-  phone_1: Scalars['String'];
-  phone_2?: Maybe<Scalars['String']>;
-  phone_3?: Maybe<Scalars['String']>;
-  address_1: Scalars['String'];
-  address_2?: Maybe<Scalars['String']>;
-  address_3?: Maybe<Scalars['String']>;
   memo: Scalars['String'];
   store_id?: Maybe<Scalars['Float']>;
   state_id: Scalars['Float'];
+  discount_id: Scalars['Float'];
   user_id?: Maybe<Scalars['Float']>;
 };
+
+export type ChangeClientStateMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type ChangeClientStateMutation = (
+  { __typename?: 'Mutation' }
+  & { changeClientState: (
+    { __typename?: 'ChangeStateResponse' }
+    & Pick<ChangeStateResponse, 'message'>
+    & { data?: Maybe<(
+      { __typename?: 'StateFields' }
+      & Pick<StateFields, 'id' | 'name'>
+    )> }
+  ) }
+);
+
+export type ListClientsQueryVariables = Exact<{
+  search?: Maybe<Scalars['String']>;
+  order_by?: Maybe<Scalars['String']>;
+  order_type?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['Float']>;
+  per_page?: Maybe<Scalars['Float']>;
+}>;
+
+
+export type ListClientsQuery = (
+  { __typename?: 'Query' }
+  & { listClients: (
+    { __typename?: 'PaginatedClientsResponse' }
+    & Pick<PaginatedClientsResponse, 'message'>
+    & { data?: Maybe<Array<(
+      { __typename?: 'Client' }
+      & Pick<Client, 'id' | 'name' | 'last_name' | 'email' | 'memo' | 'created_at'>
+      & { store: (
+        { __typename?: 'Store' }
+        & Pick<Store, 'id' | 'name'>
+      ), state: (
+        { __typename?: 'State' }
+        & Pick<State, 'id' | 'name'>
+      ), discount: (
+        { __typename?: 'Discount' }
+        & Pick<Discount, 'id' | 'percentage'>
+      ), phones: Array<(
+        { __typename?: 'Phone' }
+        & Pick<Phone, 'id' | 'name' | 'area_code' | 'phone'>
+      )>, shippings: Array<(
+        { __typename?: 'Shipping' }
+        & Pick<Shipping, 'id' | 'name' | 'street' | 'street_number' | 'cuit' | 'province' | 'location' | 'postal_code' | 'memo'>
+        & { transport: (
+          { __typename?: 'Transport' }
+          & Pick<Transport, 'id' | 'name'>
+        ) }
+      )> }
+    )>>, filters?: Maybe<(
+      { __typename?: 'PaginationFilters' }
+      & Pick<PaginationFilters, 'search' | 'page' | 'per_page' | 'order_by' | 'order_type' | 'count'>
+    )> }
+  ) }
+);
 
 export type ListRolesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -543,6 +683,130 @@ export type MeQuery = (
 );
 
 
+export const ChangeClientStateDocument = gql`
+    mutation ChangeClientState($id: Float!) {
+  changeClientState(data: {id: $id}) {
+    data {
+      id
+      name
+    }
+    message
+  }
+}
+    `;
+export type ChangeClientStateMutationFn = Apollo.MutationFunction<ChangeClientStateMutation, ChangeClientStateMutationVariables>;
+
+/**
+ * __useChangeClientStateMutation__
+ *
+ * To run a mutation, you first call `useChangeClientStateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeClientStateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeClientStateMutation, { data, loading, error }] = useChangeClientStateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useChangeClientStateMutation(baseOptions?: Apollo.MutationHookOptions<ChangeClientStateMutation, ChangeClientStateMutationVariables>) {
+        return Apollo.useMutation<ChangeClientStateMutation, ChangeClientStateMutationVariables>(ChangeClientStateDocument, baseOptions);
+      }
+export type ChangeClientStateMutationHookResult = ReturnType<typeof useChangeClientStateMutation>;
+export type ChangeClientStateMutationResult = Apollo.MutationResult<ChangeClientStateMutation>;
+export type ChangeClientStateMutationOptions = Apollo.BaseMutationOptions<ChangeClientStateMutation, ChangeClientStateMutationVariables>;
+export const ListClientsDocument = gql`
+    query ListClients($search: String, $order_by: String, $order_type: String, $page: Float, $per_page: Float) {
+  listClients(
+    vars: {search: $search, order_by: $order_by, order_type: $order_type, page: $page, per_page: $per_page}
+  ) {
+    data {
+      id
+      name
+      last_name
+      email
+      memo
+      store {
+        id
+        name
+      }
+      state {
+        id
+        name
+      }
+      discount {
+        id
+        percentage
+      }
+      phones {
+        id
+        name
+        area_code
+        phone
+      }
+      shippings {
+        id
+        name
+        street
+        street_number
+        cuit
+        province
+        location
+        postal_code
+        transport {
+          id
+          name
+        }
+        memo
+      }
+      created_at
+    }
+    filters {
+      search
+      page
+      per_page
+      order_by
+      order_type
+      count
+    }
+    message
+  }
+}
+    `;
+
+/**
+ * __useListClientsQuery__
+ *
+ * To run a query within a React component, call `useListClientsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListClientsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListClientsQuery({
+ *   variables: {
+ *      search: // value for 'search'
+ *      order_by: // value for 'order_by'
+ *      order_type: // value for 'order_type'
+ *      page: // value for 'page'
+ *      per_page: // value for 'per_page'
+ *   },
+ * });
+ */
+export function useListClientsQuery(baseOptions?: Apollo.QueryHookOptions<ListClientsQuery, ListClientsQueryVariables>) {
+        return Apollo.useQuery<ListClientsQuery, ListClientsQueryVariables>(ListClientsDocument, baseOptions);
+      }
+export function useListClientsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListClientsQuery, ListClientsQueryVariables>) {
+          return Apollo.useLazyQuery<ListClientsQuery, ListClientsQueryVariables>(ListClientsDocument, baseOptions);
+        }
+export type ListClientsQueryHookResult = ReturnType<typeof useListClientsQuery>;
+export type ListClientsLazyQueryHookResult = ReturnType<typeof useListClientsLazyQuery>;
+export type ListClientsQueryResult = Apollo.QueryResult<ListClientsQuery, ListClientsQueryVariables>;
 export const ListRolesDocument = gql`
     query ListRoles {
   listRoles {

@@ -16,3 +16,12 @@ export const responseErrorHandler = (errors: any, toast: any) => {
     }
   }
 };
+
+export const formatDate = (date: string): string => {
+  const newDate = new Date(date);
+  const day = String(newDate.getDate()).padStart(2, "0");
+  const month = String(newDate.getMonth() + 1).padStart(2, "0"); //January is 0
+  const year = newDate.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};

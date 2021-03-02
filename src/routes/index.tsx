@@ -10,6 +10,7 @@ import { isLoggedInVar } from "../config/cache";
 import { Login } from "../views/Login";
 import { Orders } from "./Orders";
 import { Users } from "./Users";
+import { Clients } from "./Clients";
 
 const Router: React.FC<{}> = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -50,6 +51,7 @@ const Router: React.FC<{}> = () => {
       <Layout>
         <Orders />
         <Users />
+        <Clients />
       </Layout>
     </Switch>
   );

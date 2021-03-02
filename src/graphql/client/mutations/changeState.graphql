@@ -1,0 +1,9 @@
+mutation ChangeClientState($id: Float!) {
+  changeClientState(data: { id: $id }) {
+    data {
+      id
+      name
+    }
+    message
+  }
+}

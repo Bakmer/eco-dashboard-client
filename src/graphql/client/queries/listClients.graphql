@@ -1,0 +1,68 @@
+query ListClients(
+  $search: String
+  $order_by: String
+  $order_type: String
+  $page: Float
+  $per_page: Float
+) {
+  listClients(
+    vars: {
+      search: $search
+      order_by: $order_by
+      order_type: $order_type
+      page: $page
+      per_page: $per_page
+    }
+  ) {
+    data {
+      id
+      name
+      last_name
+      email
+      memo
+      store {
+        id
+        name
+      }
+      state {
+        id
+        name
+      }
+      discount {
+        id
+        percentage
+      }
+      phones {
+        id
+        name
+        area_code
+        phone
+      }
+      shippings {
+        id
+        name
+        street
+        street_number
+        cuit
+        province
+        location
+        postal_code
+        transport {
+          id
+          name
+        }
+        memo
+      }
+      created_at
+    }
+    filters {
+      search
+      page
+      per_page
+      order_by
+      order_type
+      count
+    }
+    message
+  }
+}

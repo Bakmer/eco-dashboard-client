@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
 import TablePagination from "@material-ui/core/TablePagination";
@@ -6,32 +6,29 @@ import Box from "@material-ui/core/Box";
 import { Backdrop } from "../../../components/Backdrop";
 import { SearchBar } from "../../../components/SearchBar";
 import { EnhancedTableHead } from "./EnhancedTableHead";
-import { UserForm } from "../UserForm";
 import { Row } from "./Row";
-import { Modal } from "../../../components/Modal";
 import { Button } from "../../../components/Button";
 import { Root, StyledPaper, StyledTable, Title } from "./styles";
-import { useListUsersQuery } from "../../../generated/graphql";
+import { useListClientsQuery } from "../../../generated/graphql";
 
 interface Data {
-  id: number;
-  username: string;
+  created_at: string;
   name: string;
   last_name: string;
+  email: string;
+  discount: number;
   store: string;
-  role: string;
   state: string;
+  memo: string;
 }
 
 const Desktop: React.FC<{}> = () => {
-  const { data, loading, refetch } = useListUsersQuery({
+  const { data, loading, refetch } = useListClientsQuery({
     fetchPolicy: "no-cache",
   });
-  const [showModal, setShowModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState({});
 
-  const orderBy = data?.listUsers.filters?.order_by;
-  const orderType = data?.listUsers.filters?.order_type?.toLowerCase();
+  const orderBy = data?.listClients.filters?.order_by;
+  const orderType = data?.listClients.filters?.order_type?.toLowerCase();
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -39,7 +36,7 @@ const Desktop: React.FC<{}> = () => {
   ) => {
     const isAsc = orderBy === property && orderType === "asc";
     refetch({
-      ...data?.listUsers.filters,
+      ...data?.listClients.filters,
       order_by: property,
       order_type: isAsc ? "DESC" : "ASC",
     });
@@ -47,7 +44,7 @@ const Desktop: React.FC<{}> = () => {
 
   const handleChangePage = (event: unknown, newPage: number) => {
     refetch({
-      ...data?.listUsers.filters,
+      ...data?.listClients.filters,
       page: newPage,
     });
   };
@@ -56,7 +53,7 @@ const Desktop: React.FC<{}> = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     refetch({
-      ...data?.listUsers.filters,
+      ...data?.listClients.filters,
       per_page: parseInt(event.target.value, 10),
       page: 0,
     });
@@ -64,14 +61,9 @@ const Desktop: React.FC<{}> = () => {
 
   const handleSearch = (text: string) => {
     refetch({
-      ...data?.listUsers.filters,
+      ...data?.listClients.filters,
       search: text,
     });
-  };
-
-  const openModal = (user: object) => {
-    setSelectedUser(user);
-    setShowModal(true);
   };
 
   if (loading) {
@@ -82,12 +74,16 @@ const Desktop: React.FC<{}> = () => {
     <Root>
       <StyledPaper>
         <Title variant="h6" id="tableTitle" component="div">
-          Listado de usuarios
+          Listado de clientes
         </Title>
         <Box px={2} pt={3} pb={2} display="flex" justifyContent="space-between">
-          <SearchBar placeholder="Buscar usuario" search={handleSearch} />
-          <Button size="large" type="button" onClick={() => setShowModal(true)}>
-            Crear usuario
+          <SearchBar placeholder="Buscar cliente" search={handleSearch} />
+          <Button
+            size="large"
+            type="button"
+            onClick={() => console.log("Crear cliente")}
+          >
+            Crear cliente
           </Button>
         </Box>
         <TableContainer>
@@ -98,18 +94,18 @@ const Desktop: React.FC<{}> = () => {
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {data?.listUsers?.data!.map((user) => (
-                <Row data={user} openModal={openModal} key={user.id} />
+              {data?.listClients?.data!.map((client) => (
+                <Row data={client} key={client.id} />
               ))}
             </TableBody>
           </StyledTable>
         </TableContainer>
         <TablePagination
           component="div"
-          count={data?.listUsers.filters?.count!}
+          count={data?.listClients.filters?.count!}
           rowsPerPageOptions={[30, 60, 100]}
-          rowsPerPage={data?.listUsers.filters?.per_page!}
-          page={data?.listUsers.filters?.page!}
+          rowsPerPage={data?.listClients.filters?.per_page!}
+          page={data?.listClients.filters?.page!}
           labelRowsPerPage="Filas por página"
           labelDisplayedRows={({ count, from, to }) =>
             `${from}-${to} de ${count}`
@@ -118,14 +114,6 @@ const Desktop: React.FC<{}> = () => {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </StyledPaper>
-      <Modal open={showModal} onClose={() => setShowModal(false)}>
-        <UserForm
-          selectedUser={selectedUser}
-          setSelectedUser={setSelectedUser}
-          onClose={() => setShowModal(false)}
-          fetchUsers={refetch}
-        />
-      </Modal>
     </Root>
   );
 };

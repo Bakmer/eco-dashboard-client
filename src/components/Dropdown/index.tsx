@@ -29,7 +29,12 @@ export const Dropdown: React.FC<DropdownProps> = ({ items }) => {
 
   return (
     <div>
-      <IconButton aria-label="more" aria-haspopup="true" onClick={handleClick}>
+      <IconButton
+        aria-label="more"
+        aria-haspopup="true"
+        size="small"
+        onClick={handleClick}
+      >
         <MoreVertIcon />
       </IconButton>
       <Menu

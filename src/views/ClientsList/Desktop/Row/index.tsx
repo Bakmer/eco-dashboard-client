@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
 import Switch from "@material-ui/core/Switch";
 import { Dropdown } from "../../../../components/Dropdown";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import { CollapsibleTable } from "../CollapsibleTable";
 import { useChangeClientStateMutation } from "../../../../generated/graphql";
 import { formatDate } from "../../../../utils";
+import { StyledTableRow } from "./styles";
 
 interface Phone {
   id: number;
@@ -58,6 +62,7 @@ interface RowProps {
 
 export const Row: React.FC<RowProps> = ({ data }) => {
   const [client, setUser] = useState(data);
+  const [open, setOpen] = React.useState(false);
   const [toggleState] = useChangeClientStateMutation({
     onCompleted: (res) =>
       setUser({ ...client, state: res.changeClientState.data! }),
@@ -85,27 +90,41 @@ export const Row: React.FC<RowProps> = ({ data }) => {
   ];
 
   return (
-    <TableRow key={client.name}>
-      <TableCell component="th" scope="row" align="center">
-        {formatDate(client.created_at)}
-      </TableCell>
-      <TableCell align="center">{client.name}</TableCell>
-      <TableCell align="center">{client.last_name}</TableCell>
-      <TableCell align="center">{client.email ? client.email : "-"}</TableCell>
-      <TableCell align="center">{client.discount.percentage}%</TableCell>
-      <TableCell align="center">{client.store.name}</TableCell>
-      <TableCell align="center">
-        <Switch
-          checked={client.state.id === 1 ? true : false}
-          color="primary"
-          onChange={handleChange}
-          name="state"
-        />
-      </TableCell>
-      <TableCell align="center">{client.memo ? client.memo : "-"}</TableCell>
-      <TableCell align="center">
-        <Dropdown items={menu} />
-      </TableCell>
-    </TableRow>
+    <React.Fragment>
+      <StyledTableRow>
+        <TableCell align="center">
+          <IconButton
+            aria-label="expand row"
+            size="small"
+            onClick={() => setOpen(!open)}
+          >
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        </TableCell>
+        <TableCell component="th" scope="row" align="center">
+          {formatDate(client.created_at)}
+        </TableCell>
+        <TableCell align="center">{client.name}</TableCell>
+        <TableCell align="center">{client.last_name}</TableCell>
+        <TableCell align="center">
+          {client.email ? client.email : "-"}
+        </TableCell>
+        <TableCell align="center">{client.discount.percentage}%</TableCell>
+        <TableCell align="center">{client.store.name}</TableCell>
+        <TableCell align="center">
+          <Switch
+            checked={client.state.id === 1 ? true : false}
+            color="primary"
+            onChange={handleChange}
+            name="state"
+          />
+        </TableCell>
+        <TableCell align="center">{client.memo ? client.memo : "-"}</TableCell>
+        <TableCell align="center">
+          <Dropdown items={menu} />
+        </TableCell>
+      </StyledTableRow>
+      <CollapsibleTable open={open} />
+    </React.Fragment>
   );
 };

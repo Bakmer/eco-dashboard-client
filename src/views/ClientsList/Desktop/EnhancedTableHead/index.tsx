@@ -55,6 +55,7 @@ export const EnhancedTableHead: React.FC<EnhancedTableProps> = (props) => {
   return (
     <TableHead>
       <TableRow>
+        <StyledTableCell />
         {headCells.map((headCell) => (
           <StyledTableCell
             key={headCell.value}

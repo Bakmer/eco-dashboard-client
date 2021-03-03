@@ -50,7 +50,7 @@ export const Row: React.FC<RowProps> = ({ data, openModal }) => {
   ];
 
   return (
-    <TableRow key={user.name}>
+    <TableRow>
       <TableCell component="th" scope="row" align="center">
         {user.id}
       </TableCell>

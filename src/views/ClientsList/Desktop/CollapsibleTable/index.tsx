@@ -19,6 +19,39 @@ interface CollapsibleTableProps {
   };
 }
 
+const PhoneRow: React.FC<{ phone?: Phone }> = ({ phone }) => {
+  return (
+    <TableRow>
+      <TableCell align="center">
+        {phone ? `(${phone.area_code}) - ${phone.phone}` : "-"}
+      </TableCell>
+      <TableCell align="center">{phone ? phone.name : "-"}</TableCell>
+    </TableRow>
+  );
+};
+
+const ShippingRow: React.FC<{ shipping?: Shipping }> = ({ shipping }) => {
+  return (
+    <TableRow>
+      <TableCell align="center">{shipping ? shipping.name : "-"}</TableCell>
+      <TableCell align="center">{shipping ? shipping.street : "-"}</TableCell>
+      <TableCell align="center">
+        {shipping ? shipping.street_number : "-"}
+      </TableCell>
+      <TableCell align="center">
+        {shipping ? shipping.postal_code : "-"}
+      </TableCell>
+      <TableCell align="center">{shipping ? shipping.cuit : "-"}</TableCell>
+      <TableCell align="center">{shipping ? shipping.province : "-"}</TableCell>
+      <TableCell align="center">{shipping ? shipping.location : "-"}</TableCell>
+      <StyledTableCell align="center">
+        {shipping ? shipping.transport.name : "-"}
+      </StyledTableCell>
+      <TableCell align="center">{shipping ? shipping.memo : "-"}</TableCell>
+    </TableRow>
+  );
+};
+
 export const CollapsibleTable: React.FC<CollapsibleTableProps> = ({
   open,
   data,
@@ -42,18 +75,10 @@ export const CollapsibleTable: React.FC<CollapsibleTableProps> = ({
                 <TableBody>
                   {data.phones.length ? (
                     data.phones.map((phone) => (
-                      <TableRow key={phone.id}>
-                        <TableCell align="center">
-                          ({phone.area_code}) - {phone.phone}
-                        </TableCell>
-                        <TableCell align="center">{phone.name}</TableCell>
-                      </TableRow>
+                      <PhoneRow phone={phone} key={phone.id} />
                     ))
                   ) : (
-                    <TableRow>
-                      <TableCell align="center">-</TableCell>
-                      <TableCell align="center">-</TableCell>
-                    </TableRow>
+                    <PhoneRow />
                   )}
                 </TableBody>
               </Table>
@@ -88,36 +113,10 @@ export const CollapsibleTable: React.FC<CollapsibleTableProps> = ({
               <TableBody>
                 {data.shippings.length ? (
                   data.shippings.map((shipping) => (
-                    <TableRow key={shipping.id}>
-                      <TableCell align="center">{shipping.name}</TableCell>
-                      <TableCell align="center">{shipping.street}</TableCell>
-                      <TableCell align="center">
-                        {shipping.street_number}
-                      </TableCell>
-                      <TableCell align="center">
-                        {shipping.postal_code}
-                      </TableCell>
-                      <TableCell align="center">{shipping.cuit}</TableCell>
-                      <TableCell align="center">{shipping.province}</TableCell>
-                      <TableCell align="center">{shipping.location}</TableCell>
-                      <StyledTableCell align="center">
-                        {shipping.transport.name}
-                      </StyledTableCell>
-                      <TableCell align="center">{shipping.memo}</TableCell>
-                    </TableRow>
+                    <ShippingRow shipping={shipping} key={shipping.id} />
                   ))
                 ) : (
-                  <TableRow>
-                    <TableCell align="center">-</TableCell>
-                    <TableCell align="center">-</TableCell>
-                    <TableCell align="center">-</TableCell>
-                    <TableCell align="center">-</TableCell>
-                    <TableCell align="center">-</TableCell>
-                    <TableCell align="center">-</TableCell>
-                    <TableCell align="center">-</TableCell>
-                    <TableCell align="center">-</TableCell>
-                    <TableCell align="center">-</TableCell>
-                  </TableRow>
+                  <ShippingRow />
                 )}
               </TableBody>
             </Table>

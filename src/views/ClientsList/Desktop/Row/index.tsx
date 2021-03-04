@@ -12,14 +12,14 @@ import { useChangeClientStateMutation } from "../../../../generated/graphql";
 import { formatDate } from "../../../../utils";
 import { StyledTableRow } from "./styles";
 
-interface Phone {
+export interface Phone {
   id: number;
   name: string;
   area_code: string;
   phone: string;
 }
 
-interface Shipping {
+export interface Shipping {
   id: number;
   name: string;
   street: string;
@@ -67,6 +67,11 @@ export const Row: React.FC<RowProps> = ({ data }) => {
     onCompleted: (res) =>
       setUser({ ...client, state: res.changeClientState.data! }),
   });
+  const collapsibleData = {
+    memo: data.memo,
+    phones: data.phones,
+    shippings: data.shippings,
+  };
 
   const handleChange = () => {
     toggleState({ variables: { id: client.id } });
@@ -119,12 +124,11 @@ export const Row: React.FC<RowProps> = ({ data }) => {
             name="state"
           />
         </TableCell>
-        <TableCell align="center">{client.memo ? client.memo : "-"}</TableCell>
         <TableCell align="center">
           <Dropdown items={menu} />
         </TableCell>
       </StyledTableRow>
-      <CollapsibleTable open={open} />
+      <CollapsibleTable open={open} data={collapsibleData} />
     </React.Fragment>
   );
 };

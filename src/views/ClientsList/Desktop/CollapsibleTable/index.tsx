@@ -7,60 +7,118 @@ import Typography from "@material-ui/core/Typography";
 import TableBody from "@material-ui/core/TableBody";
 import TableHead from "@material-ui/core/TableHead";
 import TableCell from "@material-ui/core/TableCell";
+import { Phone, Shipping } from "../Row";
+import { MemoContainer, StyledTableCell } from "./styles";
 
 interface CollapsibleTableProps {
   open: boolean;
+  data: {
+    memo: string;
+    phones: Phone[];
+    shippings: Shipping[];
+  };
 }
 
-export const CollapsibleTable: React.FC<CollapsibleTableProps> = ({ open }) => {
+export const CollapsibleTable: React.FC<CollapsibleTableProps> = ({
+  open,
+  data,
+}) => {
   return (
     <TableRow>
       <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
         <Collapse in={open} timeout="auto" unmountOnExit>
-          <Box mx={1} mb={1} width="30%">
-            <Typography variant="h6" gutterBottom component="div">
-              Datos de envío
+          <Box display="flex" mx={1} mb={2}>
+            <Box mr={2} width="35%">
+              <Typography variant="h6" component="div">
+                Teléfonos
+              </Typography>
+              <Table size="small" aria-label="purchases">
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="center">Teléfono</TableCell>
+                    <TableCell align="center">Descripción</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {data.phones.length ? (
+                    data.phones.map((phone) => (
+                      <TableRow key={phone.id}>
+                        <TableCell align="center">
+                          ({phone.area_code}) - {phone.phone}
+                        </TableCell>
+                        <TableCell align="center">{phone.name}</TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell align="center">-</TableCell>
+                      <TableCell align="center">-</TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </Box>
+            <Box ml={2} pl={1} width="60%">
+              <Typography variant="h6" component="div">
+                Memo
+              </Typography>
+              <Box fontWeight={500} fontSize="14px">
+                <MemoContainer>{data.memo}</MemoContainer>
+              </Box>
+            </Box>
+          </Box>
+          <Box mx={1} mt={1} mb={4}>
+            <Typography variant="h6" component="div">
+              Datos de envio
             </Typography>
             <Table size="small" aria-label="purchases">
               <TableHead>
                 <TableRow>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Customer</TableCell>
-                  <TableCell align="right">Amount</TableCell>
-                  <TableCell align="right">Total</TableCell>
+                  <TableCell align="center">Recibe</TableCell>
+                  <TableCell align="center">Calle</TableCell>
+                  <TableCell align="center">Altura</TableCell>
+                  <TableCell align="center">C.P.</TableCell>
+                  <TableCell align="center">CUIT</TableCell>
+                  <TableCell align="center">Provincia</TableCell>
+                  <TableCell align="center">Localidad</TableCell>
+                  <TableCell align="center">Transporte</TableCell>
+                  <TableCell align="center">Memo</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow>
-                  <TableCell component="th" scope="row">
-                    uno
-                  </TableCell>
-                  <TableCell>dos</TableCell>
-                  <TableCell align="right">tres</TableCell>
-                  <TableCell align="right">cuatro</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Box>
-          <Box mx={1} mt={1} mb={2}>
-            <Table size="small" aria-label="purchases">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Customer</TableCell>
-                  <TableCell align="right">Amount</TableCell>
-                  <TableCell align="right">Total price ($)</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell component="th" scope="row">
-                    uno
-                  </TableCell>
-                  <TableCell>dos</TableCell>
-                  <TableCell align="right">tres</TableCell>
-                  <TableCell align="right">cuatro</TableCell>
-                </TableRow>
+                {data.shippings.length ? (
+                  data.shippings.map((shipping) => (
+                    <TableRow key={shipping.id}>
+                      <TableCell align="center">{shipping.name}</TableCell>
+                      <TableCell align="center">{shipping.street}</TableCell>
+                      <TableCell align="center">
+                        {shipping.street_number}
+                      </TableCell>
+                      <TableCell align="center">
+                        {shipping.postal_code}
+                      </TableCell>
+                      <TableCell align="center">{shipping.cuit}</TableCell>
+                      <TableCell align="center">{shipping.province}</TableCell>
+                      <TableCell align="center">{shipping.location}</TableCell>
+                      <StyledTableCell align="center">
+                        {shipping.transport.name}
+                      </StyledTableCell>
+                      <TableCell align="center">{shipping.memo}</TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell align="center">-</TableCell>
+                    <TableCell align="center">-</TableCell>
+                    <TableCell align="center">-</TableCell>
+                    <TableCell align="center">-</TableCell>
+                    <TableCell align="center">-</TableCell>
+                    <TableCell align="center">-</TableCell>
+                    <TableCell align="center">-</TableCell>
+                    <TableCell align="center">-</TableCell>
+                    <TableCell align="center">-</TableCell>
+                  </TableRow>
+                )}
               </TableBody>
             </Table>
           </Box>

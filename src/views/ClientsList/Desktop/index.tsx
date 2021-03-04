@@ -19,7 +19,6 @@ interface Data {
   discount: number;
   store: string;
   state: string;
-  memo: string;
 }
 
 const Desktop: React.FC<{}> = () => {

@@ -11,6 +11,10 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
+  DateTime: any;
+  /** The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
+  JSONObject: any;
 };
 
 export type Query = {
@@ -60,8 +64,9 @@ export type User = {
   role: Role;
   state: State;
   clients: Array<Client>;
-  created_at: Scalars['String'];
-  updated_at: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
+  deleted_at: Scalars['DateTime'];
 };
 
 export type Store = {
@@ -70,8 +75,8 @@ export type Store = {
   name: Scalars['String'];
   users: Array<User>;
   clients: Array<Client>;
-  created_at: Scalars['String'];
-  updated_at: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
 };
 
 export type Client = {
@@ -93,25 +98,26 @@ export type Client = {
   shippings: Array<Shipping>;
   billings: Array<Billing>;
   addresses: Array<Address>;
-  created_at: Scalars['String'];
-  updated_at: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
 };
 
 export type State = {
   __typename?: 'State';
   id: Scalars['Float'];
   name: Scalars['String'];
-  created_at: Scalars['String'];
-  updated_at: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
 };
+
 
 export type Discount = {
   __typename?: 'Discount';
   id: Scalars['Float'];
   percentage: Scalars['Float'];
   clients: Array<Client>;
-  created_at: Scalars['String'];
-  updated_at: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
 };
 
 export type Phone = {
@@ -122,8 +128,8 @@ export type Phone = {
   phone: Scalars['String'];
   client_id: Scalars['Float'];
   client: Client;
-  created_at: Scalars['String'];
-  updated_at: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
 };
 
 export type Shipping = {
@@ -141,8 +147,8 @@ export type Shipping = {
   transport_id: Scalars['Float'];
   client: Client;
   transport: Transport;
-  created_at: Scalars['String'];
-  updated_at: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
 };
 
 export type Transport = {
@@ -150,8 +156,8 @@ export type Transport = {
   id: Scalars['Float'];
   name: Scalars['String'];
   shippings: Array<Shipping>;
-  created_at: Scalars['String'];
-  updated_at: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
 };
 
 export type Billing = {
@@ -170,8 +176,8 @@ export type Billing = {
   iva_id: Scalars['Float'];
   client: Client;
   iva: Iva;
-  created_at: Scalars['String'];
-  updated_at: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
 };
 
 export type Iva = {
@@ -179,8 +185,8 @@ export type Iva = {
   id: Scalars['Float'];
   name: Scalars['String'];
   billings: Array<Billing>;
-  created_at: Scalars['String'];
-  updated_at: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
 };
 
 export type Address = {
@@ -195,16 +201,16 @@ export type Address = {
   postal_code: Scalars['String'];
   client_id: Scalars['Float'];
   client: Client;
-  created_at: Scalars['String'];
-  updated_at: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
 };
 
 export type Role = {
   __typename?: 'Role';
   id: Scalars['Float'];
   name: Scalars['String'];
-  created_at: Scalars['String'];
-  updated_at: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
 };
 
 export type PaginatedUsersResponse = {
@@ -273,6 +279,7 @@ export type Mutation = {
   login: UserResponse;
   changeUserState: ChangeStateResponse;
   updateUser: UserResponse;
+  deleteUser: ApiResponse;
   logout: UserResponse;
   deleteAllUsers: Scalars['String'];
   createStore: StoreResponse;
@@ -300,6 +307,11 @@ export type MutationChangeUserStateArgs = {
 
 export type MutationUpdateUserArgs = {
   data: UpdateUserFields;
+};
+
+
+export type MutationDeleteUserArgs = {
+  data: DeleteUserFields;
 };
 
 
@@ -361,6 +373,17 @@ export type ChangeStateFields = {
 export type UpdateUserFields = {
   id?: Maybe<Scalars['Float']>;
   user: CreateUserFields;
+};
+
+export type ApiResponse = {
+  __typename?: 'ApiResponse';
+  data?: Maybe<Scalars['JSONObject']>;
+  message?: Maybe<Scalars['String']>;
+};
+
+
+export type DeleteUserFields = {
+  id?: Maybe<Scalars['Float']>;
 };
 
 export type StoreResponse = {
@@ -547,6 +570,19 @@ export type CreateUserMutation = (
       { __typename?: 'User' }
       & Pick<User, 'username' | 'name' | 'last_name'>
     )> }
+  ) }
+);
+
+export type DeleteUserMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type DeleteUserMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteUser: (
+    { __typename?: 'ApiResponse' }
+    & Pick<ApiResponse, 'data' | 'message'>
   ) }
 );
 
@@ -996,6 +1032,39 @@ export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
 export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
 export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const DeleteUserDocument = gql`
+    mutation DeleteUser($id: Float!) {
+  deleteUser(data: {id: $id}) {
+    data
+    message
+  }
+}
+    `;
+export type DeleteUserMutationFn = Apollo.MutationFunction<DeleteUserMutation, DeleteUserMutationVariables>;
+
+/**
+ * __useDeleteUserMutation__
+ *
+ * To run a mutation, you first call `useDeleteUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUserMutation, { data, loading, error }] = useDeleteUserMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteUserMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserMutation, DeleteUserMutationVariables>) {
+        return Apollo.useMutation<DeleteUserMutation, DeleteUserMutationVariables>(DeleteUserDocument, baseOptions);
+      }
+export type DeleteUserMutationHookResult = ReturnType<typeof useDeleteUserMutation>;
+export type DeleteUserMutationResult = Apollo.MutationResult<DeleteUserMutation>;
+export type DeleteUserMutationOptions = Apollo.BaseMutationOptions<DeleteUserMutation, DeleteUserMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($username: String!, $password: String!) {
   login(data: {username: $username, password: $password}) {

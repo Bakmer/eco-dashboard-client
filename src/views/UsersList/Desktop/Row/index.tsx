@@ -4,6 +4,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Switch from "@material-ui/core/Switch";
 import { Dropdown } from "../../../../components/Dropdown";
 import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { useChangeUserStateMutation } from "../../../../generated/graphql";
 
 interface RowProps {
@@ -26,9 +27,10 @@ interface RowProps {
     };
   };
   openModal: Function;
+  deleteUser: Function;
 }
 
-export const Row: React.FC<RowProps> = ({ data, openModal }) => {
+export const Row: React.FC<RowProps> = ({ data, openModal, deleteUser }) => {
   const [user, setUser] = useState(data);
   const [toggleState] = useChangeUserStateMutation({
     onCompleted: (res) =>
@@ -45,6 +47,13 @@ export const Row: React.FC<RowProps> = ({ data, openModal }) => {
       label: "Ver y editar",
       action: () => {
         openModal({ user, setUser });
+      },
+    },
+    {
+      icon: <DeleteIcon fontSize="small" />,
+      label: "Eliminar",
+      action: () => {
+        deleteUser({ variables: { id: user.id } });
       },
     },
   ];

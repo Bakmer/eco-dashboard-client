@@ -11,7 +11,11 @@ import { Row } from "./Row";
 import { Modal } from "../../../components/Modal";
 import { Button } from "../../../components/Button";
 import { Root, StyledPaper, StyledTable, Title } from "./styles";
-import { useListUsersQuery } from "../../../generated/graphql";
+import {
+  useListUsersQuery,
+  useDeleteUserMutation,
+  User,
+} from "../../../generated/graphql";
 
 interface Data {
   id: number;
@@ -24,8 +28,19 @@ interface Data {
 }
 
 const Desktop: React.FC<{}> = () => {
-  const { data, loading, refetch } = useListUsersQuery({
-    fetchPolicy: "no-cache",
+  const { data, loading, refetch } = useListUsersQuery();
+  const [deleteUser] = useDeleteUserMutation({
+    update(cache, { data }) {
+      cache.modify({
+        fields: {
+          listUsers(users, { readField }) {
+            return users.data.filter(
+              (user: User) => readField("id", user) !== data?.deleteUser.data.id
+            );
+          },
+        },
+      });
+    },
   });
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
@@ -99,7 +114,12 @@ const Desktop: React.FC<{}> = () => {
             />
             <TableBody>
               {data?.listUsers?.data!.map((user) => (
-                <Row data={user} openModal={openModal} key={user.id} />
+                <Row
+                  data={user}
+                  openModal={openModal}
+                  deleteUser={deleteUser}
+                  key={user.id}
+                />
               ))}
             </TableBody>
           </StyledTable>

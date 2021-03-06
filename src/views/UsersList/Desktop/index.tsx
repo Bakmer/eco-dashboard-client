@@ -29,21 +29,21 @@ interface Data {
 
 const Desktop: React.FC<{}> = () => {
   const { data, loading, refetch } = useListUsersQuery();
+  const [showModal, setShowModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState({});
   const [deleteUser] = useDeleteUserMutation({
     update(cache, { data }) {
       cache.modify({
         fields: {
-          listUsers(users, { readField }) {
+          listUsers(users) {
             return users.data.filter(
-              (user: User) => readField("id", user) !== data?.deleteUser.data.id
+              (user: User) => user.id !== data?.deleteUser.data.id
             );
           },
         },
       });
     },
   });
-  const [showModal, setShowModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState({});
 
   const orderBy = data?.listUsers.filters?.order_by;
   const orderType = data?.listUsers.filters?.order_type?.toLowerCase();

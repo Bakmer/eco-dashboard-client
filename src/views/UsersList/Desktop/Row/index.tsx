@@ -6,6 +6,7 @@ import { Dropdown } from "../../../../components/Dropdown";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useChangeUserStateMutation } from "../../../../generated/graphql";
+import { confirmDelete } from "../../../../utils/confirmDelete";
 
 interface RowProps {
   data: {
@@ -35,6 +36,7 @@ export const Row: React.FC<RowProps> = ({ data, openModal, deleteUser }) => {
   const [toggleState] = useChangeUserStateMutation({
     onCompleted: (res) =>
       setUser({ ...user, state: res.changeUserState.data! }),
+    onError: (error) => console.log(error.message),
   });
 
   const handleChange = () => {
@@ -53,7 +55,11 @@ export const Row: React.FC<RowProps> = ({ data, openModal, deleteUser }) => {
       icon: <DeleteIcon fontSize="small" />,
       label: "Eliminar",
       action: () => {
-        deleteUser({ variables: { id: user.id } });
+        confirmDelete({
+          action: () => deleteUser({ variables: { id: user.id } }),
+          confirmText: "Desea eliminar el usuario?",
+          successText: "Usuario eliminado",
+        });
       },
     },
   ];

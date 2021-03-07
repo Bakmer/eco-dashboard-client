@@ -35,14 +35,23 @@ const Desktop: React.FC<{}> = () => {
     update(cache, { data }) {
       cache.modify({
         fields: {
-          listUsers(users) {
-            return users.data.filter(
-              (user: User) => user.id !== data?.deleteUser.data.id
-            );
+          listUsers(users, { readField }) {
+            return {
+              ...users,
+              data: users.data.filter(
+                (user: User) =>
+                  readField("id", user) !== data?.deleteUser.data.id
+              ),
+              filters: {
+                ...users.filters,
+                count: users.filters.count - 1,
+              },
+            };
           },
         },
       });
     },
+    onError: (error) => console.log(error.message),
   });
 
   const orderBy = data?.listUsers.filters?.order_by;

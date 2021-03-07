@@ -66,6 +66,7 @@ export const Row: React.FC<RowProps> = ({ data }) => {
   const [toggleState] = useChangeClientStateMutation({
     onCompleted: (res) =>
       setUser({ ...client, state: res.changeClientState.data! }),
+    onError: (error) => console.log(error.message),
   });
   const collapsibleData = {
     memo: data.memo,

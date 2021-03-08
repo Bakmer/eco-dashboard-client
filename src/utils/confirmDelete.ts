@@ -1,5 +1,8 @@
 import Swal from "sweetalert2";
 import { myTheme } from "../theme/theme";
+import messages from "../constants/messages";
+
+const { CONFIRM_DELETE_ERROR } = messages;
 
 interface ConfirmDeleteParams {
   confirmText: string;
@@ -21,9 +24,13 @@ export const confirmDelete = (x: ConfirmDeleteParams) => {
     preConfirm: async () => {
       try {
         const res = await x.action();
-        return res;
+        if (res.data) {
+          return res;
+        } else {
+          Swal.showValidationMessage(res.errors[0].message);
+        }
       } catch (error) {
-        return console.log(error);
+        Swal.showValidationMessage(CONFIRM_DELETE_ERROR);
       }
     },
     allowOutsideClick: () => !Swal.isLoading(),

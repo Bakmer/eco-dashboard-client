@@ -1,5 +1,9 @@
 import * as yup from "yup";
 
+const email = {
+  email: yup.string().email("Dirección de correo inválida"),
+};
+
 const username = {
   username: yup.string().trim().min(3, "Mín. 3 caracteres"),
 };
@@ -25,7 +29,11 @@ const state_id = {
 };
 
 const store_id = {
-  store_id: yup.number().typeError("Requerido").required("Requerido"),
+  store_id: yup.number().typeError("Requerido"),
+};
+
+const discount_id = {
+  discount_id: yup.number().typeError("Requerido").required("Requerido"),
 };
 
 export const LOGIN_SCHEMA = yup.object().shape({
@@ -41,4 +49,13 @@ export const USER_SCHEMA = yup.object().shape({
   ...role_id,
   ...state_id,
   ...store_id,
+});
+
+export const CLIENT_SCHEMA = yup.object().shape({
+  ...email,
+  ...name,
+  ...last_name,
+  ...state_id,
+  ...store_id,
+  ...discount_id,
 });

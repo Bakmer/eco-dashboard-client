@@ -178,7 +178,6 @@ export const UserForm: React.FC<UserFormProps> = ({
               <FormControl component="fieldset" fullWidth>
                 <FormLabel component="legend">Estado</FormLabel>
                 <StyledRadioGroup
-                  aria-label="gender"
                   value={value}
                   onChange={(e) => onChange(Number(e.target.value))}
                 >

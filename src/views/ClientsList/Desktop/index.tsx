@@ -5,11 +5,13 @@ import TablePagination from "@material-ui/core/TablePagination";
 import Box from "@material-ui/core/Box";
 import { Backdrop } from "../../../components/Backdrop";
 import { SearchBar } from "../../../components/SearchBar";
+import { ViewPaper } from "../../../components/ViewPaper";
 import { EnhancedTableHead } from "./EnhancedTableHead";
 import { Row } from "./Row";
 import { Button } from "../../../components/Button";
-import { Root, StyledPaper, StyledTable, Title } from "./styles";
+import { StyledTable } from "./styles";
 import { useListClientsQuery } from "../../../generated/graphql";
+import { useHistory } from "react-router-dom";
 
 interface Data {
   created_at: string;
@@ -25,14 +27,12 @@ const Desktop: React.FC<{}> = () => {
   const { data, loading, refetch } = useListClientsQuery({
     fetchPolicy: "no-cache",
   });
+  const history = useHistory();
 
   const orderBy = data?.listClients.filters?.order_by;
   const orderType = data?.listClients.filters?.order_type?.toLowerCase();
 
-  const handleRequestSort = (
-    event: React.MouseEvent<unknown>,
-    property: keyof Data
-  ) => {
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
     const isAsc = orderBy === property && orderType === "asc";
     refetch({
       ...data?.listClients.filters,
@@ -48,9 +48,7 @@ const Desktop: React.FC<{}> = () => {
     });
   };
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     refetch({
       ...data?.listClients.filters,
       per_page: parseInt(event.target.value, 10),
@@ -70,50 +68,35 @@ const Desktop: React.FC<{}> = () => {
   }
 
   return (
-    <Root>
-      <StyledPaper>
-        <Title variant="h6" id="tableTitle" component="div">
-          Listado de clientes
-        </Title>
-        <Box px={2} pt={3} pb={2} display="flex" justifyContent="space-between">
-          <SearchBar placeholder="Buscar cliente" search={handleSearch} />
-          <Button
-            size="large"
-            type="button"
-            onClick={() => console.log("Crear cliente")}
-          >
-            Crear cliente
-          </Button>
-        </Box>
-        <TableContainer>
-          <StyledTable>
-            <EnhancedTableHead
-              orderType={orderType!}
-              orderBy={orderBy!}
-              onRequestSort={handleRequestSort}
-            />
-            <TableBody>
-              {data?.listClients?.data!.map((client) => (
-                <Row data={client} key={client.id} />
-              ))}
-            </TableBody>
-          </StyledTable>
-        </TableContainer>
-        <TablePagination
-          component="div"
-          count={data?.listClients.filters?.count!}
-          rowsPerPageOptions={[30, 60, 100]}
-          rowsPerPage={data?.listClients.filters?.per_page!}
-          page={data?.listClients.filters?.page!}
-          labelRowsPerPage="Filas por página"
-          labelDisplayedRows={({ count, from, to }) =>
-            `${from}-${to} de ${count}`
-          }
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </StyledPaper>
-    </Root>
+    <ViewPaper title="Listado de clientes">
+      <Box px={2} pt={3} pb={2} display="flex" justifyContent="space-between">
+        <SearchBar placeholder="Buscar cliente" search={handleSearch} />
+        <Button size="large" type="button" onClick={() => history.push("/crear-cliente")}>
+          Crear cliente
+        </Button>
+      </Box>
+      <TableContainer>
+        <StyledTable>
+          <EnhancedTableHead orderType={orderType!} orderBy={orderBy!} onRequestSort={handleRequestSort} />
+          <TableBody>
+            {data?.listClients?.data!.map((client) => (
+              <Row data={client} key={client.id} />
+            ))}
+          </TableBody>
+        </StyledTable>
+      </TableContainer>
+      <TablePagination
+        component="div"
+        count={data?.listClients.filters?.count!}
+        rowsPerPageOptions={[30, 60, 100]}
+        rowsPerPage={data?.listClients.filters?.per_page!}
+        page={data?.listClients.filters?.page!}
+        labelRowsPerPage="Filas por página"
+        labelDisplayedRows={({ count, from, to }) => `${from}-${to} de ${count}`}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+    </ViewPaper>
   );
 };
 

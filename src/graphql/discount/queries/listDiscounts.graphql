@@ -1,0 +1,9 @@
+query ListDiscounts {
+  listDiscounts {
+    data {
+      id
+      percentage
+    }
+    message
+  }
+}

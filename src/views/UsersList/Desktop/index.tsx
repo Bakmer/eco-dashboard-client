@@ -29,42 +29,19 @@ interface Data {
 }
 
 const Desktop: React.FC<{}> = () => {
-  const { data, loading, refetch: refetchUsers } = useListUsersQuery({
-    fetchPolicy: "network-only",
-  });
+  const { data, loading, refetch: refetchUsers } = useListUsersQuery();
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
   const [deleteUser] = useDeleteUserMutation({
-    // update(cache, { data }) {
-    //   cache.modify({
-    //     fields: {
-    //       listUsers(users, { readField }) {
-    //         return {
-    //           ...users,
-    //           data: users.data.filter(
-    //             (user: User) =>
-    //               readField("id", user) !== data?.deleteUser.data.id
-    //           ),
-    //           filters: {
-    //             ...users.filters,
-    //             count: users.filters.count - 1,
-    //           },
-    //         };
-    //       },
-    //     },
-    //   });
-    // },
     onCompleted: () => refetchUsers({ ...data?.listUsers.filters }),
     onError: (error) => console.log(error.message),
   });
+  console.log(data);
 
   const orderBy = data?.listUsers.filters?.order_by;
   const orderType = data?.listUsers.filters?.order_type?.toLowerCase();
 
-  const handleRequestSort = (
-    event: React.MouseEvent<unknown>,
-    property: keyof Data
-  ) => {
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
     const isAsc = orderBy === property && orderType === "asc";
     refetchUsers({
       ...data?.listUsers.filters,
@@ -80,9 +57,7 @@ const Desktop: React.FC<{}> = () => {
     });
   };
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     refetchUsers({
       ...data?.listUsers.filters,
       per_page: parseInt(event.target.value, 10),
@@ -116,19 +91,10 @@ const Desktop: React.FC<{}> = () => {
       </Box>
       <TableContainer>
         <StyledTable>
-          <EnhancedTableHead
-            orderType={orderType!}
-            orderBy={orderBy!}
-            onRequestSort={handleRequestSort}
-          />
+          <EnhancedTableHead orderType={orderType!} orderBy={orderBy!} onRequestSort={handleRequestSort} />
           <TableBody>
             {data?.listUsers?.data!.map((user) => (
-              <Row
-                data={user}
-                openModal={openModal}
-                deleteUser={deleteUser}
-                key={user.id}
-              />
+              <Row user={user} openModal={openModal} deleteUser={deleteUser} key={user.id} />
             ))}
           </TableBody>
         </StyledTable>
@@ -140,9 +106,7 @@ const Desktop: React.FC<{}> = () => {
         rowsPerPage={data?.listUsers.filters?.per_page!}
         page={data?.listUsers.filters?.page!}
         labelRowsPerPage="Filas por página"
-        labelDisplayedRows={({ count, from, to }) =>
-          `${from}-${to} de ${count}`
-        }
+        labelDisplayedRows={({ count, from, to }) => `${from}-${to} de ${count}`}
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />

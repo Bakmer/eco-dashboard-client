@@ -24,9 +24,7 @@ interface Data {
 }
 
 const Desktop: React.FC<{}> = () => {
-  const { data, loading, refetch } = useListClientsQuery({
-    fetchPolicy: "no-cache",
-  });
+  const { data, loading, refetch } = useListClientsQuery();
   const history = useHistory();
 
   const orderBy = data?.listClients.filters?.order_by;
@@ -80,7 +78,7 @@ const Desktop: React.FC<{}> = () => {
           <EnhancedTableHead orderType={orderType!} orderBy={orderBy!} onRequestSort={handleRequestSort} />
           <TableBody>
             {data?.listClients?.data!.map((client) => (
-              <Row data={client} key={client.id} />
+              <Row client={client} key={client.id} />
             ))}
           </TableBody>
         </StyledTable>

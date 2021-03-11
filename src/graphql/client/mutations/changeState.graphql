@@ -3,6 +3,43 @@ mutation ChangeClientState($id: Float!) {
     data {
       id
       name
+      last_name
+      email
+      memo
+      store {
+        id
+        name
+      }
+      state {
+        id
+        name
+      }
+      discount {
+        id
+        percentage
+      }
+      phones {
+        id
+        name
+        area_code
+        phone
+      }
+      shippings {
+        id
+        name
+        street
+        street_number
+        cuit
+        province
+        location
+        postal_code
+        transport {
+          id
+          name
+        }
+        memo
+      }
+      created_at
     }
     message
   }

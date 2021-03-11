@@ -289,7 +289,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createUser: UserResponse;
   login: UserResponse;
-  changeUserState: ChangeStateResponse;
+  changeUserState: UserResponse;
   updateUser: UserResponse;
   deleteUser: ApiResponse;
   logout: UserResponse;
@@ -299,7 +299,7 @@ export type Mutation = {
   createState: StateResponse;
   createClient: ClientResponse;
   updateClient: ClientResponse;
-  changeClientState: ChangeStateResponse;
+  changeClientState: ClientResponse;
   deleteClient: ApiResponse;
   restoreClient: ClientResponse;
   destroyClient: ApiResponse;
@@ -396,18 +396,6 @@ export type UsernamePasswordInput = {
   password: Scalars['String'];
 };
 
-export type ChangeStateResponse = {
-  __typename?: 'ChangeStateResponse';
-  data?: Maybe<StateFields>;
-  message?: Maybe<Scalars['String']>;
-};
-
-export type StateFields = {
-  __typename?: 'StateFields';
-  id: Scalars['Float'];
-  name: Scalars['String'];
-};
-
 export type ChangeStateFields = {
   id: Scalars['Float'];
 };
@@ -496,11 +484,31 @@ export type ChangeClientStateMutationVariables = Exact<{
 export type ChangeClientStateMutation = (
   { __typename?: 'Mutation' }
   & { changeClientState: (
-    { __typename?: 'ChangeStateResponse' }
-    & Pick<ChangeStateResponse, 'message'>
+    { __typename?: 'ClientResponse' }
+    & Pick<ClientResponse, 'message'>
     & { data?: Maybe<(
-      { __typename?: 'StateFields' }
-      & Pick<StateFields, 'id' | 'name'>
+      { __typename?: 'Client' }
+      & Pick<Client, 'id' | 'name' | 'last_name' | 'email' | 'memo' | 'created_at'>
+      & { store: (
+        { __typename?: 'Store' }
+        & Pick<Store, 'id' | 'name'>
+      ), state: (
+        { __typename?: 'State' }
+        & Pick<State, 'id' | 'name'>
+      ), discount: (
+        { __typename?: 'Discount' }
+        & Pick<Discount, 'id' | 'percentage'>
+      ), phones: Array<(
+        { __typename?: 'Phone' }
+        & Pick<Phone, 'id' | 'name' | 'area_code' | 'phone'>
+      )>, shippings: Array<(
+        { __typename?: 'Shipping' }
+        & Pick<Shipping, 'id' | 'name' | 'street' | 'street_number' | 'cuit' | 'province' | 'location' | 'postal_code' | 'memo'>
+        & { transport: (
+          { __typename?: 'Transport' }
+          & Pick<Transport, 'id' | 'name'>
+        ) }
+      )> }
     )> }
   ) }
 );
@@ -716,11 +724,21 @@ export type ChangeUserStateMutationVariables = Exact<{
 export type ChangeUserStateMutation = (
   { __typename?: 'Mutation' }
   & { changeUserState: (
-    { __typename?: 'ChangeStateResponse' }
-    & Pick<ChangeStateResponse, 'message'>
+    { __typename?: 'UserResponse' }
+    & Pick<UserResponse, 'message'>
     & { data?: Maybe<(
-      { __typename?: 'StateFields' }
-      & Pick<StateFields, 'id' | 'name'>
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username' | 'name' | 'last_name' | 'password'>
+      & { store: (
+        { __typename?: 'Store' }
+        & Pick<Store, 'id' | 'name'>
+      ), role: (
+        { __typename?: 'Role' }
+        & Pick<Role, 'id' | 'name'>
+      ), state: (
+        { __typename?: 'State' }
+        & Pick<State, 'id' | 'name'>
+      ) }
     )> }
   ) }
 );
@@ -900,6 +918,43 @@ export const ChangeClientStateDocument = gql`
     data {
       id
       name
+      last_name
+      email
+      memo
+      store {
+        id
+        name
+      }
+      state {
+        id
+        name
+      }
+      discount {
+        id
+        percentage
+      }
+      phones {
+        id
+        name
+        area_code
+        phone
+      }
+      shippings {
+        id
+        name
+        street
+        street_number
+        cuit
+        province
+        location
+        postal_code
+        transport {
+          id
+          name
+        }
+        memo
+      }
+      created_at
     }
     message
   }
@@ -1370,7 +1425,22 @@ export const ChangeUserStateDocument = gql`
   changeUserState(data: {id: $id}) {
     data {
       id
+      username
       name
+      last_name
+      password
+      store {
+        id
+        name
+      }
+      role {
+        id
+        name
+      }
+      state {
+        id
+        name
+      }
     }
     message
   }

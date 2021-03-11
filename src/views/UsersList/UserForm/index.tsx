@@ -36,17 +36,12 @@ interface FormData {
   store_id: number;
 }
 
-export const UserForm: React.FC<UserFormProps> = ({
-  selectedUser,
-  setSelectedUser,
-  onClose,
-  fetchUsers,
-}) => {
+export const UserForm: React.FC<UserFormProps> = ({ selectedUser, setSelectedUser, onClose, fetchUsers }) => {
   const { register, handleSubmit, errors, control } = useForm<FormData>({
     resolver: yupResolver(USER_SCHEMA),
   });
   const [isLoading, setIsLoading] = useState(false);
-  const { user, setUser } = selectedUser;
+  const { user } = selectedUser;
 
   const { data: stores, loading: storesLoading } = useListStoresQuery();
   const { data: roles, loading: rolesLoading } = useListRolesQuery();
@@ -58,10 +53,23 @@ export const UserForm: React.FC<UserFormProps> = ({
     try {
       setIsLoading(true);
       if (user) {
-        const updatedUser = await updateUser({
+        await updateUser({
           variables: { id: user.id, ...formData },
+          update(cache, { data }) {
+            cache.modify({
+              fields: {
+                listUsers(currentUsers, { readField }) {
+                  return {
+                    ...currentUsers,
+                    data: currentUsers.data.map((currUser: any) =>
+                      readField("id", currUser) === user.id ? data?.updateUser.data : currUser
+                    ),
+                  };
+                },
+              },
+            });
+          },
         });
-        setUser(updatedUser.data?.updateUser.data);
       } else {
         await createUser({ variables: formData });
         await fetchUsers();
@@ -177,17 +185,9 @@ export const UserForm: React.FC<UserFormProps> = ({
             render={({ value, onChange }) => (
               <FormControl component="fieldset" fullWidth>
                 <FormLabel component="legend">Estado</FormLabel>
-                <StyledRadioGroup
-                  value={value}
-                  onChange={(e) => onChange(Number(e.target.value))}
-                >
+                <StyledRadioGroup value={value} onChange={(e) => onChange(Number(e.target.value))}>
                   {state?.listStates.data!.map((state) => (
-                    <FormControlLabel
-                      value={state.id}
-                      control={<Radio />}
-                      label={state.name}
-                      key={state.id}
-                    />
+                    <FormControlLabel value={state.id} control={<Radio />} label={state.name} key={state.id} />
                   ))}
                 </StyledRadioGroup>
               </FormControl>
@@ -200,14 +200,7 @@ export const UserForm: React.FC<UserFormProps> = ({
           </Button>
         </Grid>
         <Grid xs={12} md={6} item>
-          <Button
-            size="large"
-            color="secondary"
-            type="button"
-            disabled={isLoading}
-            onClick={() => onClose()}
-            fullWidth
-          >
+          <Button size="large" color="secondary" type="button" disabled={isLoading} onClick={() => onClose()} fullWidth>
             Cancelar
           </Button>
         </Grid>

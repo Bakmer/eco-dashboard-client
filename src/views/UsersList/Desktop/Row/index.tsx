@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import Switch from "@material-ui/core/Switch";
@@ -9,7 +9,7 @@ import { useChangeUserStateMutation } from "../../../../generated/graphql";
 import { confirmDelete } from "../../../../utils/confirmDelete";
 
 interface RowProps {
-  data: {
+  user: {
     id: number;
     username: string;
     name: string;
@@ -31,11 +31,22 @@ interface RowProps {
   deleteUser: Function;
 }
 
-export const Row: React.FC<RowProps> = ({ data, openModal, deleteUser }) => {
-  const [user, setUser] = useState(data);
+export const Row: React.FC<RowProps> = ({ user, openModal, deleteUser }) => {
   const [toggleState] = useChangeUserStateMutation({
-    onCompleted: (res) =>
-      setUser({ ...user, state: res.changeUserState.data! }),
+    update(cache, { data }) {
+      cache.modify({
+        fields: {
+          listUsers(currentUsers, { readField }) {
+            return {
+              ...currentUsers,
+              data: currentUsers.data.map((currUser: any) =>
+                readField("id", currUser) === user.id ? data?.changeUserState.data : currUser
+              ),
+            };
+          },
+        },
+      });
+    },
     onError: (error) => console.log(error.message),
   });
 
@@ -48,7 +59,7 @@ export const Row: React.FC<RowProps> = ({ data, openModal, deleteUser }) => {
       icon: <EditIcon fontSize="small" />,
       label: "Ver y editar",
       action: () => {
-        openModal({ user, setUser });
+        openModal({ user });
       },
     },
     {
@@ -75,12 +86,7 @@ export const Row: React.FC<RowProps> = ({ data, openModal, deleteUser }) => {
       <TableCell align="center">{user.store.name}</TableCell>
       <TableCell align="center">{user.role.name}</TableCell>
       <TableCell align="center">
-        <Switch
-          checked={user.state.id === 1 ? true : false}
-          color="primary"
-          onChange={handleChange}
-          name="state"
-        />
+        <Switch checked={user.state.id === 1 ? true : false} color="primary" onChange={handleChange} name="state" />
       </TableCell>
       <TableCell align="center">
         <Dropdown items={menu} />

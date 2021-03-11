@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import TableCell from "@material-ui/core/TableCell";
 import Switch from "@material-ui/core/Switch";
 import { Dropdown } from "../../../../components/Dropdown";
@@ -36,7 +36,7 @@ export interface Shipping {
 }
 
 interface RowProps {
-  data: {
+  client: {
     id: number;
     name: string;
     last_name: string;
@@ -60,18 +60,29 @@ interface RowProps {
   };
 }
 
-export const Row: React.FC<RowProps> = ({ data }) => {
-  const [client, setUser] = useState(data);
+export const Row: React.FC<RowProps> = ({ client }) => {
   const [open, setOpen] = React.useState(false);
   const [toggleState] = useChangeClientStateMutation({
-    onCompleted: (res) =>
-      setUser({ ...client, state: res.changeClientState.data! }),
+    update(cache, { data }) {
+      cache.modify({
+        fields: {
+          listClients(currentClients, { readField }) {
+            return {
+              ...currentClients,
+              data: currentClients.data.map((currClient: any) =>
+                readField("id", currClient) === client.id ? data?.changeClientState.data : currClient
+              ),
+            };
+          },
+        },
+      });
+    },
     onError: (error) => console.log(error.message),
   });
   const collapsibleData = {
-    memo: data.memo,
-    phones: data.phones,
-    shippings: data.shippings,
+    memo: client.memo,
+    phones: client.phones,
+    shippings: client.shippings,
   };
 
   const handleChange = () => {
@@ -99,11 +110,7 @@ export const Row: React.FC<RowProps> = ({ data }) => {
     <React.Fragment>
       <StyledTableRow>
         <TableCell align="center">
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
+          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
@@ -112,18 +119,11 @@ export const Row: React.FC<RowProps> = ({ data }) => {
         </TableCell>
         <TableCell align="center">{client.name}</TableCell>
         <TableCell align="center">{client.last_name}</TableCell>
-        <TableCell align="center">
-          {client.email ? client.email : "-"}
-        </TableCell>
+        <TableCell align="center">{client.email ? client.email : "-"}</TableCell>
         <TableCell align="center">{client.discount.percentage}%</TableCell>
         <TableCell align="center">{client.store.name}</TableCell>
         <TableCell align="center">
-          <Switch
-            checked={client.state.id === 1 ? true : false}
-            color="primary"
-            onChange={handleChange}
-            name="state"
-          />
+          <Switch checked={client.state.id === 1 ? true : false} color="primary" onChange={handleChange} name="state" />
         </TableCell>
         <TableCell align="center">
           <Dropdown items={menu} />

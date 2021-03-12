@@ -11,7 +11,7 @@ import Menu from "@material-ui/core/Menu";
 import Sections from "./Sections";
 import { useApolloClient } from "@apollo/client";
 import { useLogoutMutation } from "../../generated/graphql";
-import { isLoggedInVar } from "../../config/cache";
+import { isLoggedInVar } from "../cache";
 
 import {
   Root,
@@ -71,12 +71,7 @@ const ResponsiveDrawer: React.FC<ResponsiveDrawerProps> = ({ children }) => {
       <CssBaseline />
       <StyledAppBar position="fixed">
         <Toolbar>
-          <StyledIconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-          >
+          <StyledIconButton color="inherit" aria-label="open drawer" edge="start" onClick={handleDrawerToggle}>
             <MenuIcon />
           </StyledIconButton>
           <StyledTypography variant="h6" noWrap>

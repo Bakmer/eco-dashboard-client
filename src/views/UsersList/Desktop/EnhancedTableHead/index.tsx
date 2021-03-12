@@ -8,13 +8,11 @@ import { ListUsersQueryHookResult } from "../../../../generated/graphql";
 interface HeadCell {
   value: keyof Data;
   label: string;
+  width: string;
 }
 
 interface EnhancedTableProps {
-  onRequestSort: (
-    event: React.MouseEvent<unknown>,
-    property: keyof Data
-  ) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
   orderType: string;
   orderBy: string;
   users?: ListUsersQueryHookResult;
@@ -31,22 +29,20 @@ interface Data {
 }
 
 const headCells: HeadCell[] = [
-  { value: "id", label: "ID" },
-  { value: "username", label: "Usuario" },
-  { value: "name", label: "Nombre" },
-  { value: "last_name", label: "Apellido" },
-  { value: "store", label: "Tienda" },
-  { value: "role", label: "Rol" },
-  { value: "state", label: "Estado" },
+  { value: "id", label: "ID", width: "5%" },
+  { value: "username", label: "Usuario", width: "15%" },
+  { value: "name", label: "Nombre", width: "15%" },
+  { value: "last_name", label: "Apellido", width: "15%" },
+  { value: "store", label: "Tienda", width: "15%" },
+  { value: "role", label: "Rol", width: "15%" },
+  { value: "state", label: "Estado", width: "10%" },
 ];
 
 export const EnhancedTableHead: React.FC<EnhancedTableProps> = (props) => {
   const { orderType, orderBy, onRequestSort } = props;
   const getOrderType = orderType === "asc" ? "asc" : "desc";
 
-  const createSortHandler = (property: keyof Data) => (
-    event: React.MouseEvent<unknown>
-  ) => {
+  const createSortHandler = (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
     onRequestSort(event, property);
   };
 
@@ -57,6 +53,7 @@ export const EnhancedTableHead: React.FC<EnhancedTableProps> = (props) => {
           <StyledTableCell
             key={headCell.value}
             align="center"
+            width={headCell.width}
             sortDirection={orderBy === headCell.value ? getOrderType : false}
           >
             <TableSortLabel
@@ -66,16 +63,12 @@ export const EnhancedTableHead: React.FC<EnhancedTableProps> = (props) => {
             >
               {headCell.label}
               {orderBy === headCell.value ? (
-                <VisuallyHidden>
-                  {orderType === "desc"
-                    ? "sorted descending"
-                    : "sorted ascending"}
-                </VisuallyHidden>
+                <VisuallyHidden>{orderType === "desc" ? "sorted descending" : "sorted ascending"}</VisuallyHidden>
               ) : null}
             </TableSortLabel>
           </StyledTableCell>
         ))}
-        <StyledTableCell key="action" align="center">
+        <StyledTableCell key="action" align="center" width="10%">
           Acción
         </StyledTableCell>
       </TableRow>

@@ -1,11 +1,6 @@
 import React from "react";
-import {
-  ApolloClient,
-  ApolloProvider,
-  HttpLink,
-  ApolloLink,
-} from "@apollo/client";
-import { cache } from "../config/cache";
+import { ApolloClient, ApolloProvider, HttpLink, ApolloLink } from "@apollo/client";
+import { cache } from "./cache";
 import { BrowserRouter } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { responseErrorHandler } from "../utils";

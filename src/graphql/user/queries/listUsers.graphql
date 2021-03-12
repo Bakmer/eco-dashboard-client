@@ -1,37 +1,7 @@
-query ListUsers(
-  $search: String
-  $order_by: String
-  $order_type: String
-  $page: Float
-  $per_page: Float
-) {
-  listUsers(
-    vars: {
-      search: $search
-      order_by: $order_by
-      order_type: $order_type
-      page: $page
-      per_page: $per_page
-    }
-  ) {
+query ListUsers($search: String, $order_by: String, $order_type: String, $page: Float, $per_page: Float) {
+  listUsers(vars: { search: $search, order_by: $order_by, order_type: $order_type, page: $page, per_page: $per_page }) {
     data {
-      id
-      username
-      name
-      last_name
-      password
-      store {
-        id
-        name
-      }
-      role {
-        id
-        name
-      }
-      state {
-        id
-        name
-      }
+      ...User
     }
     filters {
       search

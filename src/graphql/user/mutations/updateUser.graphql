@@ -23,23 +23,7 @@ mutation UpdateUser(
     }
   ) {
     data {
-      id
-      username
-      name
-      last_name
-      password
-      store {
-        id
-        name
-      }
-      role {
-        id
-        name
-      }
-      state {
-        id
-        name
-      }
+      ...User
     }
     message
   }

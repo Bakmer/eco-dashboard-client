@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { cache } from "../../../app/cache";
 import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
 import TablePagination from "@material-ui/core/TablePagination";
@@ -36,7 +37,6 @@ const Desktop: React.FC<{}> = () => {
     onCompleted: () => refetchUsers({ ...data?.listUsers.filters }),
     onError: (error) => console.log(error.message),
   });
-  console.log(data);
 
   const orderBy = data?.listUsers.filters?.order_by;
   const orderType = data?.listUsers.filters?.order_type?.toLowerCase();
@@ -76,6 +76,12 @@ const Desktop: React.FC<{}> = () => {
     setSelectedUser(user);
     setShowModal(true);
   };
+
+  useEffect(() => {
+    return () => {
+      cache.evict({ id: "ROOT_QUERY", fieldName: "listUsers" });
+    };
+  }, []);
 
   if (loading) {
     return <Backdrop open={true} />;

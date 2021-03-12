@@ -8,13 +8,11 @@ import { ListUsersQueryHookResult } from "../../../../generated/graphql";
 interface HeadCell {
   value: keyof Data;
   label: string;
+  width: string;
 }
 
 interface EnhancedTableProps {
-  onRequestSort: (
-    event: React.MouseEvent<unknown>,
-    property: keyof Data
-  ) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
   orderType: string;
   orderBy: string;
   users?: ListUsersQueryHookResult;
@@ -31,32 +29,31 @@ interface Data {
 }
 
 const headCells: HeadCell[] = [
-  { value: "created_at", label: "Creación" },
-  { value: "name", label: "Nombre" },
-  { value: "last_name", label: "Apellido" },
-  { value: "email", label: "Email" },
-  { value: "discount", label: "Descuento" },
-  { value: "store", label: "Local" },
-  { value: "state", label: "Estado" },
+  { value: "created_at", label: "Creación", width: "10%" },
+  { value: "name", label: "Nombre", width: "15%" },
+  { value: "last_name", label: "Apellido", width: "15%" },
+  { value: "email", label: "Email", width: "20%" },
+  { value: "discount", label: "Descuento", width: "5%" },
+  { value: "store", label: "Local", width: "15%" },
+  { value: "state", label: "Estado", width: "5%" },
 ];
 
 export const EnhancedTableHead: React.FC<EnhancedTableProps> = (props) => {
   const { orderType, orderBy, onRequestSort } = props;
   const getOrderType = orderType === "asc" ? "asc" : "desc";
 
-  const createSortHandler = (property: keyof Data) => (
-    event: React.MouseEvent<unknown>
-  ) => {
+  const createSortHandler = (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
     onRequestSort(event, property);
   };
 
   return (
     <TableHead>
       <TableRow>
-        <StyledTableCell />
+        <StyledTableCell width="5%" />
         {headCells.map((headCell) => (
           <StyledTableCell
             key={headCell.value}
+            width={headCell.width}
             align="center"
             sortDirection={orderBy === headCell.value ? getOrderType : false}
           >
@@ -67,16 +64,12 @@ export const EnhancedTableHead: React.FC<EnhancedTableProps> = (props) => {
             >
               {headCell.label}
               {orderBy === headCell.value ? (
-                <VisuallyHidden>
-                  {orderType === "desc"
-                    ? "sorted descending"
-                    : "sorted ascending"}
-                </VisuallyHidden>
+                <VisuallyHidden>{orderType === "desc" ? "sorted descending" : "sorted ascending"}</VisuallyHidden>
               ) : null}
             </TableSortLabel>
           </StyledTableCell>
         ))}
-        <StyledTableCell key="action" align="center">
+        <StyledTableCell key="action" width="10%" align="center">
           Acción
         </StyledTableCell>
       </TableRow>

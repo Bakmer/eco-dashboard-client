@@ -5,7 +5,7 @@ import { PageLoaderWrapper } from "./styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Layout from "../app/Layout";
 import { useReactiveVar } from "@apollo/client";
-import { isLoggedInVar } from "../config/cache";
+import { isLoggedInVar } from "../app/cache";
 
 import { Login } from "../views/Login";
 import { Orders } from "./Orders";

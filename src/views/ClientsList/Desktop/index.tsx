@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { cache } from "../../../app/cache";
 import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
 import TablePagination from "@material-ui/core/TablePagination";
@@ -61,8 +62,14 @@ const Desktop: React.FC<{}> = () => {
     });
   };
 
+  useEffect(() => {
+    return () => {
+      cache.evict({ id: "ROOT_QUERY", fieldName: "listClients" });
+    };
+  }, []);
+
   if (loading) {
-    return <Backdrop open={true} />;
+    return <Backdrop open={loading} />;
   }
 
   return (

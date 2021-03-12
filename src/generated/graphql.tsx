@@ -476,6 +476,41 @@ export type CreateDiscountField = {
   percentage: Scalars['Float'];
 };
 
+export type ClientFragment = (
+  { __typename?: 'Client' }
+  & Pick<Client, 'id' | 'name' | 'last_name' | 'email' | 'memo'>
+  & { store: (
+    { __typename?: 'Store' }
+    & Pick<Store, 'id' | 'name'>
+  ), state: (
+    { __typename?: 'State' }
+    & Pick<State, 'id' | 'name'>
+  ), discount: (
+    { __typename?: 'Discount' }
+    & Pick<Discount, 'id' | 'percentage'>
+  ), phones: Array<(
+    { __typename?: 'Phone' }
+    & Pick<Phone, 'id' | 'name' | 'area_code' | 'phone'>
+  )>, billings: Array<(
+    { __typename?: 'Billing' }
+    & Pick<Billing, 'id' | 'name' | 'street' | 'street_number' | 'memo' | 'cuit' | 'province' | 'location' | 'postal_code'>
+    & { iva: (
+      { __typename?: 'Iva' }
+      & Pick<Iva, 'id' | 'name'>
+    ) }
+  )>, shippings: Array<(
+    { __typename?: 'Shipping' }
+    & Pick<Shipping, 'id' | 'name' | 'street' | 'street_number' | 'memo' | 'cuit' | 'province' | 'location' | 'postal_code'>
+    & { transport: (
+      { __typename?: 'Transport' }
+      & Pick<Transport, 'id' | 'name'>
+    ) }
+  )>, addresses: Array<(
+    { __typename?: 'Address' }
+    & Pick<Address, 'id' | 'name' | 'street' | 'street_number' | 'memo' | 'province' | 'location' | 'postal_code'>
+  )> }
+);
+
 export type ChangeClientStateMutationVariables = Exact<{
   id: Scalars['Float'];
 }>;
@@ -488,27 +523,8 @@ export type ChangeClientStateMutation = (
     & Pick<ClientResponse, 'message'>
     & { data?: Maybe<(
       { __typename?: 'Client' }
-      & Pick<Client, 'id' | 'name' | 'last_name' | 'email' | 'memo' | 'created_at'>
-      & { store: (
-        { __typename?: 'Store' }
-        & Pick<Store, 'id' | 'name'>
-      ), state: (
-        { __typename?: 'State' }
-        & Pick<State, 'id' | 'name'>
-      ), discount: (
-        { __typename?: 'Discount' }
-        & Pick<Discount, 'id' | 'percentage'>
-      ), phones: Array<(
-        { __typename?: 'Phone' }
-        & Pick<Phone, 'id' | 'name' | 'area_code' | 'phone'>
-      )>, shippings: Array<(
-        { __typename?: 'Shipping' }
-        & Pick<Shipping, 'id' | 'name' | 'street' | 'street_number' | 'cuit' | 'province' | 'location' | 'postal_code' | 'memo'>
-        & { transport: (
-          { __typename?: 'Transport' }
-          & Pick<Transport, 'id' | 'name'>
-        ) }
-      )> }
+      & Pick<Client, 'created_at'>
+      & ClientFragment
     )> }
   ) }
 );
@@ -531,33 +547,7 @@ export type CreateClientMutation = (
     & Pick<ClientResponse, 'message'>
     & { data?: Maybe<(
       { __typename?: 'Client' }
-      & Pick<Client, 'id' | 'name' | 'last_name' | 'email' | 'memo'>
-      & { store: (
-        { __typename?: 'Store' }
-        & Pick<Store, 'id' | 'name'>
-      ), state: (
-        { __typename?: 'State' }
-        & Pick<State, 'id' | 'name'>
-      ), discount: (
-        { __typename?: 'Discount' }
-        & Pick<Discount, 'id' | 'percentage'>
-      ), phones: Array<(
-        { __typename?: 'Phone' }
-        & Pick<Phone, 'id' | 'name' | 'area_code' | 'phone'>
-      )>, billings: Array<(
-        { __typename?: 'Billing' }
-        & Pick<Billing, 'id' | 'name' | 'street' | 'street_number' | 'memo' | 'cuit' | 'province' | 'location' | 'postal_code'>
-        & { iva: (
-          { __typename?: 'Iva' }
-          & Pick<Iva, 'id' | 'name'>
-        ) }
-      )>, shippings: Array<(
-        { __typename?: 'Shipping' }
-        & Pick<Shipping, 'id' | 'name' | 'street' | 'street_number' | 'memo' | 'cuit' | 'province' | 'location' | 'postal_code'>
-      )>, addresses: Array<(
-        { __typename?: 'Address' }
-        & Pick<Address, 'id' | 'name' | 'street' | 'street_number' | 'memo' | 'province' | 'location' | 'postal_code'>
-      )> }
+      & ClientFragment
     )> }
   ) }
 );
@@ -581,33 +571,23 @@ export type UpdateClientMutation = (
     & Pick<ClientResponse, 'message'>
     & { data?: Maybe<(
       { __typename?: 'Client' }
-      & Pick<Client, 'id' | 'name' | 'last_name' | 'email' | 'memo'>
-      & { store: (
-        { __typename?: 'Store' }
-        & Pick<Store, 'id' | 'name'>
-      ), state: (
-        { __typename?: 'State' }
-        & Pick<State, 'id' | 'name'>
-      ), discount: (
-        { __typename?: 'Discount' }
-        & Pick<Discount, 'id' | 'percentage'>
-      ), phones: Array<(
-        { __typename?: 'Phone' }
-        & Pick<Phone, 'id' | 'name' | 'area_code' | 'phone'>
-      )>, billings: Array<(
-        { __typename?: 'Billing' }
-        & Pick<Billing, 'id' | 'name' | 'street' | 'street_number' | 'memo' | 'cuit' | 'province' | 'location' | 'postal_code'>
-        & { iva: (
-          { __typename?: 'Iva' }
-          & Pick<Iva, 'id' | 'name'>
-        ) }
-      )>, shippings: Array<(
-        { __typename?: 'Shipping' }
-        & Pick<Shipping, 'id' | 'name' | 'street' | 'street_number' | 'memo' | 'cuit' | 'province' | 'location' | 'postal_code'>
-      )>, addresses: Array<(
-        { __typename?: 'Address' }
-        & Pick<Address, 'id' | 'name' | 'street' | 'street_number' | 'memo' | 'province' | 'location' | 'postal_code'>
-      )> }
+      & ClientFragment
+    )> }
+  ) }
+);
+
+export type GetClientQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type GetClientQuery = (
+  { __typename?: 'Query' }
+  & { getClient: (
+    { __typename?: 'ClientResponse' }
+    & { data?: Maybe<(
+      { __typename?: 'Client' }
+      & ClientFragment
     )> }
   ) }
 );
@@ -716,6 +696,21 @@ export type ListStoresQuery = (
   ) }
 );
 
+export type UserFragment = (
+  { __typename?: 'User' }
+  & Pick<User, 'id' | 'username' | 'name' | 'last_name' | 'password'>
+  & { store: (
+    { __typename?: 'Store' }
+    & Pick<Store, 'id' | 'name'>
+  ), role: (
+    { __typename?: 'Role' }
+    & Pick<Role, 'id' | 'name'>
+  ), state: (
+    { __typename?: 'State' }
+    & Pick<State, 'id' | 'name'>
+  ) }
+);
+
 export type ChangeUserStateMutationVariables = Exact<{
   id: Scalars['Float'];
 }>;
@@ -728,17 +723,7 @@ export type ChangeUserStateMutation = (
     & Pick<UserResponse, 'message'>
     & { data?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'username' | 'name' | 'last_name' | 'password'>
-      & { store: (
-        { __typename?: 'Store' }
-        & Pick<Store, 'id' | 'name'>
-      ), role: (
-        { __typename?: 'Role' }
-        & Pick<Role, 'id' | 'name'>
-      ), state: (
-        { __typename?: 'State' }
-        & Pick<State, 'id' | 'name'>
-      ) }
+      & UserFragment
     )> }
   ) }
 );
@@ -792,17 +777,7 @@ export type LoginMutation = (
     & Pick<UserResponse, 'message'>
     & { data?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'username' | 'name' | 'last_name'>
-      & { store: (
-        { __typename?: 'Store' }
-        & Pick<Store, 'id' | 'name'>
-      ), role: (
-        { __typename?: 'Role' }
-        & Pick<Role, 'id' | 'name'>
-      ), state: (
-        { __typename?: 'State' }
-        & Pick<State, 'id' | 'name'>
-      ) }
+      & UserFragment
     )> }
   ) }
 );
@@ -837,17 +812,7 @@ export type UpdateUserMutation = (
     & Pick<UserResponse, 'message'>
     & { data?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'username' | 'name' | 'last_name' | 'password'>
-      & { store: (
-        { __typename?: 'Store' }
-        & Pick<Store, 'id' | 'name'>
-      ), role: (
-        { __typename?: 'Role' }
-        & Pick<Role, 'id' | 'name'>
-      ), state: (
-        { __typename?: 'State' }
-        & Pick<State, 'id' | 'name'>
-      ) }
+      & UserFragment
     )> }
   ) }
 );
@@ -868,17 +833,7 @@ export type ListUsersQuery = (
     & Pick<PaginatedUsersResponse, 'message'>
     & { data?: Maybe<Array<(
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'username' | 'name' | 'last_name' | 'password'>
-      & { store: (
-        { __typename?: 'Store' }
-        & Pick<Store, 'id' | 'name'>
-      ), role: (
-        { __typename?: 'Role' }
-        & Pick<Role, 'id' | 'name'>
-      ), state: (
-        { __typename?: 'State' }
-        & Pick<State, 'id' | 'name'>
-      ) }
+      & UserFragment
     )>>, filters?: Maybe<(
       { __typename?: 'PaginationFilters' }
       & Pick<PaginationFilters, 'search' | 'page' | 'per_page' | 'order_by' | 'order_type' | 'count'>
@@ -896,70 +851,110 @@ export type MeQuery = (
     & Pick<UserResponse, 'message'>
     & { data?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'username' | 'name' | 'last_name'>
-      & { store: (
-        { __typename?: 'Store' }
-        & Pick<Store, 'id' | 'name'>
-      ), role: (
-        { __typename?: 'Role' }
-        & Pick<Role, 'id' | 'name'>
-      ), state: (
-        { __typename?: 'State' }
-        & Pick<State, 'id' | 'name'>
-      ) }
+      & UserFragment
     )> }
   ) }
 );
 
-
+export const ClientFragmentDoc = gql`
+    fragment Client on Client {
+  id
+  name
+  last_name
+  email
+  memo
+  store {
+    id
+    name
+  }
+  state {
+    id
+    name
+  }
+  discount {
+    id
+    percentage
+  }
+  phones {
+    id
+    name
+    area_code
+    phone
+  }
+  billings {
+    id
+    name
+    street
+    street_number
+    memo
+    cuit
+    iva {
+      id
+      name
+    }
+    province
+    location
+    postal_code
+  }
+  shippings {
+    id
+    name
+    street
+    street_number
+    memo
+    cuit
+    transport {
+      id
+      name
+    }
+    province
+    location
+    postal_code
+  }
+  addresses {
+    id
+    name
+    street
+    street_number
+    memo
+    province
+    location
+    postal_code
+  }
+}
+    `;
+export const UserFragmentDoc = gql`
+    fragment User on User {
+  id
+  username
+  name
+  last_name
+  password
+  store {
+    id
+    name
+  }
+  role {
+    id
+    name
+  }
+  state {
+    id
+    name
+  }
+}
+    `;
 export const ChangeClientStateDocument = gql`
     mutation ChangeClientState($id: Float!) {
   changeClientState(data: {id: $id}) {
     data {
-      id
-      name
-      last_name
-      email
-      memo
-      store {
-        id
-        name
-      }
-      state {
-        id
-        name
-      }
-      discount {
-        id
-        percentage
-      }
-      phones {
-        id
-        name
-        area_code
-        phone
-      }
-      shippings {
-        id
-        name
-        street
-        street_number
-        cuit
-        province
-        location
-        postal_code
-        transport {
-          id
-          name
-        }
-        memo
-      }
+      ...Client
       created_at
     }
     message
   }
 }
-    `;
+    ${ClientFragmentDoc}`;
 export type ChangeClientStateMutationFn = Apollo.MutationFunction<ChangeClientStateMutation, ChangeClientStateMutationVariables>;
 
 /**
@@ -991,70 +986,12 @@ export const CreateClientDocument = gql`
     data: {name: $name, last_name: $last_name, email: $email, memo: $memo, state_id: $state_id, discount_id: $discount_id, store_id: $store_id}
   ) {
     data {
-      id
-      name
-      last_name
-      email
-      memo
-      store {
-        id
-        name
-      }
-      state {
-        id
-        name
-      }
-      discount {
-        id
-        percentage
-      }
-      phones {
-        id
-        name
-        area_code
-        phone
-      }
-      billings {
-        id
-        name
-        street
-        street_number
-        memo
-        cuit
-        iva {
-          id
-          name
-        }
-        province
-        location
-        postal_code
-      }
-      shippings {
-        id
-        name
-        street
-        street_number
-        memo
-        cuit
-        province
-        location
-        postal_code
-      }
-      addresses {
-        id
-        name
-        street
-        street_number
-        memo
-        province
-        location
-        postal_code
-      }
+      ...Client
     }
     message
   }
 }
-    `;
+    ${ClientFragmentDoc}`;
 export type CreateClientMutationFn = Apollo.MutationFunction<CreateClientMutation, CreateClientMutationVariables>;
 
 /**
@@ -1092,70 +1029,12 @@ export const UpdateClientDocument = gql`
     data: {id: $id, client: {name: $name, last_name: $last_name, email: $email, memo: $memo, state_id: $state_id, discount_id: $discount_id, store_id: $store_id}}
   ) {
     data {
-      id
-      name
-      last_name
-      email
-      memo
-      store {
-        id
-        name
-      }
-      state {
-        id
-        name
-      }
-      discount {
-        id
-        percentage
-      }
-      phones {
-        id
-        name
-        area_code
-        phone
-      }
-      billings {
-        id
-        name
-        street
-        street_number
-        memo
-        cuit
-        iva {
-          id
-          name
-        }
-        province
-        location
-        postal_code
-      }
-      shippings {
-        id
-        name
-        street
-        street_number
-        memo
-        cuit
-        province
-        location
-        postal_code
-      }
-      addresses {
-        id
-        name
-        street
-        street_number
-        memo
-        province
-        location
-        postal_code
-      }
+      ...Client
     }
     message
   }
 }
-    `;
+    ${ClientFragmentDoc}`;
 export type UpdateClientMutationFn = Apollo.MutationFunction<UpdateClientMutation, UpdateClientMutationVariables>;
 
 /**
@@ -1188,6 +1067,41 @@ export function useUpdateClientMutation(baseOptions?: Apollo.MutationHookOptions
 export type UpdateClientMutationHookResult = ReturnType<typeof useUpdateClientMutation>;
 export type UpdateClientMutationResult = Apollo.MutationResult<UpdateClientMutation>;
 export type UpdateClientMutationOptions = Apollo.BaseMutationOptions<UpdateClientMutation, UpdateClientMutationVariables>;
+export const GetClientDocument = gql`
+    query GetClient($id: Float!) {
+  getClient(vars: {id: $id}) {
+    data {
+      ...Client
+    }
+  }
+}
+    ${ClientFragmentDoc}`;
+
+/**
+ * __useGetClientQuery__
+ *
+ * To run a query within a React component, call `useGetClientQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetClientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetClientQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetClientQuery(baseOptions: Apollo.QueryHookOptions<GetClientQuery, GetClientQueryVariables>) {
+        return Apollo.useQuery<GetClientQuery, GetClientQueryVariables>(GetClientDocument, baseOptions);
+      }
+export function useGetClientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetClientQuery, GetClientQueryVariables>) {
+          return Apollo.useLazyQuery<GetClientQuery, GetClientQueryVariables>(GetClientDocument, baseOptions);
+        }
+export type GetClientQueryHookResult = ReturnType<typeof useGetClientQuery>;
+export type GetClientLazyQueryHookResult = ReturnType<typeof useGetClientLazyQuery>;
+export type GetClientQueryResult = Apollo.QueryResult<GetClientQuery, GetClientQueryVariables>;
 export const ListClientsDocument = gql`
     query ListClients($search: String, $order_by: String, $order_type: String, $page: Float, $per_page: Float) {
   listClients(
@@ -1424,28 +1338,12 @@ export const ChangeUserStateDocument = gql`
     mutation ChangeUserState($id: Float!) {
   changeUserState(data: {id: $id}) {
     data {
-      id
-      username
-      name
-      last_name
-      password
-      store {
-        id
-        name
-      }
-      role {
-        id
-        name
-      }
-      state {
-        id
-        name
-      }
+      ...User
     }
     message
   }
 }
-    `;
+    ${UserFragmentDoc}`;
 export type ChangeUserStateMutationFn = Apollo.MutationFunction<ChangeUserStateMutation, ChangeUserStateMutationVariables>;
 
 /**
@@ -1553,27 +1451,12 @@ export const LoginDocument = gql`
     mutation Login($username: String!, $password: String!) {
   login(data: {username: $username, password: $password}) {
     data {
-      id
-      username
-      name
-      last_name
-      store {
-        id
-        name
-      }
-      role {
-        id
-        name
-      }
-      state {
-        id
-        name
-      }
+      ...User
     }
     message
   }
 }
-    `;
+    ${UserFragmentDoc}`;
 export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
@@ -1637,28 +1520,12 @@ export const UpdateUserDocument = gql`
     data: {id: $id, user: {username: $username, password: $password, name: $name, last_name: $last_name, store_id: $store_id, role_id: $role_id, state_id: $state_id}}
   ) {
     data {
-      id
-      username
-      name
-      last_name
-      password
-      store {
-        id
-        name
-      }
-      role {
-        id
-        name
-      }
-      state {
-        id
-        name
-      }
+      ...User
     }
     message
   }
 }
-    `;
+    ${UserFragmentDoc}`;
 export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
 
 /**
@@ -1697,23 +1564,7 @@ export const ListUsersDocument = gql`
     vars: {search: $search, order_by: $order_by, order_type: $order_type, page: $page, per_page: $per_page}
   ) {
     data {
-      id
-      username
-      name
-      last_name
-      password
-      store {
-        id
-        name
-      }
-      role {
-        id
-        name
-      }
-      state {
-        id
-        name
-      }
+      ...User
     }
     filters {
       search
@@ -1726,7 +1577,7 @@ export const ListUsersDocument = gql`
     message
   }
 }
-    `;
+    ${UserFragmentDoc}`;
 
 /**
  * __useListUsersQuery__
@@ -1761,27 +1612,12 @@ export const MeDocument = gql`
     query Me {
   me {
     data {
-      id
-      username
-      name
-      last_name
-      store {
-        id
-        name
-      }
-      role {
-        id
-        name
-      }
-      state {
-        id
-        name
-      }
+      ...User
     }
     message
   }
 }
-    `;
+    ${UserFragmentDoc}`;
 
 /**
  * __useMeQuery__

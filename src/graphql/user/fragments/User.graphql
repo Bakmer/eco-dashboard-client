@@ -1,0 +1,19 @@
+fragment User on User {
+  id
+  username
+  name
+  last_name
+  password
+  store {
+    id
+    name
+  }
+  role {
+    id
+    name
+  }
+  state {
+    id
+    name
+  }
+}

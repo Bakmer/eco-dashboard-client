@@ -14,7 +14,7 @@ import { Root, GridContainer, StyledPaper, StyledForm } from "./styles";
 import { LOGIN_SCHEMA } from "../../constants/validationSchemas";
 import logo from "../../assets/images/ECO-SISTEMA-CON-LOGO.png";
 import { useLoginMutation, MeQuery, MeDocument } from "../../generated/graphql";
-import { isLoggedInVar } from "../../config/cache";
+import { isLoggedInVar } from "../../app/cache";
 
 interface FormData {
   username: string;
@@ -45,9 +45,7 @@ export const Login: React.FC<{}> = () => {
   };
 
   const TogglePassword: React.FC<{}> = () => {
-    const handleMouseDownPassword = (
-      event: React.MouseEvent<HTMLButtonElement>
-    ) => {
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
     };
     return (
@@ -102,12 +100,7 @@ export const Login: React.FC<{}> = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <Box mt={2}>
-                    <Button
-                      size="large"
-                      type="submit"
-                      loading={loading}
-                      fullWidth
-                    >
+                    <Button size="large" type="submit" loading={loading} fullWidth>
                       Ingresar
                     </Button>
                   </Box>

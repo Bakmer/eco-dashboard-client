@@ -1,32 +1,15 @@
 import React from "react";
-import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import Switch from "@material-ui/core/Switch";
 import { Dropdown } from "../../../../components/Dropdown";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { useChangeUserStateMutation } from "../../../../generated/graphql";
+import { useChangeUserStateMutation, UserFragment } from "../../../../generated/graphql";
 import { confirmDelete } from "../../../../utils/confirmDelete";
+import { TableCell } from "../../../../components/TableCell";
 
 interface RowProps {
-  user: {
-    id: number;
-    username: string;
-    name: string;
-    last_name: string;
-    store: {
-      id: number;
-      name: string;
-    };
-    role: {
-      id: number;
-      name: string;
-    };
-    state: {
-      id: number;
-      name: string;
-    };
-  };
+  user: UserFragment;
   openModal: Function;
   deleteUser: Function;
 }

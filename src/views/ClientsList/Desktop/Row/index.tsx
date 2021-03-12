@@ -1,5 +1,4 @@
 import React from "react";
-import TableCell from "@material-ui/core/TableCell";
 import Switch from "@material-ui/core/Switch";
 import { Dropdown } from "../../../../components/Dropdown";
 import EditIcon from "@material-ui/icons/Edit";
@@ -10,6 +9,8 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import { CollapsibleTable } from "../CollapsibleTable";
 import { useChangeClientStateMutation } from "../../../../generated/graphql";
 import { formatDate } from "../../../../utils";
+import { TableCell } from "../../../../components/TableCell";
+import { useHistory } from "react-router-dom";
 import { StyledTableRow } from "./styles";
 
 export interface Phone {
@@ -79,6 +80,7 @@ export const Row: React.FC<RowProps> = ({ client }) => {
     },
     onError: (error) => console.log(error.message),
   });
+  const history = useHistory();
   const collapsibleData = {
     memo: client.memo,
     phones: client.phones,
@@ -93,9 +95,7 @@ export const Row: React.FC<RowProps> = ({ client }) => {
     {
       icon: <EditIcon fontSize="small" />,
       label: "Ver y editar",
-      action: () => {
-        console.log("Ver y editar");
-      },
+      action: () => history.push(`/clientes/${client.id}`),
     },
     {
       icon: <DeleteIcon fontSize="small" />,

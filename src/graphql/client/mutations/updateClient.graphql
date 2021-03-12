@@ -23,65 +23,7 @@ mutation UpdateClient(
     }
   ) {
     data {
-      id
-      name
-      last_name
-      email
-      memo
-      store {
-        id
-        name
-      }
-      state {
-        id
-        name
-      }
-      discount {
-        id
-        percentage
-      }
-      phones {
-        id
-        name
-        area_code
-        phone
-      }
-      billings {
-        id
-        name
-        street
-        street_number
-        memo
-        cuit
-        iva {
-          id
-          name
-        }
-        province
-        location
-        postal_code
-      }
-      shippings {
-        id
-        name
-        street
-        street_number
-        memo
-        cuit
-        province
-        location
-        postal_code
-      }
-      addresses {
-        id
-        name
-        street
-        street_number
-        memo
-        province
-        location
-        postal_code
-      }
+      ...Client
     }
     message
   }

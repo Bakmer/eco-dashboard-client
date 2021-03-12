@@ -17,14 +17,18 @@ export const StyledRadioGroup = styled(RadioGroup)`
   }
 `;
 
-export const ButtonWrapper = styled.div`
-  width: 180px;
-  padding: 5px 16px 16px 16px;
-`;
+export const ButtonWrapper = styled.div(({ theme }) => ({
+  width: "180px",
+  padding: "5px 16px 16px 16px",
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+  },
+}));
 
 export const SectionTitle = styled.div`
   font-size: 16px;
   font-weight: 500;
+  margin-bottom: 7px;
 `;
 
 export const SectionWrapper = styled.div(({ theme }) => ({

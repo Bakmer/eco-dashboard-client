@@ -19,7 +19,7 @@ import {
   useUpdateClientMutation,
   useGetClientLazyQuery,
 } from "../../generated/graphql";
-import { StyledForm, StyledRadioGroup, ButtonWrapper, SectionTitle, SectionWrapper } from "./styles";
+import { StyledForm, StyledRadioGroup, ButtonWrapper } from "./styles";
 import { useSnackbar } from "notistack";
 import { Backdrop } from "../../components/Backdrop";
 import Divider from "@material-ui/core/Divider";
@@ -107,7 +107,7 @@ export const ClientForm: React.FC<{}> = () => {
   }
 
   return (
-    <ViewPaper title="Crear cliente">
+    <ViewPaper title={client ? "Editar cliente" : "Crear cliente"}>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -231,25 +231,13 @@ export const ClientForm: React.FC<{}> = () => {
       {client && (
         <React.Fragment>
           <Divider />
-          <SectionWrapper>
-            <SectionTitle>Teléfonos</SectionTitle>
-            <Phones />
-          </SectionWrapper>
+          <Phones />
           <Divider />
-          <SectionWrapper>
-            <SectionTitle>Direcciónes de envío</SectionTitle>
-            <ShippingAddresses />
-          </SectionWrapper>
+          <ShippingAddresses />
           <Divider />
-          <SectionWrapper>
-            <SectionTitle>Facturación</SectionTitle>
-            <Billings />
-          </SectionWrapper>
+          <Billings />
           <Divider />
-          <SectionWrapper>
-            <SectionTitle>Locales</SectionTitle>
-            <Addresses />
-          </SectionWrapper>
+          <Addresses />
         </React.Fragment>
       )}
     </ViewPaper>

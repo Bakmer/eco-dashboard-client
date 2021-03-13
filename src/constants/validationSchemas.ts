@@ -36,6 +36,10 @@ const discount_id = {
   discount_id: yup.number().typeError("Requerido").required("Requerido"),
 };
 
+const phone = {
+  phone: yup.number().typeError("Requerido").required("Requerido"),
+};
+
 export const LOGIN_SCHEMA = yup.object().shape({
   ...username,
   ...password,

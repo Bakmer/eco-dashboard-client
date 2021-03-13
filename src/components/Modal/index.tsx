@@ -6,9 +6,10 @@ import { StyledModal, StyledPaper } from "./styles";
 interface ModalProps {
   open: boolean;
   onClose: Function;
+  width?: number;
 }
 
-export const Modal: React.FC<ModalProps> = ({ open, onClose, children }) => {
+export const Modal: React.FC<ModalProps> = ({ open, onClose, children, width }) => {
   const handleClose = () => {
     onClose();
   };
@@ -24,7 +25,7 @@ export const Modal: React.FC<ModalProps> = ({ open, onClose, children }) => {
       }}
     >
       <Fade in={open}>
-        <StyledPaper>{children}</StyledPaper>
+        <StyledPaper width={width ? width : 400}>{children}</StyledPaper>
       </Fade>
     </StyledModal>
   );

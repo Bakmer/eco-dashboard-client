@@ -18,6 +18,7 @@ import {
   useUpdateUserMutation,
 } from "../../../generated/graphql";
 import { StyledRadioGroup } from "./styles";
+import Typography from "@material-ui/core/Typography";
 
 interface UserFormProps {
   selectedUser: any;
@@ -89,6 +90,11 @@ export const UserForm: React.FC<UserFormProps> = ({ selectedUser, setSelectedUse
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Typography variant="h6" align="center">
+            Crear usuario
+          </Typography>
+        </Grid>
         <Grid item xs={12}>
           <TextField
             label="Usuario"
@@ -195,12 +201,12 @@ export const UserForm: React.FC<UserFormProps> = ({ selectedUser, setSelectedUse
           />
         </Grid>
         <Grid xs={12} md={6} item>
-          <Button size="large" type="submit" loading={isLoading} fullWidth>
+          <Button type="submit" loading={isLoading} fullWidth>
             Guardar
           </Button>
         </Grid>
         <Grid xs={12} md={6} item>
-          <Button size="large" color="secondary" type="button" disabled={isLoading} onClick={() => onClose()} fullWidth>
+          <Button color="secondary" type="button" disabled={isLoading} onClick={() => onClose()} fullWidth>
             Cancelar
           </Button>
         </Grid>

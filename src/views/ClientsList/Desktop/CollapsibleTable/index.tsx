@@ -22,9 +22,7 @@ interface CollapsibleTableProps {
 const PhoneRow: React.FC<{ phone?: Phone }> = ({ phone }) => {
   return (
     <TableRow>
-      <TableCell align="center">
-        {phone ? `(${phone.area_code}) - ${phone.phone}` : "-"}
-      </TableCell>
+      <TableCell align="center">{phone ? `(${phone.area_code}) - ${phone.phone}` : "-"}</TableCell>
       <TableCell align="center">{phone ? phone.name : "-"}</TableCell>
     </TableRow>
   );
@@ -35,27 +33,18 @@ const ShippingRow: React.FC<{ shipping?: Shipping }> = ({ shipping }) => {
     <TableRow>
       <TableCell align="center">{shipping ? shipping.name : "-"}</TableCell>
       <TableCell align="center">{shipping ? shipping.street : "-"}</TableCell>
-      <TableCell align="center">
-        {shipping ? shipping.street_number : "-"}
-      </TableCell>
-      <TableCell align="center">
-        {shipping ? shipping.postal_code : "-"}
-      </TableCell>
+      <TableCell align="center">{shipping ? shipping.street_number : "-"}</TableCell>
+      <TableCell align="center">{shipping ? shipping.postal_code : "-"}</TableCell>
       <TableCell align="center">{shipping ? shipping.cuit : "-"}</TableCell>
       <TableCell align="center">{shipping ? shipping.province : "-"}</TableCell>
       <TableCell align="center">{shipping ? shipping.location : "-"}</TableCell>
-      <StyledTableCell align="center">
-        {shipping ? shipping.transport.name : "-"}
-      </StyledTableCell>
+      <StyledTableCell align="center">{shipping ? shipping.transport.name : "-"}</StyledTableCell>
       <TableCell align="center">{shipping ? shipping.memo : "-"}</TableCell>
     </TableRow>
   );
 };
 
-export const CollapsibleTable: React.FC<CollapsibleTableProps> = ({
-  open,
-  data,
-}) => {
+export const CollapsibleTable: React.FC<CollapsibleTableProps> = ({ open, data }) => {
   return (
     <TableRow>
       <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
@@ -69,14 +58,12 @@ export const CollapsibleTable: React.FC<CollapsibleTableProps> = ({
                 <TableHead>
                   <TableRow>
                     <TableCell align="center">Teléfono</TableCell>
-                    <TableCell align="center">Descripción</TableCell>
+                    <TableCell align="center">Nota</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {data.phones.length ? (
-                    data.phones.map((phone) => (
-                      <PhoneRow phone={phone} key={phone.id} />
-                    ))
+                    data.phones.map((phone) => <PhoneRow phone={phone} key={phone.id} />)
                   ) : (
                     <PhoneRow />
                   )}
@@ -112,9 +99,7 @@ export const CollapsibleTable: React.FC<CollapsibleTableProps> = ({
               </TableHead>
               <TableBody>
                 {data.shippings.length ? (
-                  data.shippings.map((shipping) => (
-                    <ShippingRow shipping={shipping} key={shipping.id} />
-                  ))
+                  data.shippings.map((shipping) => <ShippingRow shipping={shipping} key={shipping.id} />)
                 ) : (
                   <ShippingRow />
                 )}

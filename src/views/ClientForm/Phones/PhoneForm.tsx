@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Grid from "@material-ui/core/Grid";
 import { TextField } from "../../../components/TextField";
 import { Button } from "../../../components/Button";
-import { Select } from "../../../components/Select";
+import Typography from "@material-ui/core/Typography";
 
 interface PhoneFormProps {
   onClose: Function;
@@ -26,9 +26,14 @@ export const PhoneForm: React.FC<PhoneFormProps> = ({ onClose }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
+          <Typography variant="h6" align="center">
+            Teléfono
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
           <TextField
-            label="Usuario"
-            name="username"
+            label="Nota"
+            name="Nota"
             // defaultValue={user ? user.username : ""}
             ref={register}
             // error={!!errors.username}
@@ -36,9 +41,20 @@ export const PhoneForm: React.FC<PhoneFormProps> = ({ onClose }) => {
             fullWidth
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} md={4}>
           <TextField
-            label="Nombre"
+            label="Cód. de area"
+            name="name"
+            // defaultValue={user ? user.name : ""}
+            ref={register}
+            // error={!!errors.name}
+            // helperText={errors.name?.message}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} md={8}>
+          <TextField
+            label="Número"
             name="name"
             // defaultValue={user ? user.name : ""}
             ref={register}
@@ -48,12 +64,12 @@ export const PhoneForm: React.FC<PhoneFormProps> = ({ onClose }) => {
           />
         </Grid>
         <Grid xs={12} md={6} item>
-          <Button size="large" type="submit" loading={isLoading} fullWidth>
+          <Button type="submit" loading={isLoading} fullWidth>
             Crear
           </Button>
         </Grid>
         <Grid xs={12} md={6} item>
-          <Button size="large" color="secondary" type="button" disabled={isLoading} onClick={() => onClose()} fullWidth>
+          <Button color="secondary" type="button" disabled={isLoading} onClick={() => onClose()} fullWidth>
             Cancelar
           </Button>
         </Grid>

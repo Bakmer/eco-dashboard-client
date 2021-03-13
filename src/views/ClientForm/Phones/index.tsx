@@ -14,7 +14,7 @@ export const Phones: React.FC<PhonesProps> = () => {
       <SectionTitle>Teléfonos</SectionTitle>
       <Button onClick={() => setShowModal(true)}>Agregar</Button>
 
-      <Modal open={showModal} onClose={() => setShowModal(false)}>
+      <Modal open={showModal} onClose={() => setShowModal(false)} width={500}>
         <PhoneForm onClose={() => setShowModal(false)} />
       </Modal>
     </SectionWrapper>

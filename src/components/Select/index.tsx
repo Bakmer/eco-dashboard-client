@@ -13,33 +13,32 @@ interface TextFieldProps extends StandardTextFieldProps {
   isLoading?: boolean;
 }
 
-export const Select: React.FC<TextFieldProps> = React.forwardRef(
-  (props, ref) => {
-    const { isLoading, options, ...rest } = props;
+export const Select: React.FC<TextFieldProps> = React.forwardRef((props, ref) => {
+  const { isLoading, options, size, ...rest } = props;
 
-    return (
-      <React.Fragment>
-        {isLoading ? (
-          <StyledMuiSelect
-            {...rest}
-            label="Cargando..."
-            value=""
-            disabled={true}
-            inputRef={ref}
-            variant="outlined"
-          />
-        ) : (
-          <StyledMuiSelect {...rest} inputRef={ref} variant="outlined" select>
-            {options
-              ? options.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))
-              : []}
-          </StyledMuiSelect>
-        )}
-      </React.Fragment>
-    );
-  }
-);
+  return (
+    <React.Fragment>
+      {isLoading ? (
+        <StyledMuiSelect
+          {...rest}
+          label="Cargando..."
+          value=""
+          disabled={true}
+          inputRef={ref}
+          variant="outlined"
+          size={size ? size : "small"}
+        />
+      ) : (
+        <StyledMuiSelect {...rest} inputRef={ref} variant="outlined" size={size ? size : "small"} select>
+          {options
+            ? options.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))
+            : []}
+        </StyledMuiSelect>
+      )}
+    </React.Fragment>
+  );
+});

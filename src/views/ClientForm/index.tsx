@@ -82,7 +82,7 @@ export const ClientForm: React.FC<{}> = () => {
   });
   console.log(client);
 
-  const onSubmit: SubmitHandler<FormData> = async (formData) => {
+  const onSubmit: SubmitHandler<FormData> = (formData) => {
     if (client) {
       return updateClient({ variables: { ...formData, id: client.id } });
     } else {
@@ -231,7 +231,7 @@ export const ClientForm: React.FC<{}> = () => {
       {client && (
         <React.Fragment>
           <Divider />
-          <Phones />
+          <Phones client={client} />
           <Divider />
           <ShippingAddresses />
           <Divider />

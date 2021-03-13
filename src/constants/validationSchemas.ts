@@ -28,16 +28,24 @@ const state_id = {
   state_id: yup.number().typeError("Requerido").required("Requerido"),
 };
 
+// const client_id = {
+//   client_id: yup.number().typeError("Requerido").required("Requerido"),
+// };
+
 const store_id = {
   store_id: yup.number().typeError("Requerido"),
 };
 
 const discount_id = {
-  discount_id: yup.number().typeError("Requerido").required("Requerido"),
+  discount_id: yup.number().positive("Error").typeError("Números").required("Requerido"),
+};
+
+const area_code = {
+  area_code: yup.number().positive("Error").typeError("Números").required("Requerido"),
 };
 
 const phone = {
-  phone: yup.number().typeError("Requerido").required("Requerido"),
+  phone: yup.number().positive("Error").typeError("Números").required("Requerido"),
 };
 
 export const LOGIN_SCHEMA = yup.object().shape({
@@ -62,4 +70,9 @@ export const CLIENT_SCHEMA = yup.object().shape({
   ...state_id,
   ...store_id,
   ...discount_id,
+});
+
+export const CLIENT_PHONE_SCHEMA = yup.object().shape({
+  ...area_code,
+  ...phone,
 });

@@ -7,34 +7,15 @@ import IconButton from "@material-ui/core/IconButton";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import { CollapsibleTable } from "../CollapsibleTable";
-import { useChangeClientStateMutation } from "../../../../generated/graphql";
+import {
+  useChangeClientStateMutation,
+  ClientPhoneFragment,
+  ClientShippingFragment,
+} from "../../../../generated/graphql";
 import { formatDate } from "../../../../utils";
 import { TableCell } from "../../../../components/TableCell";
 import { useHistory } from "react-router-dom";
 import { StyledTableRow } from "./styles";
-
-export interface Phone {
-  id: number;
-  name: string;
-  area_code: string;
-  phone: string;
-}
-
-export interface Shipping {
-  id: number;
-  name: string;
-  street: string;
-  street_number: number;
-  cuit: string;
-  province: string;
-  location: string;
-  postal_code: string;
-  transport: {
-    id: number;
-    name: string;
-  };
-  memo: string;
-}
 
 interface RowProps {
   client: {
@@ -55,8 +36,8 @@ interface RowProps {
       id: number;
       percentage: number;
     };
-    phones: Phone[];
-    shippings: Shipping[];
+    phones: ClientPhoneFragment[];
+    shippings: ClientShippingFragment[];
     created_at: string;
   };
 }

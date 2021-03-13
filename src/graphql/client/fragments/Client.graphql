@@ -17,49 +17,15 @@ fragment Client on Client {
     percentage
   }
   phones {
-    id
-    name
-    area_code
-    phone
+    ...ClientPhone
   }
   billings {
-    id
-    name
-    street
-    street_number
-    memo
-    cuit
-    iva {
-      id
-      name
-    }
-    province
-    location
-    postal_code
+    ...ClientBilling
   }
   shippings {
-    id
-    name
-    street
-    street_number
-    memo
-    cuit
-    transport {
-      id
-      name
-    }
-    province
-    location
-    postal_code
+    ...ClientShipping
   }
   addresses {
-    id
-    name
-    street
-    street_number
-    memo
-    province
-    location
-    postal_code
+    ...ClientAddress
   }
 }

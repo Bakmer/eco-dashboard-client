@@ -1,0 +1,6 @@
+fragment ClientPhone on Phone {
+  id
+  name
+  area_code
+  phone
+}

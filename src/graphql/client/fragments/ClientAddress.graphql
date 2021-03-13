@@ -1,0 +1,10 @@
+fragment ClientAddress on Address {
+  id
+  name
+  street
+  street_number
+  memo
+  province
+  location
+  postal_code
+}

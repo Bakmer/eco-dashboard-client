@@ -1,25 +1,43 @@
-import React, { useState } from "react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import React from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { CLIENT_PHONE_SCHEMA } from "../../../constants/validationSchemas";
 import Grid from "@material-ui/core/Grid";
 import { TextField } from "../../../components/TextField";
 import { Button } from "../../../components/Button";
 import Typography from "@material-ui/core/Typography";
+import { ClientFragment, useCreatePhoneMutation } from "../../../generated/graphql";
+import { useSnackbar } from "notistack";
+import { clientVar } from "../../../app/cache";
 
 interface PhoneFormProps {
   onClose: Function;
+  client: ClientFragment;
 }
 
-interface FormData {}
+interface FormData {
+  name: string;
+  area_code: number;
+  phone: number;
+}
 
-export const PhoneForm: React.FC<PhoneFormProps> = ({ onClose }) => {
+export const PhoneForm: React.FC<PhoneFormProps> = ({ onClose, client }) => {
   const { register, handleSubmit, errors, control } = useForm<FormData>({
-    // resolver: yupResolver(USER_SCHEMA),
+    resolver: yupResolver(CLIENT_PHONE_SCHEMA),
   });
-  const [isLoading, setIsLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [createPhone, { loading: phoneLoading }] = useCreatePhoneMutation({
+    fetchPolicy: "no-cache",
+    onCompleted: (res) => {
+      clientVar({ ...client, phones: [...client.phones, res.createPhone.data!] });
+      enqueueSnackbar(res.createPhone.message, { variant: "success" });
+    },
+    onError: (error) => console.log(error),
+  });
 
   const onSubmit: SubmitHandler<FormData> = async (formData) => {
-    console.log(formData);
+    return createPhone({ variables: { ...formData, client_id: client.id } });
   };
 
   return (
@@ -30,46 +48,47 @@ export const PhoneForm: React.FC<PhoneFormProps> = ({ onClose }) => {
             Teléfono
           </Typography>
         </Grid>
-        <Grid item xs={12}>
-          <TextField
-            label="Nota"
-            name="Nota"
-            // defaultValue={user ? user.username : ""}
-            ref={register}
-            // error={!!errors.username}
-            // helperText={errors.username?.message}
-            fullWidth
-          />
-        </Grid>
         <Grid item xs={12} md={4}>
           <TextField
-            label="Cód. de area"
-            name="name"
-            // defaultValue={user ? user.name : ""}
+            label="Cód. de area *"
+            name="area_code"
             ref={register}
-            // error={!!errors.name}
-            // helperText={errors.name?.message}
+            type="tel"
+            error={!!errors.area_code}
+            helperText={errors.area_code?.message}
             fullWidth
           />
         </Grid>
         <Grid item xs={12} md={8}>
           <TextField
-            label="Número"
-            name="name"
-            // defaultValue={user ? user.name : ""}
+            label="Número *"
+            name="phone"
             ref={register}
-            // error={!!errors.name}
-            // helperText={errors.name?.message}
+            type="tel"
+            error={!!errors.phone}
+            helperText={errors.phone?.message}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            label="Nota"
+            name="name"
+            ref={register}
+            error={!!errors.name}
+            helperText={errors.name?.message}
+            multiline
+            rows={2}
             fullWidth
           />
         </Grid>
         <Grid xs={12} md={6} item>
-          <Button type="submit" loading={isLoading} fullWidth>
+          <Button type="submit" loading={phoneLoading} fullWidth>
             Crear
           </Button>
         </Grid>
         <Grid xs={12} md={6} item>
-          <Button color="secondary" type="button" disabled={isLoading} onClick={() => onClose()} fullWidth>
+          <Button color="secondary" type="button" disabled={phoneLoading} onClick={() => onClose()} fullWidth>
             Cancelar
           </Button>
         </Grid>

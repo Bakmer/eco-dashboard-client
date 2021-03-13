@@ -1,0 +1,15 @@
+fragment ClientBilling on Billing {
+  id
+  name
+  street
+  street_number
+  memo
+  cuit
+  iva {
+    id
+    name
+  }
+  province
+  location
+  postal_code
+}

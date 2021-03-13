@@ -7,19 +7,19 @@ import Typography from "@material-ui/core/Typography";
 import TableBody from "@material-ui/core/TableBody";
 import TableHead from "@material-ui/core/TableHead";
 import TableCell from "@material-ui/core/TableCell";
-import { Phone, Shipping } from "../Row";
+import { ClientPhoneFragment, ClientShippingFragment } from "../../../../generated/graphql";
 import { MemoContainer, StyledTableCell } from "./styles";
 
 interface CollapsibleTableProps {
   open: boolean;
   data: {
     memo: string;
-    phones: Phone[];
-    shippings: Shipping[];
+    phones: ClientPhoneFragment[];
+    shippings: ClientShippingFragment[];
   };
 }
 
-const PhoneRow: React.FC<{ phone?: Phone }> = ({ phone }) => {
+const PhoneRow: React.FC<{ phone?: ClientPhoneFragment }> = ({ phone }) => {
   return (
     <TableRow>
       <TableCell align="center">{phone ? `(${phone.area_code}) - ${phone.phone}` : "-"}</TableCell>
@@ -28,7 +28,7 @@ const PhoneRow: React.FC<{ phone?: Phone }> = ({ phone }) => {
   );
 };
 
-const ShippingRow: React.FC<{ shipping?: Shipping }> = ({ shipping }) => {
+const ShippingRow: React.FC<{ shipping?: ClientShippingFragment }> = ({ shipping }) => {
   return (
     <TableRow>
       <TableCell align="center">{shipping ? shipping.name : "-"}</TableCell>

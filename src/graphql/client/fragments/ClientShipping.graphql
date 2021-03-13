@@ -1,0 +1,15 @@
+fragment ClientShipping on Shipping {
+  id
+  name
+  street
+  street_number
+  memo
+  cuit
+  transport {
+    id
+    name
+  }
+  province
+  location
+  postal_code
+}

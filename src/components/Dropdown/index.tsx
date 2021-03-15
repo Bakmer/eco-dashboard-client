@@ -14,9 +14,10 @@ interface Item {
 
 interface DropdownProps {
   items: Item[];
+  size?: "small" | "medium";
 }
 
-export const Dropdown: React.FC<DropdownProps> = ({ items }) => {
+export const Dropdown: React.FC<DropdownProps> = ({ items, size }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -29,21 +30,10 @@ export const Dropdown: React.FC<DropdownProps> = ({ items }) => {
 
   return (
     <div>
-      <IconButton
-        aria-label="more"
-        aria-haspopup="true"
-        size="small"
-        onClick={handleClick}
-      >
+      <IconButton aria-label="more" aria-haspopup="true" size={size ? size : "small"} onClick={handleClick}>
         <MoreVertIcon />
       </IconButton>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
+      <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         {items.map(({ icon, label, action }) => {
           const handleEvent = (event: React.MouseEvent<HTMLElement>) => {
             action();

@@ -11,11 +11,14 @@ import {
   useChangeClientStateMutation,
   ClientPhoneFragment,
   ClientShippingFragment,
+  useDeleteClientMutation,
 } from "../../../../generated/graphql";
 import { formatDate } from "../../../../utils";
+import { confirmDelete } from "../../../../utils/confirmDelete";
 import { TableCell } from "../../../../components/TableCell";
 import { useHistory } from "react-router-dom";
 import { StyledTableRow } from "./styles";
+import { useSnackbar } from "notistack";
 
 interface RowProps {
   client: {
@@ -44,6 +47,7 @@ interface RowProps {
 
 export const Row: React.FC<RowProps> = ({ client }) => {
   const [open, setOpen] = React.useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   const [toggleState] = useChangeClientStateMutation({
     update(cache, { data }) {
       cache.modify({
@@ -59,6 +63,29 @@ export const Row: React.FC<RowProps> = ({ client }) => {
         },
       });
     },
+    onError: (error) => console.log(error.message),
+  });
+  const [deleteClient] = useDeleteClientMutation({
+    update(cache, { data }) {
+      cache.modify({
+        fields: {
+          listClients(currentClients, { readField }) {
+            console.log(currentClients);
+            return {
+              ...currentClients,
+              filters: {
+                ...currentClients.filters,
+                count: currentClients.filters.count - 1,
+              },
+              data: currentClients.data.filter(
+                (currClient: any) => readField("id", currClient) !== data?.deleteClient.data.id
+              ),
+            };
+          },
+        },
+      });
+    },
+    onCompleted: (res) => enqueueSnackbar(res.deleteClient.message, { variant: "success" }),
     onError: (error) => console.log(error.message),
   });
   const history = useHistory();
@@ -81,9 +108,11 @@ export const Row: React.FC<RowProps> = ({ client }) => {
     {
       icon: <DeleteIcon fontSize="small" />,
       label: "Eliminar",
-      action: () => {
-        console.log("Eliminar");
-      },
+      action: () =>
+        confirmDelete({
+          action: () => deleteClient({ variables: { id: client.id } }),
+          confirmText: "Desea eliminar al cliente?",
+        }),
     },
   ];
 

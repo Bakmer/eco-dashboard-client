@@ -1,4 +1,4 @@
-mutation CreatePhone($name: String!, $client_id: Float!, $area_code: Float!, $phone: Float!) {
+mutation CreatePhone($name: String!, $client_id: Float!, $area_code: String!, $phone: String!) {
   createPhone(data: { name: $name, client_id: $client_id, area_code: $area_code, phone: $phone }) {
     data {
       ...ClientPhone

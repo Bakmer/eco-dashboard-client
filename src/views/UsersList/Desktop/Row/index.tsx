@@ -48,13 +48,11 @@ export const Row: React.FC<RowProps> = ({ user, openModal, deleteUser }) => {
     {
       icon: <DeleteIcon fontSize="small" />,
       label: "Eliminar",
-      action: () => {
+      action: () =>
         confirmDelete({
           action: () => deleteUser({ variables: { id: user.id } }),
           confirmText: "Desea eliminar el usuario?",
-          successText: "Usuario eliminado",
-        });
-      },
+        }),
     },
   ];
 

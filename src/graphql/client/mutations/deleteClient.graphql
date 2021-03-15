@@ -1,0 +1,6 @@
+mutation DeleteClient($id: Float!) {
+  deleteClient(data: { id: $id }) {
+    data
+    message
+  }
+}

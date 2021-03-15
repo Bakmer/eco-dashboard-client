@@ -6,7 +6,6 @@ const { CONFIRM_DELETE_ERROR } = messages;
 
 interface ConfirmDeleteParams {
   confirmText: string;
-  successText: string;
   action: Function;
   onSuccess?: Function;
 }
@@ -36,22 +35,13 @@ export const confirmDelete = (x: ConfirmDeleteParams) => {
     allowOutsideClick: () => !Swal.isLoading(),
   }).then((res) => {
     if (res.isConfirmed) {
-      Swal.fire({
-        icon: "success",
-        confirmButtonColor: myTheme.palette.primary.main,
-        confirmButtonText: `Ok`,
-        text: x.successText,
-      }).then((res) => {
-        if (res.isConfirmed) {
-          if (x.onSuccess) {
-            return x.onSuccess;
-          } else {
-            return;
-          }
-        } else {
-          return;
-        }
-      });
+      if (x.onSuccess) {
+        return x.onSuccess;
+      } else {
+        return;
+      }
+    } else {
+      return;
     }
   });
 };

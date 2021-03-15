@@ -1,0 +1,6 @@
+mutation DeletePhone($id: Float!) {
+  deletePhone(data: { id: $id }) {
+    data
+    message
+  }
+}

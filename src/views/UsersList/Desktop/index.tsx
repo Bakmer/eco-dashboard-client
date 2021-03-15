@@ -12,6 +12,7 @@ import { UserForm } from "../UserForm";
 import { Row } from "./Row";
 import { Modal } from "../../../components/Modal";
 import { Button } from "../../../components/Button";
+import { useSnackbar } from "notistack";
 import { StyledTable } from "./styles";
 import {
   useListUsersQuery,
@@ -33,8 +34,13 @@ const Desktop: React.FC<{}> = () => {
   const { data, loading, refetch: refetchUsers } = useListUsersQuery();
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
+  const { enqueueSnackbar } = useSnackbar();
   const [deleteUser] = useDeleteUserMutation({
-    onCompleted: () => refetchUsers({ ...data?.listUsers.filters }),
+    onCompleted: async (res) => {
+      await refetchUsers({ ...data?.listUsers.filters });
+
+      enqueueSnackbar(res.deleteUser.message, { variant: "success" });
+    },
     onError: (error) => console.log(error.message),
   });
 

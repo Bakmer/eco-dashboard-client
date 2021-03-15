@@ -50,15 +50,19 @@ export const CollapsibleTable: React.FC<CollapsibleTableProps> = ({ open, data }
       <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
         <Collapse in={open} timeout="auto" unmountOnExit>
           <Box display="flex" mx={1} mb={2}>
-            <Box mr={2} width="35%">
+            <Box mr={2} width="45%">
               <Typography variant="h6" component="div">
                 Teléfonos
               </Typography>
-              <Table size="small" aria-label="purchases">
+              <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell align="center">Teléfono</TableCell>
-                    <TableCell align="center">Nota</TableCell>
+                    <TableCell align="center" width="50%">
+                      Teléfono
+                    </TableCell>
+                    <TableCell align="center" width="50%">
+                      Nota
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -70,7 +74,7 @@ export const CollapsibleTable: React.FC<CollapsibleTableProps> = ({ open, data }
                 </TableBody>
               </Table>
             </Box>
-            <Box ml={2} pl={1} width="60%">
+            <Box ml={2} pl={1} width="50%">
               <Typography variant="h6" component="div">
                 Memo
               </Typography>

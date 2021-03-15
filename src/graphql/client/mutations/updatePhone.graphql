@@ -1,0 +1,8 @@
+mutation UpdatePhone($id: Float!, $name: String!, $area_code: String!, $phone: String!, $client_id: Float!) {
+  updatePhone(data: { id: $id, phone: { name: $name, area_code: $area_code, phone: $phone, client_id: $client_id } }) {
+    data {
+      ...ClientPhone
+    }
+    message
+  }
+}

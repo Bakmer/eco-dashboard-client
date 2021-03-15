@@ -17,12 +17,12 @@ interface PhoneFormProps {
 
 interface FormData {
   name: string;
-  area_code: number;
-  phone: number;
+  area_code: string;
+  phone: string;
 }
 
-export const PhoneForm: React.FC<PhoneFormProps> = ({ onClose, client }) => {
-  const { register, handleSubmit, errors, control } = useForm<FormData>({
+export const PhoneModalForm: React.FC<PhoneFormProps> = ({ onClose, client }) => {
+  const { register, handleSubmit, errors } = useForm<FormData>({
     resolver: yupResolver(CLIENT_PHONE_SCHEMA),
   });
   const { enqueueSnackbar } = useSnackbar();
@@ -32,6 +32,7 @@ export const PhoneForm: React.FC<PhoneFormProps> = ({ onClose, client }) => {
     onCompleted: (res) => {
       clientVar({ ...client, phones: [...client.phones, res.createPhone.data!] });
       enqueueSnackbar(res.createPhone.message, { variant: "success" });
+      onClose();
     },
     onError: (error) => console.log(error),
   });
@@ -45,8 +46,18 @@ export const PhoneForm: React.FC<PhoneFormProps> = ({ onClose, client }) => {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Typography variant="h6" align="center">
-            Teléfono
+            Agregar Teléfono
           </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            label="Nota"
+            name="name"
+            ref={register}
+            error={!!errors.name}
+            helperText={errors.name?.message}
+            fullWidth
+          />
         </Grid>
         <Grid item xs={12} md={4}>
           <TextField
@@ -67,18 +78,6 @@ export const PhoneForm: React.FC<PhoneFormProps> = ({ onClose, client }) => {
             type="tel"
             error={!!errors.phone}
             helperText={errors.phone?.message}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            label="Nota"
-            name="name"
-            ref={register}
-            error={!!errors.name}
-            helperText={errors.name?.message}
-            multiline
-            rows={2}
             fullWidth
           />
         </Grid>

@@ -1,5 +1,7 @@
 import * as yup from "yup";
 
+const phoneRegExp = /^\d*[1-9]\d*$/;
+
 const email = {
   email: yup.string().email("Dirección de correo inválida"),
 };
@@ -41,11 +43,11 @@ const discount_id = {
 };
 
 const area_code = {
-  area_code: yup.number().positive("Error").typeError("Números").required("Requerido"),
+  area_code: yup.string().required("Requerido").matches(phoneRegExp, "Solo números"),
 };
 
 const phone = {
-  phone: yup.number().positive("Error").typeError("Números").required("Requerido"),
+  phone: yup.string().required("Requerido").matches(phoneRegExp, "Solo números"),
 };
 
 export const LOGIN_SCHEMA = yup.object().shape({
@@ -75,4 +77,5 @@ export const CLIENT_SCHEMA = yup.object().shape({
 export const CLIENT_PHONE_SCHEMA = yup.object().shape({
   ...area_code,
   ...phone,
+  ...name,
 });

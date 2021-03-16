@@ -29,7 +29,7 @@ import { Phones } from "./Phones";
 import { Billings } from "./Billings";
 import { useParams } from "react-router-dom";
 import { useReactiveVar } from "@apollo/client";
-import { clientVar } from "../../app/cache";
+import { clientVar, cache } from "../../app/cache";
 
 interface FormData {
   email: string;
@@ -99,6 +99,7 @@ export const ClientForm: React.FC<{}> = () => {
 
     return () => {
       clientVar(null);
+      cache.evict({ id: `Client:${clientId}` });
     };
   }, [clientId, getClient]);
 

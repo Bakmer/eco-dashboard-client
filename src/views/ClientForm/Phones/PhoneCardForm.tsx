@@ -28,6 +28,7 @@ export const PhoneCardForm: React.FC<CardFormProps> = ({ phone, client, closeCar
   });
   const { enqueueSnackbar } = useSnackbar();
   const [updatePhone, { loading: updateLoading }] = useUpdatePhoneMutation({
+    fetchPolicy: "no-cache",
     onCompleted: (res) => {
       clientVar({ ...client, phones: client.phones.map((x) => (x.id === phone.id ? res.updatePhone.data! : x)) });
       enqueueSnackbar(res.updatePhone.message, { variant: "success" });

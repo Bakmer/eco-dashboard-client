@@ -234,7 +234,7 @@ export const ClientForm: React.FC<{}> = () => {
           <Divider />
           <Phones client={client} />
           <Divider />
-          <ShippingAddresses />
+          <ShippingAddresses client={client} />
           <Divider />
           <Billings />
           <Divider />

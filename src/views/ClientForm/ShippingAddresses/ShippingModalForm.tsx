@@ -46,12 +46,12 @@ export const ShippingModalForm: React.FC<PhoneFormProps> = ({ onClose, client })
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Typography variant="h6" align="center">
-            Agregar Teléfono
+            Dirección de envío
           </Typography>
         </Grid>
         <Grid item xs={12}>
           <TextField
-            label="Nota"
+            label="Razón social"
             name="name"
             ref={register}
             error={!!errors.name}
@@ -59,23 +59,31 @@ export const ShippingModalForm: React.FC<PhoneFormProps> = ({ onClose, client })
             fullWidth
           />
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={8}>
           <TextField
-            label="Cód. de area *"
-            name="area_code"
+            label="Calle *"
+            name="street"
             ref={register}
-            type="tel"
             error={!!errors.area_code}
             helperText={errors.area_code?.message}
             fullWidth
           />
         </Grid>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={4}>
           <TextField
             label="Número *"
-            name="phone"
+            name="street_number"
             ref={register}
-            type="tel"
+            error={!!errors.phone}
+            helperText={errors.phone?.message}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <TextField
+            label="CUIT *"
+            name="cuit"
+            ref={register}
             error={!!errors.phone}
             helperText={errors.phone?.message}
             fullWidth

@@ -70,7 +70,6 @@ export const Row: React.FC<RowProps> = ({ client }) => {
       cache.modify({
         fields: {
           listClients(currentClients, { readField }) {
-            console.log(currentClients);
             return {
               ...currentClients,
               filters: {

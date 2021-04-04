@@ -1,0 +1,13 @@
+query GetProvinces {
+  getAllProvinces {
+    data
+    message
+  }
+}
+
+query GetLocations($province_id: String!) {
+  getLocations(vars: { province_id: $province_id }) {
+    data
+    message
+  }
+}

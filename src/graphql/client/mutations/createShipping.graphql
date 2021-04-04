@@ -1,0 +1,32 @@
+mutation CreateShipping(
+  $name: String!
+  $street: String!
+  $street_number: Float!
+  $postal_code: String!
+  $cuit: String!
+  $memo: String!
+  $province_id: String!
+  $location_id: String!
+  $client_id: Float!
+  $transport_id: Float!
+) {
+  createShipping(
+    data: {
+      name: $name
+      street: $street
+      street_number: $street_number
+      postal_code: $postal_code
+      memo: $memo
+      cuit: $cuit
+      province_id: $province_id
+      location_id: $location_id
+      transport_id: $transport_id
+      client_id: $client_id
+    }
+  ) {
+    data {
+      ...ClientShipping
+    }
+    message
+  }
+}

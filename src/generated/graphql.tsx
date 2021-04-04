@@ -28,6 +28,11 @@ export type Query = {
   getClient: ClientResponse;
   listClients: PaginatedClientsResponse;
   listDiscounts: ListDiscountResponse;
+  getAllProvinces: ApiResponse;
+  getAllLocations: ApiResponse;
+  getProvince: ApiResponse;
+  getLocation: ApiResponse;
+  getLocations: ApiResponse;
 };
 
 
@@ -43,6 +48,21 @@ export type QueryGetClientArgs = {
 
 export type QueryListClientsArgs = {
   vars?: Maybe<PaginationFields>;
+};
+
+
+export type QueryGetProvinceArgs = {
+  vars: IdField;
+};
+
+
+export type QueryGetLocationArgs = {
+  vars: IdField;
+};
+
+
+export type QueryGetLocationsArgs = {
+  vars: ProvinceId;
 };
 
 export type UserResponse = {
@@ -143,8 +163,8 @@ export type Shipping = {
   street_number: Scalars['Float'];
   memo: Scalars['String'];
   cuit: Scalars['String'];
-  province: Scalars['String'];
-  location: Scalars['String'];
+  province?: Maybe<Scalars['JSONObject']>;
+  location?: Maybe<Scalars['JSONObject']>;
   postal_code: Scalars['String'];
   client_id: Scalars['Float'];
   transport_id: Scalars['Float'];
@@ -154,6 +174,7 @@ export type Shipping = {
   updated_at: Scalars['DateTime'];
   deleted_at: Scalars['DateTime'];
 };
+
 
 export type Transport = {
   __typename?: 'Transport';
@@ -284,6 +305,20 @@ export type ListDiscountResponse = {
   message?: Maybe<Scalars['String']>;
 };
 
+export type ApiResponse = {
+  __typename?: 'ApiResponse';
+  data?: Maybe<Scalars['JSONObject']>;
+  message?: Maybe<Scalars['String']>;
+};
+
+export type IdField = {
+  id: Scalars['String'];
+};
+
+export type ProvinceId = {
+  province_id: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createUser: UserResponse;
@@ -306,6 +341,9 @@ export type Mutation = {
   createPhone: PhoneResponse;
   updatePhone: PhoneResponse;
   deletePhone: ApiResponse;
+  createShipping: ShippingResponse;
+  updateShipping: ShippingResponse;
+  deleteShipping: ApiResponse;
 };
 
 
@@ -398,6 +436,21 @@ export type MutationDeletePhoneArgs = {
   data: DeletePhoneFields;
 };
 
+
+export type MutationCreateShippingArgs = {
+  data: CreateShippingFields;
+};
+
+
+export type MutationUpdateShippingArgs = {
+  data: UpdateShippingFields;
+};
+
+
+export type MutationDeleteShippingArgs = {
+  data: DeleteShippingFields;
+};
+
 export type CreateUserFields = {
   name: Scalars['String'];
   last_name: Scalars['String'];
@@ -421,13 +474,6 @@ export type UpdateUserFields = {
   id?: Maybe<Scalars['Float']>;
   user: CreateUserFields;
 };
-
-export type ApiResponse = {
-  __typename?: 'ApiResponse';
-  data?: Maybe<Scalars['JSONObject']>;
-  message?: Maybe<Scalars['String']>;
-};
-
 
 export type DeleteUserFields = {
   id: Scalars['Float'];
@@ -512,6 +558,34 @@ export type UpdatePhoneFields = {
 };
 
 export type DeletePhoneFields = {
+  id: Scalars['Float'];
+};
+
+export type ShippingResponse = {
+  __typename?: 'ShippingResponse';
+  data?: Maybe<Shipping>;
+  message?: Maybe<Scalars['String']>;
+};
+
+export type CreateShippingFields = {
+  name: Scalars['String'];
+  street: Scalars['String'];
+  street_number: Scalars['Float'];
+  memo: Scalars['String'];
+  cuit: Scalars['String'];
+  province_id: Scalars['String'];
+  location_id: Scalars['String'];
+  postal_code: Scalars['String'];
+  client_id: Scalars['Float'];
+  transport_id: Scalars['Float'];
+};
+
+export type UpdateShippingFields = {
+  id: Scalars['Float'];
+  shipping: CreateShippingFields;
+};
+
+export type DeleteShippingFields = {
   id: Scalars['Float'];
 };
 
@@ -627,6 +701,32 @@ export type CreatePhoneMutation = (
     & { data?: Maybe<(
       { __typename?: 'Phone' }
       & ClientPhoneFragment
+    )> }
+  ) }
+);
+
+export type CreateShippingMutationVariables = Exact<{
+  name: Scalars['String'];
+  street: Scalars['String'];
+  street_number: Scalars['Float'];
+  postal_code: Scalars['String'];
+  cuit: Scalars['String'];
+  memo: Scalars['String'];
+  province_id: Scalars['String'];
+  location_id: Scalars['String'];
+  client_id: Scalars['Float'];
+  transport_id: Scalars['Float'];
+}>;
+
+
+export type CreateShippingMutation = (
+  { __typename?: 'Mutation' }
+  & { createShipping: (
+    { __typename?: 'ShippingResponse' }
+    & Pick<ShippingResponse, 'message'>
+    & { data?: Maybe<(
+      { __typename?: 'Shipping' }
+      & ClientShippingFragment
     )> }
   ) }
 );
@@ -774,6 +874,30 @@ export type ListDiscountsQuery = (
       { __typename?: 'Discount' }
       & Pick<Discount, 'id' | 'percentage'>
     )>> }
+  ) }
+);
+
+export type GetProvincesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetProvincesQuery = (
+  { __typename?: 'Query' }
+  & { getAllProvinces: (
+    { __typename?: 'ApiResponse' }
+    & Pick<ApiResponse, 'data' | 'message'>
+  ) }
+);
+
+export type GetLocationsQueryVariables = Exact<{
+  province_id: Scalars['String'];
+}>;
+
+
+export type GetLocationsQuery = (
+  { __typename?: 'Query' }
+  & { getLocations: (
+    { __typename?: 'ApiResponse' }
+    & Pick<ApiResponse, 'data' | 'message'>
   ) }
 );
 
@@ -1212,6 +1336,52 @@ export function useCreatePhoneMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreatePhoneMutationHookResult = ReturnType<typeof useCreatePhoneMutation>;
 export type CreatePhoneMutationResult = Apollo.MutationResult<CreatePhoneMutation>;
 export type CreatePhoneMutationOptions = Apollo.BaseMutationOptions<CreatePhoneMutation, CreatePhoneMutationVariables>;
+export const CreateShippingDocument = gql`
+    mutation CreateShipping($name: String!, $street: String!, $street_number: Float!, $postal_code: String!, $cuit: String!, $memo: String!, $province_id: String!, $location_id: String!, $client_id: Float!, $transport_id: Float!) {
+  createShipping(
+    data: {name: $name, street: $street, street_number: $street_number, postal_code: $postal_code, memo: $memo, cuit: $cuit, province_id: $province_id, location_id: $location_id, transport_id: $transport_id, client_id: $client_id}
+  ) {
+    data {
+      ...ClientShipping
+    }
+    message
+  }
+}
+    ${ClientShippingFragmentDoc}`;
+export type CreateShippingMutationFn = Apollo.MutationFunction<CreateShippingMutation, CreateShippingMutationVariables>;
+
+/**
+ * __useCreateShippingMutation__
+ *
+ * To run a mutation, you first call `useCreateShippingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateShippingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createShippingMutation, { data, loading, error }] = useCreateShippingMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      street: // value for 'street'
+ *      street_number: // value for 'street_number'
+ *      postal_code: // value for 'postal_code'
+ *      cuit: // value for 'cuit'
+ *      memo: // value for 'memo'
+ *      province_id: // value for 'province_id'
+ *      location_id: // value for 'location_id'
+ *      client_id: // value for 'client_id'
+ *      transport_id: // value for 'transport_id'
+ *   },
+ * });
+ */
+export function useCreateShippingMutation(baseOptions?: Apollo.MutationHookOptions<CreateShippingMutation, CreateShippingMutationVariables>) {
+        return Apollo.useMutation<CreateShippingMutation, CreateShippingMutationVariables>(CreateShippingDocument, baseOptions);
+      }
+export type CreateShippingMutationHookResult = ReturnType<typeof useCreateShippingMutation>;
+export type CreateShippingMutationResult = Apollo.MutationResult<CreateShippingMutation>;
+export type CreateShippingMutationOptions = Apollo.BaseMutationOptions<CreateShippingMutation, CreateShippingMutationVariables>;
 export const DeleteClientDocument = gql`
     mutation DeleteClient($id: Float!) {
   deleteClient(data: {id: $id}) {
@@ -1522,6 +1692,73 @@ export function useListDiscountsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type ListDiscountsQueryHookResult = ReturnType<typeof useListDiscountsQuery>;
 export type ListDiscountsLazyQueryHookResult = ReturnType<typeof useListDiscountsLazyQuery>;
 export type ListDiscountsQueryResult = Apollo.QueryResult<ListDiscountsQuery, ListDiscountsQueryVariables>;
+export const GetProvincesDocument = gql`
+    query GetProvinces {
+  getAllProvinces {
+    data
+    message
+  }
+}
+    `;
+
+/**
+ * __useGetProvincesQuery__
+ *
+ * To run a query within a React component, call `useGetProvincesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProvincesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProvincesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetProvincesQuery(baseOptions?: Apollo.QueryHookOptions<GetProvincesQuery, GetProvincesQueryVariables>) {
+        return Apollo.useQuery<GetProvincesQuery, GetProvincesQueryVariables>(GetProvincesDocument, baseOptions);
+      }
+export function useGetProvincesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProvincesQuery, GetProvincesQueryVariables>) {
+          return Apollo.useLazyQuery<GetProvincesQuery, GetProvincesQueryVariables>(GetProvincesDocument, baseOptions);
+        }
+export type GetProvincesQueryHookResult = ReturnType<typeof useGetProvincesQuery>;
+export type GetProvincesLazyQueryHookResult = ReturnType<typeof useGetProvincesLazyQuery>;
+export type GetProvincesQueryResult = Apollo.QueryResult<GetProvincesQuery, GetProvincesQueryVariables>;
+export const GetLocationsDocument = gql`
+    query GetLocations($province_id: String!) {
+  getLocations(vars: {province_id: $province_id}) {
+    data
+    message
+  }
+}
+    `;
+
+/**
+ * __useGetLocationsQuery__
+ *
+ * To run a query within a React component, call `useGetLocationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLocationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLocationsQuery({
+ *   variables: {
+ *      province_id: // value for 'province_id'
+ *   },
+ * });
+ */
+export function useGetLocationsQuery(baseOptions: Apollo.QueryHookOptions<GetLocationsQuery, GetLocationsQueryVariables>) {
+        return Apollo.useQuery<GetLocationsQuery, GetLocationsQueryVariables>(GetLocationsDocument, baseOptions);
+      }
+export function useGetLocationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLocationsQuery, GetLocationsQueryVariables>) {
+          return Apollo.useLazyQuery<GetLocationsQuery, GetLocationsQueryVariables>(GetLocationsDocument, baseOptions);
+        }
+export type GetLocationsQueryHookResult = ReturnType<typeof useGetLocationsQuery>;
+export type GetLocationsLazyQueryHookResult = ReturnType<typeof useGetLocationsLazyQuery>;
+export type GetLocationsQueryResult = Apollo.QueryResult<GetLocationsQuery, GetLocationsQueryVariables>;
 export const ListRolesDocument = gql`
     query ListRoles {
   listRoles {

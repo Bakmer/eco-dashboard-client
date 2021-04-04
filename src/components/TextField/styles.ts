@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import MuiTextField from "@material-ui/core/TextField";
 
-interface StyledMuiTextFieldProps {}
+interface StyledMuiTextFieldProps {
+  autoComplete?: string;
+}
 
 export const StyledMuiTextField = styled(MuiTextField)<StyledMuiTextFieldProps>`
   .MuiFormHelperText-root {

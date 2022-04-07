@@ -1,3 +1,3 @@
 export default function () {
-  return <div>test1 great</div>;
+  return <div>test1 great latest</div>;
 }

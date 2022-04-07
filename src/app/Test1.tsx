@@ -1,3 +1,8 @@
 export default function () {
-  return <div>test1 great latest</div>;
+  return (
+    <div>
+      test1 great latest<span>test</span>
+      great
+    </div>
+  );
 }
